@@ -2,11 +2,7 @@ package SFT;
 
 import java.awt.Dimension;
 
-import javax.swing.JApplet;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 
 /**
@@ -23,7 +19,6 @@ import javax.swing.SwingUtilities;
 */
 public class MainJApplet extends javax.swing.JApplet {
 	private JLabel jLabelTitle;
-	private JLabel jLabelExplanation;
 
 	/**
 	* Auto-generated main method to display this 
@@ -52,17 +47,14 @@ public class MainJApplet extends javax.swing.JApplet {
 		try {
 			setSize(new Dimension(500, 400));
 			getContentPane().setLayout(null);
+			getContentPane().setBackground(new java.awt.Color(255,255,255));
 			{
 				jLabelTitle = new JLabel();
 				getContentPane().add(jLabelTitle);
 				jLabelTitle.setText("Learning and Coding Theory exercise - The SFT Algorithm");
 				jLabelTitle.setBounds(12, 12, 476, 36);
 				jLabelTitle.setFont(new java.awt.Font("Tahoma",1,14));
-			}
-			{
-				jLabelExplanation = new JLabel();
-				getContentPane().add(jLabelExplanation);
-				jLabelExplanation.setBounds(12, 60, 476, 89);
+				jLabelTitle.setHorizontalAlignment(JLabel.CENTER);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
