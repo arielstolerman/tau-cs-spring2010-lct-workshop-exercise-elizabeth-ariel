@@ -40,7 +40,7 @@ public class Elem {
 	 * @param N:	new order for Z_N
 	 */
 	public void setOrder(long N){
-		this.N= N;
+		Elem.N= N;
 	}
 	
 	// static functions on elements
