@@ -21,7 +21,17 @@
 				 Learning and Coding Theory Exercise
 				</center></b>
 				
-				This applet is an implementation of the SFT algorithm over Z<sub>N</sub>. The applet accepts as input... 
+				This applet is an implementation of the SFT algorithm over Z<sub>N</sub> for finding the list
+				of significant Fourier coefficients for some function f:Z<sub>N</sub> &rarr C.<br>
+				The applet accepts as input	an Integer N representing Z<sub>N</sub>, a threshold &tau and an
+				error bound &delta in (0,1). It also has access to a query function f, allowing it to ask for 
+				the f-values of a polynomial number of inputs from Z<sub>N</sub>.<br>
+				The querying is enabled by three methods:<br>
+				<ul><i>
+					<li> Interactive function query, user supplies f values on demand. 
+					<li> The user supplies an XML file with pairs of monoms and their coefficients.
+					<li> The algorithm randomly selects f-values, i.e. some random function f.
+				</i></ul>
 			
 				<p align="center">
 
@@ -33,6 +43,9 @@
     				deployJava.runApplet(attributes, parameters, '1.6'); 
 				</script>
 				 </p>
+				 
+				 <br>
+				 <center>Created by Elizabeth Firman &amp; Ariel Stolerman, CS Workshop, TAU Spring 2010</center>
 			
 			</div>			
 		</div>
