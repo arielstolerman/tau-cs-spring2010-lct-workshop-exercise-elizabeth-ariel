@@ -15,7 +15,7 @@ package SFT;
 import java.util.*;
 
 public class Query {
-	private Map<Long,Complex> query;
+	private Map<Elem,Complex> query;
 	private int numOfElements;
 	private final long N;
 	
@@ -24,7 +24,7 @@ public class Query {
 	 * @param N:	the size of the domain Z_N
 	 */
 	public Query(long N){
-		this.query = new HashMap<Long,Complex>();
+		this.query = new HashMap<Elem,Complex>();
 		this.numOfElements = 0;
 		this.N = N;
 	}
@@ -34,7 +34,7 @@ public class Query {
 	 * @param query:	initial query values
 	 * @param N:	the size of the domain Z_N
 	 */
-	public Query(long N, HashMap<Long,Complex> query){
+	public Query(long N, HashMap<Elem,Complex> query){
 		this.query = query;
 		this.numOfElements = query.size();
 		this.N = N;
@@ -45,7 +45,7 @@ public class Query {
 	/**
 	 * @return:		the query map
 	 */
-	public Map<Long,Complex> getQuery(){
+	public Map<Elem,Complex> getQuery(){
 		return this.query;
 	}
 	
@@ -68,15 +68,15 @@ public class Query {
 	 * @param n:	input for the function the query represents
 	 * @return:		the output of the function the query represents for the given input (a complex number)
 	 */
-	public Complex getValue(Long n){
-		return query.get(n);
+	public Complex getValue(Elem key){
+		return query.get(key);
 	}
 	
 	/**
 	 * @param key:	an integer in Z_N
 	 * @return:		true iff the query hold a pair <key,value>
 	 */
-	public boolean containsKey(Long key){
+	public boolean containsKey(Elem key){
 		return query.containsKey(key);
 	}
 	
@@ -88,7 +88,7 @@ public class Query {
 	 * @param key:		key to insert into the query
 	 * @param value:	value for this key (a complex number)
 	 */
-	public void addChangeValue(Long key, Complex value){
+	public void addChangeValue(Elem key, Complex value){
 		if (!containsKey(key))
 			this.numOfElements++;
 		query.put(key, value);

@@ -17,13 +17,26 @@ public class SFT {
 	 * Main SFT procedure
 	 * @param N:		an integer value describing the group Z_N
 	 * @param tau:		threshold on the weight of the Fourier coefficients we seek
-	 * @param deltha:	confidence parameter
+	 * @param deltha_t:	confidence parameter
 	 * @return			a short list L in Z_N of the tau-significant Fourier coefficients
-	 * 					of f with probability at least 1-deltha
+	 * 					of f with probability at least 1-deltha_t
 	 */
-	public static double[] runMainSFTAlgorithm(long N, double tau, double deltha, Query query){
-		return new double[1]; //TODO
+	public static Elem[] runMainSFTAlgorithm(long N, double tau, double deltha_t, Query query){
+		return new Elem[1]; //TODO
 	}
 	
-	public static long[] generateQueries()
+	/**
+	 * Generate Queries algorithm
+	 * @param N:		an integer value describing the group Z_N
+	 * @param gamma:	a value in R+
+	 * @param fInfNorm:	||f||_(infinity)
+	 * @param deltha:	confidence parameter
+	 * @return:			a set of elements in Z_N for which the main procedure will ask
+	 * 					its f values
+	 */
+	public static Elem[] generateQueries(long N, double gamma, double fInfNorm, double deltha){
+		return new Elem[1]; //TODO
+	}
+	
+	
 }
