@@ -23,6 +23,7 @@ import javax.swing.SwingUtilities;
 */
 public class MainJApplet extends javax.swing.JApplet {
 	private JLabel jLabelTitle;
+	private JLabel jLabelExplanation;
 
 	/**
 	* Auto-generated main method to display this 
@@ -57,6 +58,11 @@ public class MainJApplet extends javax.swing.JApplet {
 				jLabelTitle.setText("Learning and Coding Theory exercise - The SFT Algorithm");
 				jLabelTitle.setBounds(12, 12, 476, 36);
 				jLabelTitle.setFont(new java.awt.Font("Tahoma",1,14));
+			}
+			{
+				jLabelExplanation = new JLabel();
+				getContentPane().add(jLabelExplanation);
+				jLabelExplanation.setBounds(12, 60, 476, 89);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
