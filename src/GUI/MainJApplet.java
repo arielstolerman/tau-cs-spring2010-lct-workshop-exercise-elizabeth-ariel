@@ -117,7 +117,7 @@ public class MainJApplet extends javax.swing.JApplet {
 				buttonGroupQuerySelection.add(jRadioButtonQuery2);
 				getContentPane().add(jRadioButtonQuery2);
 				jRadioButtonQuery2.setBounds(24, 286, 366, 28);
-				jRadioButtonQuery2.setText("Supply XML with pairs of monoms and thier coefficients");
+				jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
 				jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
 			}
 			{
