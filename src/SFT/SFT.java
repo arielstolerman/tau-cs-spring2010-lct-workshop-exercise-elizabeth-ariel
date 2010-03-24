@@ -52,21 +52,37 @@ public class SFT {
 		
 		Debug.log("m_A is: "+m_A+", m_B is: "+m_B, DebugOutput.STDOUT);
 		
+		// generate A,B1,...,Bl
+		int logN = (int)Math.ceil(Math.log(N)/Math.log(2)); //TODO verify log basis and if l is floor/ceiling on log(N)
+		Set<Elem>[] res = new HashSet[logN+1];
+		
 		// generate random subset A partial to Z_N with m_A elements
-		//Set<Elem> A = generateRandomSubsetA(m_A, N);
-		Set<Elem> A = generateRandomSubsetA(10, N);
+		//Set<Elem> A = generateRandomSubsetA(m_A, N); //TODO
+		res[0] = generateRandomSubsetA(10, N);
+		
+		Debug.log("A:",DebugOutput.STDOUT);
+		for (Iterator<Elem> j = res[0].iterator(); j.hasNext(); ){
+			Debug.log("- "+j.next(),DebugOutput.STDOUT);
+		}
+
 		// generate logN random subsets B_l partial to {0,...,2^(l-1)-1} with min{m_B,2^(l-1)} elements
-		//Set<Elem>[] B = generateRandomSubsetsB(m_B, N);
-		Set<Elem>[] B = generateRandomSubsetsB(10, N);
+		// return an array of A,B1,...,Bl
+		for(int l=1; l<=logN; l++){
+			//res[l] = generateRandomSubsetBl(m_B,N,l);//TODO
+			res[l] = generateRandomSubsetBl(10,N,l);
+		}
+		
+		Debug.log("B's:",DebugOutput.STDOUT);
+		for (int i=1; i<=logN; i++){
+			Debug.log("B["+i+"]:",DebugOutput.STDOUT);
+			for (Iterator<Elem> j = res[i].iterator(); j.hasNext(); ){
+				Debug.log("- "+j.next(),DebugOutput.STDOUT);
+			}
+		}
 		
 		Debug.log("created A and B1,...,Bl",DebugOutput.STDOUT);
 		
-		
-		
-		
-		Set<Elem>[] tmpArr = new HashSet[1]; //TODO
-		tmpArr[0] = new HashSet<Elem>();
-		return tmpArr;
+		return res;
 	}
 	
 	/**
@@ -113,40 +129,20 @@ public class SFT {
 			if (!res.add(new Elem(getRandValue(N))))	// if add fails, another element is needed
 				i--;
 		
-		Debug.log("A:",DebugOutput.STDOUT);
-		for (Iterator<Elem> j = res.iterator(); j.hasNext(); ){
-			Debug.log("- "+j.next(),DebugOutput.STDOUT);
-		}
-		
 		return res;
 	}
 	
-	private static Set<Elem>[] generateRandomSubsetsB(int m_B, long N){
-		//TODO verify log basis and if l is floor/ceiling on log(N)
-		int logN = (int)Math.ceil(Math.log(N)/Math.log(2));
-		Set<Elem>[] res = new HashSet[logN];
-		
-		// generate each B_l
-		for (int l=1; l<=logN; l++){
-			// define number of elements by min{m_B, 2^(l-1)}
-			long pow = (long)Math.pow(2, l-1);
-			long numOfElems = Math.min((long)m_B, pow);
-			
-			// create B_l
-			Set<Elem> curr = new HashSet<Elem>();
-			for(int i=0; i<numOfElems; i++){
-				if (!curr.add(new Elem(getRandValue(pow))))	// if add fails, another element is needed
-					i--;
-			}
-			res[l-1] = curr;
-		}
-		
-		Debug.log("B's:",DebugOutput.STDOUT);
-		for (int i=0; i<logN; i++){
-			Debug.log("B["+i+"]:",DebugOutput.STDOUT);
-			for (Iterator<Elem> j = res[i].iterator(); j.hasNext(); ){
-				Debug.log("- "+j.next(),DebugOutput.STDOUT);
-			}
+	private static Set<Elem> generateRandomSubsetBl(int m_B, long N, int l){
+		// generate B_l
+		// define number of elements by min{m_B, 2^(l-1)}
+		long pow = (long)Math.pow(2, l-1);
+		long numOfElems = Math.min((long)m_B, pow);
+
+		// create B_l
+		Set<Elem> res = new HashSet<Elem>();
+		for(int i=0; i<numOfElems; i++){
+			if (!res.add(new Elem(getRandValue(pow))))	// if add fails, another element is needed
+				i--;
 		}
 		
 		return res;
