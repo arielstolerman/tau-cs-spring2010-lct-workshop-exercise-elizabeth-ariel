@@ -32,7 +32,7 @@ public class MainJApplet extends javax.swing.JApplet {
 	private ButtonGroup buttonGroupQuerySelection = new ButtonGroup();
 	private JRadioButton[] jRadioButtonQuerySelect;
 	private JRadioButton jRadioButtonQuery1;
-	private JButton jButtonPhase1Next;
+	private JButton jButtonPhaseNext;
 	private JSeparator jSeparator1;
 	private JLabel jLabelExplanationTitle;
 	private JLabel jLabelExplanation;
@@ -60,6 +60,9 @@ public class MainJApplet extends javax.swing.JApplet {
 	
 	public MainJApplet() {
 		super();
+		// initialize framework variables
+		AppletListeners.initAll();
+		// initialize GUI
 		initGUI();
 	}
 	
@@ -101,10 +104,10 @@ public class MainJApplet extends javax.swing.JApplet {
 				jRadioButtonQuery3.setBackground(new java.awt.Color(255,255,255));
 			}
 			{
-				jButtonPhase1Next = new JButton();
+				jButtonPhaseNext = new JButton();
 				getContentPane().add(getJButtonPhase1Next());
-				jButtonPhase1Next.setText("Next");
-				jButtonPhase1Next.setBounds(390, 343, 80, 30);
+				jButtonPhaseNext.setText("Next");
+				jButtonPhaseNext.setBounds(390, 343, 80, 30);
 			}
 			{
 				jLabelExplanation = new JLabel();
@@ -132,6 +135,6 @@ public class MainJApplet extends javax.swing.JApplet {
 	}
 	
 	public JButton getJButtonPhase1Next() {
-		return jButtonPhase1Next;
+		return jButtonPhaseNext;
 	}
 }
