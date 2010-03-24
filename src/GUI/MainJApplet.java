@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.Dimension;
-
 import javax.swing.*;
 
 
@@ -71,6 +70,8 @@ public class MainJApplet extends javax.swing.JApplet {
 			setSize(new Dimension(500, 400));
 			getContentPane().setLayout(null);
 			getContentPane().setBackground(new java.awt.Color(255,255,255));
+			
+			// Main title
 			{
 				jLabelTitle = new JLabel();
 				getContentPane().add(jLabelTitle);
@@ -79,6 +80,30 @@ public class MainJApplet extends javax.swing.JApplet {
 				jLabelTitle.setFont(new java.awt.Font("Verdana",1,10));
 				jLabelTitle.setHorizontalAlignment(JLabel.CENTER);
 			}
+			
+			// text zone
+			{
+				jLabelExplanationTitle = new JLabel();
+				getContentPane().add(jLabelExplanationTitle);
+				jLabelExplanationTitle.setText("Phase #1");
+				jLabelExplanationTitle.setBounds(29, 54, 441, 21);
+				jLabelExplanationTitle.setFont(new java.awt.Font("Verdana",1,14));
+			}
+			{
+				jSeparator1 = new JSeparator();
+				getContentPane().add(jSeparator1);
+				jSeparator1.setBounds(29, 75, 441, 10);
+			}
+			{
+				jLabelExplanation = new JLabel();
+				getContentPane().add(jLabelExplanation);
+				jLabelExplanation.setText(AppletListeners.phasesExplanation.get("phase1"));
+				jLabelExplanation.setBounds(29, 86, 441, 131);
+				jLabelExplanation.setVerticalAlignment(JLabel.TOP);
+				jLabelExplanation.setFont(new java.awt.Font("Verdana",0,12));
+			}
+			
+			// actions zone
 			{
 				jRadioButtonQuery1 = new JRadioButton();
 				buttonGroupQuerySelection.add(jRadioButtonQuery1);
@@ -109,26 +134,7 @@ public class MainJApplet extends javax.swing.JApplet {
 				jButtonPhaseNext.setText("Next");
 				jButtonPhaseNext.setBounds(390, 343, 80, 30);
 			}
-			{
-				jLabelExplanation = new JLabel();
-				getContentPane().add(jLabelExplanation);
-				jLabelExplanation.setText("Phase");
-				jLabelExplanation.setBounds(29, 86, 441, 131);
-				jLabelExplanation.setVerticalAlignment(JLabel.TOP);
-				jLabelExplanation.setFont(new java.awt.Font("Verdana",0,12));
-			}
-			{
-				jLabelExplanationTitle = new JLabel();
-				getContentPane().add(jLabelExplanationTitle);
-				jLabelExplanationTitle.setText("Phase #1");
-				jLabelExplanationTitle.setBounds(29, 54, 441, 21);
-				jLabelExplanationTitle.setFont(new java.awt.Font("Verdana",1,14));
-			}
-			{
-				jSeparator1 = new JSeparator();
-				getContentPane().add(jSeparator1);
-				jSeparator1.setBounds(29, 75, 268, 10);
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
