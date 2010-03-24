@@ -34,6 +34,10 @@ public class Elem {
 		return N;
 	}
 	
+	public String toString(){
+		return String.valueOf(value);
+	}
+	
 	// setters
 	
 	/**

@@ -10,7 +10,7 @@ public class Debug {
 	private static final String LOG_FILE = "LCT_log.txt";
 	private static BufferedWriter outputFile = null;
 	private static BufferedWriter queryOutputFile = null;
-	private static final boolean DEBUG_MODE = true;
+	public static final boolean DEBUG_MODE = true;
 
 	//Time
 	private static final String DATE_FORMAT = "HH:mm:ss";
