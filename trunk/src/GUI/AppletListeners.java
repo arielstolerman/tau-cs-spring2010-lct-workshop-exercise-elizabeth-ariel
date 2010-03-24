@@ -24,8 +24,10 @@ public class AppletListeners {
 	 * to explain each phase in the application run
 	 */
 	public static void initPhasesExplanation(){
-		String phase1 = "Insert an integer N representing the function's domain group, τ the threshold and δ "+
-		"the error probability. Then select the method of the function query.";
+		String phase1 =	"<html>" +
+				"Insert an integer N representing the function's domain group, τ the <br>" +
+				"threshold and δ the error probability. Then select the method of the function query." +
+				"</html>";
 		
 		phasesExplanation.put("phase1",phase1);
 	}
