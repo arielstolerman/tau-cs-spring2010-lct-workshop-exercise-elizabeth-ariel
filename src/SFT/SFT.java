@@ -156,12 +156,4 @@ public class SFT {
 		double value = Math.random()*(barrier-1);
 		return (long)Math.floor(value);
 	}
-	
-	/* ******
-	 * Main
-	 ********/
-	public static void main(String[] args) {
-		Debug.log("Started",DebugOutput.STDOUT);
-		generateQueries(76, 1/36, 1, 0.1);
-	}
 }
