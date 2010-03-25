@@ -19,8 +19,6 @@ import Utils.Debug.DebugOutput;
 
 public class SFT {
 	
-	private static boolean DEBUG = true;
-	
 	/**
 	 * Main SFT procedure (3.4)
 	 * @param N:		an integer value describing the group Z_N
@@ -29,8 +27,40 @@ public class SFT {
 	 * @return			a short list L in Z_N of the tau-significant Fourier coefficients
 	 * 					of f with probability at least 1-deltha_t
 	 */
-	public static Set<Elem> runMainSFTAlgorithm(long N, double tau, double deltha_t){
-		return new HashSet<Elem>(); //TODO
+	public static Set<Elem> runMainSFTAlgorithm(long N, double tau, double delta_t){
+		Debug.log("SFT::runMainSFTAlgorithm started", DebugOutput.STDOUT);
+		
+		// run generateQueries on N, gamma = tau/36, ||f||_infinity and delta = delta_t/O((||f||_2^2/tau)^1.5*logN)
+		double gamma = tau/36;
+		double fInfNorm = getFInfinityNorm();
+		double delta = delta_t/( Math.pow(Math.pow(getFEuclideanNorm(),2)/tau,1.5)*
+				(Math.log(N)/Math.log(2)) ); //TODO should the log be on base 2, what about the O(...) notation?
+		Set<Elem>[] sets = generateQueries(N, gamma, fInfNorm, delta);
+		
+		Debug.log("generated sets A,B1,..,Bl",DebugOutput.STDOUT);
+		
+		// Build set Q
+		Set<Elem> BUnified = new HashSet<Elem>();
+		for (int i=1; i<sets.length; i++){
+			BUnified.addAll(sets[i]);
+		}
+		Set<Elem> Q = sets[0];
+		Q.removeAll(BUnified);
+		
+		Debug.log("created Q from A - union(B_i), i=1,...,log(N)",DebugOutput.STDOUT);
+		
+		// query f to find values f(q) for all q in Q
+		Query query = Query.getQueryFromQ(Q, N); //TODO needs implementation in class Query
+		
+		Debug.log("fetched query for all elements in Q",DebugOutput.STDOUT);
+		
+		// run getFixedQueriesSFT and return its output, L
+		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query);
+		
+		Debug.log("finished calculating L, the list of significant Fourier coefficients for f",DebugOutput.STDOUT);
+		Debug.log("SFT::runMainSFTAlgorithm finished", DebugOutput.STDOUT);
+		
+		return L;
 	}
 	
 	/**
@@ -42,13 +72,13 @@ public class SFT {
 	 * @return:			sets of elements in Z_N from which the main procedure will
 	 * 					create the set of x's to ask their f-value
 	 */
-	public static Set<Elem>[] generateQueries(long N, double gamma, double fInfNorm, double deltha){
-		Debug.log("SFT::generateQueries was called", DebugOutput.STDOUT);
+	public static Set<Elem>[] generateQueries(long N, double gamma, double fInfNorm, double delta){
+		Debug.log("SFT::generateQueries started", DebugOutput.STDOUT);
 		
 		// compute m_A and m_B
 		double tmp = 1.0/Math.pow(gamma, 2);
-		int m_A = (int)Math.ceil(tmp*Math.log(1.0/deltha));
-		int m_B = (int)Math.ceil(tmp*Math.log(1.0/(deltha*gamma)));
+		int m_A = (int)Math.ceil(tmp*Math.log(1.0/delta));
+		int m_B = (int)Math.ceil(tmp*Math.log(1.0/(delta*gamma)));
 		
 		Debug.log("m_A is: "+m_A+", m_B is: "+m_B, DebugOutput.STDOUT);
 		
@@ -81,6 +111,7 @@ public class SFT {
 		}
 		
 		Debug.log("created A and B1,...,Bl",DebugOutput.STDOUT);
+		Debug.log("SFT::generateQueries finished",DebugOutput.STDOUT);
 		
 		return res;
 	}
@@ -132,6 +163,12 @@ public class SFT {
 		return res;
 	}
 	
+	/**
+	 * @param m_B:	potential size of the set
+	 * @param N:	the order of Z_N
+	 * @param l		a value between 1 and log(N)
+	 * @return		a set of elements in {0,...,2^(l-1)-1}
+	 */
 	private static Set<Elem> generateRandomSubsetBl(int m_B, long N, int l){
 		// generate B_l
 		// define number of elements by min{m_B, 2^(l-1)}
@@ -149,11 +186,37 @@ public class SFT {
 	}
 	
 	/**
-	 * @param barrier
+	 * @param barrier:	upper limit for the random generator
 	 * @return:			a random integer value between 0 and barrier-1
 	 */
 	private static long getRandValue(long barrier){
 		double value = Math.random()*(barrier-1);
 		return (long)Math.floor(value);
+	}
+	
+	/**
+	 * @return:		the infinity norm of f, that is max{|f(x)| | x in Z_N}
+	 */
+	private static double getFInfinityNorm(){
+		return 1.0; //TODO
+	}
+	
+	/**
+	 * @return:		the Euclidean norm of f, that is sqrt[sum(|f(x_i)|^2)]
+	 */
+	private static double getFEuclideanNorm(){
+		return 1.0; //TODO
+	}
+	
+	/* ********************
+	 * 	Main for Debigging
+	 **********************/
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Debug.log("Started",DebugOutput.STDOUT);
+		SFT.generateQueries(76, 1/36, 1, 0.1);
 	}
 }

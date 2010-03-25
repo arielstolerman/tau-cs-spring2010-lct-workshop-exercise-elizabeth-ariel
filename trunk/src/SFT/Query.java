@@ -40,6 +40,20 @@ public class Query {
 		this.N = N;
 	}
 	
+	/* **************************************
+	 * 	Query build functions for class SFT
+	 ****************************************/
+	
+	/**
+	 * main function to receive f-values for all element in Q (partial to Z_N)
+	 * @param Q:	a set of elements in Z_N
+	 * @param N:	the order of Z_N
+	 * @return:		a map of elements in Q and their f-value
+	 */
+	public static Query getQueryFromQ(Set<Elem> Q, long N){
+		return new Query(N); //TODO
+	}
+	
 	// getters
 	
 	/**
