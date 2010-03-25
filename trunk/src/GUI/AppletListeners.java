@@ -1,9 +1,11 @@
 package GUI;
 
+import java.awt.Font;
 import java.util.*;
 
 public class AppletListeners {
 	public static Map<String,String> phasesExplanation = new HashMap<String,String>();
+	public static java.awt.Font fontMainApplet = new Font("Tahoma", Font.PLAIN, 11);
 	
 	/**
 	 * initialize all static parameters and values
