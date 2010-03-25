@@ -27,33 +27,34 @@ public class MainJApplet extends javax.swing.JApplet {
 		}
 	}
 
-	private JLabel jLabelTitle;
-	private ButtonGroup buttonGroupQuerySelection = new ButtonGroup();
-	private JRadioButton jRadioButtonQuery1;
-	private JButton jButtonPhaseNext;
-	private JSeparator jSeparator1;
-	private JLabel jLabelExplanationTitle;
-	private JTabbedPane jTabbedPaneMain;
-	private JPanel jPanelPhase1;
-	private JButton jButtonInputXMLBrowse;
-	private JLabel jLabelInputXMLFile;
-	private JTextField jTextFieldInputCoeffmAmB;
-	private JLabel jLabelInputCoeffDelta;
-	private JTextField jTextFieldInputCoeffDelta;
-	private JLabel jLabelInputCoeffmAmB;
-	private JTextField jTextFieldInputFEuclideanNorm;
-	private JTextField jTextFieldInputFInfNorm;
-	private JTextField jTextFieldInputXMLFile;
-	private JLabel jLabelInputFEuclideanNorm;
-	private JLabel jLabelInputFInfNorm;
-	private JTextField jTextFieldInputDelta;
-	private JTextField jTextFieldInputTau;
-	private JTextField jTextFieldInputN;
-	private JLabel jLabelInputDelta;
-	private JLabel jLabelInputTau;
-	private JLabel jLabelInputN;
-	private JLabel jLabelExplanation;
-	private JRadioButton jRadioButtonQuery2;
+	private static JLabel jLabelTitle;
+	private static ButtonGroup buttonGroupQuerySelection = new ButtonGroup();
+	private static JRadioButton jRadioButtonQuery1;
+	private static JButton jButtonPhase1Next;
+	private static JSeparator jSeparator1;
+	private static JLabel jLabelExplanationTitle;
+	private static JTabbedPane jTabbedPaneMain;
+	private static JLabel jLabelPhase1ErrorMsgBox;
+	private static JPanel jPanelPhase1;
+	private static JButton jButtonInputXMLBrowse;
+	private static JLabel jLabelInputXMLFile;
+	private static JTextField jTextFieldInputCoeffmAmB;
+	private static JLabel jLabelInputCoeffDelta;
+	private static JTextField jTextFieldInputCoeffDelta;
+	private static JLabel jLabelInputCoeffmAmB;
+	private static JTextField jTextFieldInputFEuclideanNorm;
+	private static JTextField jTextFieldInputFInfNorm;
+	private static JTextField jTextFieldInputXMLFile;
+	private static JLabel jLabelInputFEuclideanNorm;
+	private static JLabel jLabelInputFInfNorm;
+	private static JTextField jTextFieldInputDelta;
+	private static JTextField jTextFieldInputTau;
+	private static JTextField jTextFieldInputN;
+	private static JLabel jLabelInputDelta;
+	private static JLabel jLabelInputTau;
+	private static JLabel jLabelInputN;
+	private static JLabel jLabelExplanation;
+	private static JRadioButton jRadioButtonQuery2;
 
 	/**
 	* Auto-generated main method to display this 
@@ -131,27 +132,28 @@ public class MainJApplet extends javax.swing.JApplet {
 					jRadioButtonQuery1 = new JRadioButton();
 					jPanelPhase1.add(jRadioButtonQuery1);
 					buttonGroupQuerySelection.add(jRadioButtonQuery1);
-					jRadioButtonQuery1.setBounds(26, 104, 337, 28);
-					jRadioButtonQuery1.setText("Interactive function query, user supplies f values on demand");
+					jRadioButtonQuery1.setBounds(26, 110, 337, 23);
+					jRadioButtonQuery1.setText("<html>Interactive function query, user supplies &fnof; values on demand</html>");
 					jRadioButtonQuery1.setBackground(new java.awt.Color(255,255,255));
 					jRadioButtonQuery1.setFont(AppletListeners.fontMainApplet);
+					jRadioButtonQuery1.setSelected(true);
 					
 				}
 				{
 					jRadioButtonQuery2 = new JRadioButton();
 					jPanelPhase1.add(jRadioButtonQuery2);
 					buttonGroupQuerySelection.add(jRadioButtonQuery2);
-					jRadioButtonQuery2.setBounds(26, 133, 337, 28);
+					jRadioButtonQuery2.setBounds(26, 134, 337, 23);
 					jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
 					jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
 					jRadioButtonQuery2.setFont(AppletListeners.fontMainApplet);
 				}
 				{
-					jButtonPhaseNext = new JButton();
-					jPanelPhase1.add(jButtonPhaseNext);
-					jButtonPhaseNext.setText("Next");
-					jButtonPhaseNext.setBounds(378, 131, 80, 30);
-					jButtonPhaseNext.setFont(AppletListeners.fontMainApplet);
+					jButtonPhase1Next = new JButton();
+					jPanelPhase1.add(jButtonPhase1Next);
+					jButtonPhase1Next.setText("Next");
+					jButtonPhase1Next.setBounds(378, 131, 80, 30);
+					jButtonPhase1Next.setFont(AppletListeners.fontMainApplet);
 				}
 				{
 					jLabelInputN = new JLabel();
@@ -195,7 +197,7 @@ public class MainJApplet extends javax.swing.JApplet {
 				{
 					jLabelInputFInfNorm = new JLabel();
 					jPanelPhase1.add(jLabelInputFInfNorm);
-					jLabelInputFInfNorm.setText("<html>||f||<sub>&infin;</sub>:</html>");
+					jLabelInputFInfNorm.setText("<html>||&fnof;||<sub>&infin;</sub>:</html>");
 					jLabelInputFInfNorm.setBounds(152, 13, 49, 22);
 					jLabelInputFInfNorm.setFont(AppletListeners.fontMainApplet);
 				}
@@ -209,7 +211,7 @@ public class MainJApplet extends javax.swing.JApplet {
 					jLabelInputFEuclideanNorm = new JLabel();
 					jPanelPhase1.add(jLabelInputFEuclideanNorm);
 					jLabelInputFEuclideanNorm.setBounds(152, 41, 49, 22);
-					jLabelInputFEuclideanNorm.setText("<html>||f||<sub>2</sub>:</html>");
+					jLabelInputFEuclideanNorm.setText("<html>||&fnof;||<sub>2</sub>:</html>");
 					jLabelInputFEuclideanNorm.setFont(AppletListeners.fontMainApplet);
 				}
 				{
@@ -250,12 +252,14 @@ public class MainJApplet extends javax.swing.JApplet {
 					jLabelInputXMLFile.setText("XML File:");
 					jLabelInputXMLFile.setBounds(152, 69, 49, 22);
 					jLabelInputXMLFile.setFont(AppletListeners.fontMainApplet);
+					jLabelInputXMLFile.setVisible(false);
 				}
 				{
 					jTextFieldInputXMLFile = new JTextField();
 					jPanelPhase1.add(jTextFieldInputXMLFile);
 					jTextFieldInputXMLFile.setBounds(201, 70, 178, 21);
 					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
+					jTextFieldInputXMLFile.setVisible(false);
 				}
 				{
 					jButtonInputXMLBrowse = new JButton();
@@ -263,117 +267,128 @@ public class MainJApplet extends javax.swing.JApplet {
 					jButtonInputXMLBrowse.setText("Browse");
 					jButtonInputXMLBrowse.setBounds(387, 70, 71, 22);
 					jButtonInputXMLBrowse.setFont(AppletListeners.fontMainApplet);
+					jButtonInputXMLBrowse.setVisible(false);
+				}
+				{
+					jLabelPhase1ErrorMsgBox = new JLabel();
+					jPanelPhase1.add(jLabelPhase1ErrorMsgBox);
+					jLabelPhase1ErrorMsgBox.setBounds(79, 169, 337, 18);
+					jLabelPhase1ErrorMsgBox.setText("");
+					jLabelPhase1ErrorMsgBox.setHorizontalAlignment(JLabel.CENTER);
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		// initialize listeners
+		AppletListeners.initAppletListeners();
 	}
 	
 	// getters and setters
-	
-	public JButton getJButtonPhase1Next() {
-		return jButtonPhaseNext;
-	}
 
-	public JLabel getjLabelTitle() {
+	public static JLabel getjLabelTitle() {
 		return jLabelTitle;
 	}
 
-	public ButtonGroup getButtonGroupQuerySelection() {
+	public static ButtonGroup getButtonGroupQuerySelection() {
 		return buttonGroupQuerySelection;
 	}
 
-	public JRadioButton getjRadioButtonQuery1() {
+	public static JRadioButton getjRadioButtonQuery1() {
 		return jRadioButtonQuery1;
 	}
 
-	public JButton getjButtonPhaseNext() {
-		return jButtonPhaseNext;
+	public static JButton getjButtonPhase1Next() {
+		return jButtonPhase1Next;
 	}
 
-	public JSeparator getjSeparator1() {
+	public static JSeparator getjSeparator1() {
 		return jSeparator1;
 	}
 
-	public JLabel getjLabelExplanationTitle() {
+	public static JLabel getjLabelExplanationTitle() {
 		return jLabelExplanationTitle;
 	}
 
-	public JButton getjButtonInputXMLBrowse() {
+	public static JButton getjButtonInputXMLBrowse() {
 		return jButtonInputXMLBrowse;
 	}
 
-	public JLabel getjLabelInputXMLFile() {
+	public static JLabel getjLabelInputXMLFile() {
 		return jLabelInputXMLFile;
 	}
 
-	public JTextField getjTextFieldInputCoeffmAmB() {
+	public static JTextField getjTextFieldInputCoeffmAmB() {
 		return jTextFieldInputCoeffmAmB;
 	}
 
-	public JLabel getjLabelInputCoeffDelta() {
+	public static JLabel getjLabelInputCoeffDelta() {
 		return jLabelInputCoeffDelta;
 	}
 
-	public JTextField getjTextFieldInputCoeffDelta() {
+	public static JTextField getjTextFieldInputCoeffDelta() {
 		return jTextFieldInputCoeffDelta;
 	}
 
-	public JLabel getjLabelInputCoeffmAmB() {
+	public static JLabel getjLabelInputCoeffmAmB() {
 		return jLabelInputCoeffmAmB;
 	}
 
-	public JTextField getjTextFieldInputFEuclideanNorm() {
+	public static JTextField getjTextFieldInputFEuclideanNorm() {
 		return jTextFieldInputFEuclideanNorm;
 	}
 
-	public JTextField getjTextFieldInputFInfNorm() {
+	public static JTextField getjTextFieldInputFInfNorm() {
 		return jTextFieldInputFInfNorm;
 	}
 
-	public JTextField getjTextFieldInputXMLFile() {
+	public static JTextField getjTextFieldInputXMLFile() {
 		return jTextFieldInputXMLFile;
 	}
 
-	public JLabel getjLabelInputFEuclideanNorm() {
+	public static JLabel getjLabelInputFEuclideanNorm() {
 		return jLabelInputFEuclideanNorm;
 	}
 
-	public JLabel getjLabelInputFInfNorm() {
+	public static JLabel getjLabelInputFInfNorm() {
 		return jLabelInputFInfNorm;
 	}
 
-	public JTextField getjTextFieldInputDelta() {
+	public static JTextField getjTextFieldInputDelta() {
 		return jTextFieldInputDelta;
 	}
 
-	public JTextField getjTextFieldInputTau() {
+	public static JTextField getjTextFieldInputTau() {
 		return jTextFieldInputTau;
 	}
 
-	public JTextField getjTextFieldInputN() {
+	public static JTextField getjTextFieldInputN() {
 		return jTextFieldInputN;
 	}
 
-	public JLabel getjLabelInputDelta() {
+	public static JLabel getjLabelInputDelta() {
 		return jLabelInputDelta;
 	}
 
-	public JLabel getjLabelInputTau() {
+	public static JLabel getjLabelInputTau() {
 		return jLabelInputTau;
 	}
 
-	public JLabel getjLabelInputN() {
+	public static JLabel getjLabelInputN() {
 		return jLabelInputN;
 	}
 
-	public JLabel getjLabelExplanation() {
+	public static JLabel getjLabelExplanation() {
 		return jLabelExplanation;
 	}
 
-	public JRadioButton getjRadioButtonQuery2() {
+	public static JRadioButton getjRadioButtonQuery2() {
 		return jRadioButtonQuery2;
+	}
+
+	public static JLabel getjLabelPhase1ErrorMsgBox() {
+		return jLabelPhase1ErrorMsgBox;
 	}
 }
