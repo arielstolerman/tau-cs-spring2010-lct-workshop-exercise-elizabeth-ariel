@@ -23,11 +23,20 @@ public class SFT {
 	 * - the Euclidean norm of f
 	 * - a constant coefficient for calculating delta
 	 * - a constant coefficient for calculating m_A nad m_B
+	 * - N the order of Z_N
+	 * - tau the threshold
+	 * - delta the confidence parameter
+	 * 
+	 * these parameters will be set by the user input, and the SFT algorithm will
+	 * run using these parameters
 	 */
 	private static double fInfNorm;
 	private static double fEuclideanNorm;
 	private static double deltaCalculationConst = 1;
-	private static int m_A_m_B_CalculationConst = 1;
+	private static double m_A_m_B_CalculationConst = 1;
+	private static long N;
+	private static double tau;
+	private static double delta;
 	
 	/**
 	 * Main SFT procedure (3.4)
@@ -334,11 +343,35 @@ public class SFT {
 		SFT.deltaCalculationConst = deltaCalculationConst;
 	}
 
-	public static int getM_A_m_B_CalculationConst() {
+	public static double getM_A_m_B_CalculationConst() {
 		return m_A_m_B_CalculationConst;
 	}
 
-	public static void setM_A_m_B_CalculationConst(int mAMBCalculationConst) {
+	public static void setM_A_m_B_CalculationConst(double mAMBCalculationConst) {
 		m_A_m_B_CalculationConst = mAMBCalculationConst;
+	}
+
+	public static long getN() {
+		return N;
+	}
+
+	public static void setN(long n) {
+		N = n;
+	}
+
+	public static double getTau() {
+		return tau;
+	}
+
+	public static void setTau(double tau) {
+		SFT.tau = tau;
+	}
+
+	public static double getDelta() {
+		return delta;
+	}
+
+	public static void setDelta(double delta) {
+		SFT.delta = delta;
 	}
 }
