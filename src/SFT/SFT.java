@@ -55,12 +55,10 @@ public class SFT {
 		Debug.log("fetched query for all elements in Q",DebugOutput.STDOUT);
 		
 		// run getFixedQueriesSFT and return its output, L
-		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query);
-		
 		Debug.log("finished calculating L, the list of significant Fourier coefficients for f",DebugOutput.STDOUT);
 		Debug.log("SFT::runMainSFTAlgorithm finished", DebugOutput.STDOUT);
 		
-		return L;
+		return getFixedQueriesSFT(N,tau,sets,query);
 	}
 	
 	/**
@@ -83,7 +81,7 @@ public class SFT {
 		Debug.log("m_A is: "+m_A+", m_B is: "+m_B, DebugOutput.STDOUT);
 		
 		// generate A,B1,...,Bl
-		int logN = (int)Math.ceil(Math.log(N)/Math.log(2)); //TODO verify log basis and if l is floor/ceiling on log(N)
+		int logN = calcLogN(N);
 		Set<Elem>[] res = new HashSet[logN+1];
 		
 		// generate random subset A partial to Z_N with m_A elements
@@ -125,8 +123,59 @@ public class SFT {
 	 * @return:				a short list L in Z_N of the tau-significant Fourier coefficients
 	 * 						of f with probability at least 1-deltha_t
 	 */
-	public static Set<Elem> getFixedQueriesSFT(long N, double tau, Set<Elem>[] querySets, Query query){		
-		return new HashSet<Elem>(); //TODO
+	public static Set<Elem> getFixedQueriesSFT(long N, double tau, Set<Elem>[] querySets, Query query){
+		Debug.log("SFT::getFixedQueriesSFT started",DebugOutput.STDOUT);
+		
+		// initialize candidate (candidate_0)
+		Elem[] initInterval = new Elem[2];
+		initInterval[0].setValue(0);
+		initInterval[1].setValue(N);
+		Candidate candidate = new Candidate(initInterval);
+		
+		// run iterations over l = 0,...,log_2(N)-1
+		int logN = calcLogN(N);
+		Set<Elem> A = querySets[0];
+		
+		for(int l=0; l<logN; l++){
+			Candidate tmpCandidate = new Candidate();
+			for (Elem[] interval: candidate.getSet()){
+				// create two sub intervals
+				Elem a = interval[0];
+				Elem b = interval[1];
+				
+				Elem middle = new Elem(Math.floor((a.getValue()+b.getValue())/2));
+				Elem[] subInterval1 = {new Elem(a.getValue()), new Elem(middle.getValue())};
+				Elem[] subInterval2 = {new Elem(middle.getValue()+1), new Elem(b.getValue())};
+				
+				// check that the intervals size difference is no greater that 1
+				assert(Math.abs((subInterval1[1].getValue()-subInterval1[0].getValue()) - 
+						(subInterval2[1].getValue()-subInterval2[0].getValue())) <= 1);
+				
+				// for each sub interval check if it is "heavy"
+				Set<Elem> B_lplus1 = querySets[l+1];
+				if (distinguish(subInterval1, tau, A, B_lplus1, query))
+					tmpCandidate.addInterval(subInterval1);
+				if (distinguish(subInterval2, tau, A, B_lplus1, query))
+					tmpCandidate.addInterval(subInterval2);
+			}
+			candidate = tmpCandidate; // update candidate_i to candidate_(i+1)
+		}
+		
+		Debug.log("candidate iterations finished",DebugOutput.STDOUT);
+		
+		// build L and return it
+		Set<Elem> L = new HashSet<Elem>();
+		for (Elem[] interval: candidate.getSet()){
+			if (interval[0].getValue() == interval[1].getValue()){
+				Elem elem = new Elem(interval[0].getValue());
+				L.add(elem);
+			}
+		}
+		
+		Debug.log("Done creating L",DebugOutput.STDOUT);
+		Debug.log("SFT::getFixedQueriesSFT finished",DebugOutput.STDOUT);
+		
+		return L;
 	}
 	
 	/**
@@ -139,13 +188,21 @@ public class SFT {
 	 * @param query:	
 	 * @return:			decides whether to keep or discard the interval {a,b} 
 	 */
-	public static boolean distinguish(Elem a, Elem b, double tau, Set<Elem> A, Set<Elem> B, Query query){
+	public static boolean distinguish(Elem[] interval, double tau, Set<Elem> A, Set<Elem> B, Query query){
 		return true; //TODO
 	}
 	
 	/* *****************************
 	 * private assistance methods
 	 *******************************/
+	
+	/**
+	 * @param N:	the order of Z_N
+	 * @return:		log_2(N), rounded up
+	 */
+	private static int calcLogN(long N){
+		return (int)Math.ceil(Math.log(N)/Math.log(2));
+	}
 	
 	/**
 	 * @param m_A:	the size of the set

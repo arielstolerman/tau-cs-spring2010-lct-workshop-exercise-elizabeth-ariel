@@ -19,10 +19,13 @@ public class Elem {
 	public long value;
 	
 	/**
-	 * default constructor
+	 * default constructors
 	 */
 	public Elem(long value){
 		this.value = value;
+	}
+	public Elem(double value){
+		this.value = (long)value;
 	}
 
 	// getters
@@ -32,6 +35,13 @@ public class Elem {
 	 */
 	public long getOrder(){
 		return N;
+	}
+	
+	/**
+	 * @return:		the value
+	 */
+	public long getValue(){
+		return value;
 	}
 	
 	public String toString(){
@@ -45,6 +55,14 @@ public class Elem {
 	 */
 	public void setOrder(long N){
 		Elem.N= N;
+	}
+	
+	/**
+	 * setter for the value
+	 * @param value:	new value
+	 */
+	public void setValue(long value){
+		this.value = value;
 	}
 	
 	// static functions on elements
