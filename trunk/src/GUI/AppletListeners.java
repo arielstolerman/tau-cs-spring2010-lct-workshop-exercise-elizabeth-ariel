@@ -26,7 +26,10 @@ public class AppletListeners {
 	public static void initPhasesExplanation(){
 		String phase1 =	"<html>" +
 				"Insert an integer N representing the function's domain group, τ the <br>" +
-				"threshold and δ the error probability. Then select the method of the function query." +
+				"threshold, δ the error probability, ||f||<sub>&infin;</sub> the infinity norm of f,<br>" +
+				"||f||<sub>2</sub> the Euclidean norm of f, a constant coefficient for &delta; calculation<br>" +
+				"and a constant coefficient for m<sub>A</sub> and m<sub>B</sub>.<br>" +
+				"Then select the method of the function query." +
 				"</html>";
 		
 		phasesExplanation.put("phase1",phase1);
