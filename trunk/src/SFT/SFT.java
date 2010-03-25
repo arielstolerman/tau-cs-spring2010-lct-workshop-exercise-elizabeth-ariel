@@ -208,12 +208,22 @@ public class SFT {
 		
 		// calculate est(a,b)
 		for (Elem x: A){
+			double tmpBSum = 0;
 			for (Elem y: B){
-				chi(v,y);
+				//TODO calculate tmpBSum
 			}
+			tmpBSum *= tmpBSum;
+			est += tmpBSum;
 		}
 		
-		return true; //TODO
+		est /= A.size()*B.size()*B.size();
+		
+		Debug.log("calculated est: "+est,DebugOutput.STDOUT);
+		
+		// compare to threshold and return result
+		
+		double threshold = 5*tau/36;
+		return est >= threshold;
 	}
 	
 	/* *****************************
