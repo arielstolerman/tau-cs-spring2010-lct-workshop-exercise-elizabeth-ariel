@@ -11,13 +11,23 @@
 
 package SFT;
 
-import java.math.*;
 import java.util.*;
-
 import Utils.Debug;
 import Utils.Debug.DebugOutput;
 
 public class SFT {
+	
+	/* ***************************
+	 * parameters used by the algorithm given by the user:
+	 * - the infinity norm of f
+	 * - the Euclidean norm of f
+	 * - a constant coefficient for calculating delta
+	 * - a constant coefficient for calculating m_A nad m_B
+	 */
+	private static double fInfNorm;
+	private static double fEuclideanNorm;
+	private static double deltaCalculationConst = 1;
+	private static int m_A_m_B_CalculationConst = 1;
 	
 	/**
 	 * Main SFT procedure (3.4)
@@ -32,9 +42,9 @@ public class SFT {
 		
 		// run generateQueries on N, gamma = tau/36, ||f||_infinity and delta = delta_t/O((||f||_2^2/tau)^1.5*logN)
 		double gamma = tau/36;
-		double fInfNorm = getFInfinityNorm();
-		double delta = delta_t/( Math.pow(Math.pow(getFEuclideanNorm(),2)/tau,1.5)*
-				(Math.log(N)/Math.log(2)) ); //TODO should the log be on base 2, what about the O(...) notation?
+		double fInfNorm = getfInfNorm();
+		double delta = delta_t/( deltaCalculationConst * Math.pow(Math.pow(getfEuclideanNorm(),2)/tau,1.5) *
+				(Math.log(N)/Math.log(2)) );
 		Set<Elem>[] sets = generateQueries(N, gamma, fInfNorm, delta);
 		
 		Debug.log("generated sets A,B1,..,Bl",DebugOutput.STDOUT);
@@ -55,10 +65,15 @@ public class SFT {
 		Debug.log("fetched query for all elements in Q",DebugOutput.STDOUT);
 		
 		// run getFixedQueriesSFT and return its output, L
-		Debug.log("finished calculating L, the list of significant Fourier coefficients for f",DebugOutput.STDOUT);
+		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query); 
+		Debug.log("finished calculating L, the list of significant Fourier coefficients for f. L elements:",DebugOutput.STDOUT);
+		for (Elem e: L){
+			Debug.log(String.valueOf(e.getValue())+" ",DebugOutput.STDOUT);
+		}
+		
 		Debug.log("SFT::runMainSFTAlgorithm finished", DebugOutput.STDOUT);
 		
-		return getFixedQueriesSFT(N,tau,sets,query);
+		return L;
 	}
 	
 	/**
@@ -75,8 +90,8 @@ public class SFT {
 		
 		// compute m_A and m_B
 		double tmp = 1.0/Math.pow(gamma, 2);
-		int m_A = (int)Math.ceil(tmp*Math.log(1.0/delta));
-		int m_B = (int)Math.ceil(tmp*Math.log(1.0/(delta*gamma)));
+		int m_A = (int) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/delta)));
+		int m_B = (int) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/(delta*gamma))));
 		
 		Debug.log("m_A is: "+m_A+", m_B is: "+m_B, DebugOutput.STDOUT);
 		
@@ -180,15 +195,24 @@ public class SFT {
 	
 	/**
 	 * Distinguishing algorithm (3.7)
-	 * @param a:		
-	 * @param b:		
-	 * @param tau:		
+	 * @param interval:	the interval to be checked for "heaviness"
+	 * @param tau:		threshold
 	 * @param A:		
 	 * @param B:		
 	 * @param query:	
 	 * @return:			decides whether to keep or discard the interval {a,b} 
 	 */
 	public static boolean distinguish(Elem[] interval, double tau, Set<Elem> A, Set<Elem> B, Query query){
+		double est = 0;
+		Elem v = new Elem(Math.floor((interval[0].getValue()+interval[1].getValue())/2));
+		
+		// calculate est(a,b)
+		for (Elem x: A){
+			for (Elem y: B){
+				chi(v,y);
+			}
+		}
+		
 		return true; //TODO
 	}
 	
@@ -252,21 +276,17 @@ public class SFT {
 	}
 	
 	/**
-	 * @return:		the infinity norm of f, that is max{|f(x)| | x in Z_N}
+	 * calculate Chi
+	 * @param v:		floor( (a+b)/2 )
+	 * @param y:		input for the chi function
+	 * @return:			chi_(floor[(a+b)/2]) (y)
 	 */
-	private static double getFInfinityNorm(){
-		return 1.0; //TODO
-	}
-	
-	/**
-	 * @return:		the Euclidean norm of f, that is sqrt[sum(|f(x_i)|^2)]
-	 */
-	private static double getFEuclideanNorm(){
-		return 1.0; //TODO
+	private static Complex chi(Elem v, Elem y){
+		return new Complex(1.0, 1.0); //TODO
 	}
 	
 	/* ********************
-	 * 	Main for Debigging
+	 * 	Main for Debugging
 	 **********************/
 	
 	/**
@@ -275,5 +295,39 @@ public class SFT {
 	public static void main(String[] args) {
 		Debug.log("Started",DebugOutput.STDOUT);
 		SFT.generateQueries(76, 1/36, 1, 0.1);
+	}
+	
+	// AUTO GENERATED GETTERS AND SETTERS
+
+	public static double getfInfNorm() {
+		return fInfNorm;
+	}
+
+	public static void setfInfNorm(double fInfNorm) {
+		SFT.fInfNorm = fInfNorm;
+	}
+
+	public static double getfEuclideanNorm() {
+		return fEuclideanNorm;
+	}
+
+	public static void setfEuclideanNorm(double fEuclideanNorm) {
+		SFT.fEuclideanNorm = fEuclideanNorm;
+	}
+
+	public static double getDeltaCalculationConst() {
+		return deltaCalculationConst;
+	}
+
+	public static void setDeltaCalculationConst(double deltaCalculationConst) {
+		SFT.deltaCalculationConst = deltaCalculationConst;
+	}
+
+	public static int getM_A_m_B_CalculationConst() {
+		return m_A_m_B_CalculationConst;
+	}
+
+	public static void setM_A_m_B_CalculationConst(int mAMBCalculationConst) {
+		m_A_m_B_CalculationConst = mAMBCalculationConst;
 	}
 }
