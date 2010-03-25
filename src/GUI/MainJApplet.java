@@ -33,6 +33,8 @@ public class MainJApplet extends javax.swing.JApplet {
 	private JButton jButtonPhaseNext;
 	private JSeparator jSeparator1;
 	private JLabel jLabelExplanationTitle;
+	private JTabbedPane jTabbedPaneMain;
+	private JPanel jPanelPhase1;
 	private JButton jButtonInputXMLBrowse;
 	private JLabel jLabelInputXMLFile;
 	private JTextField jTextFieldInputCoeffmAmB;
@@ -113,128 +115,155 @@ public class MainJApplet extends javax.swing.JApplet {
 				jLabelExplanation = new JLabel();
 				getContentPane().add(jLabelExplanation);
 				jLabelExplanation.setText(AppletListeners.phasesExplanation.get("phase1"));
-				jLabelExplanation.setBounds(29, 86, 441, 131);
+				jLabelExplanation.setBounds(29, 86, 441, 117);
 				jLabelExplanation.setVerticalAlignment(JLabel.TOP);
 				jLabelExplanation.setFont(new java.awt.Font("Verdana",0,12));
 			}
 			
 			// actions zone
 			{
-				jRadioButtonQuery1 = new JRadioButton();
-				buttonGroupQuerySelection.add(jRadioButtonQuery1);
-				getContentPane().add(jRadioButtonQuery1);
-				jRadioButtonQuery1.setBounds(29, 314, 337, 28);
-				jRadioButtonQuery1.setText("Interactive function query, user supplies f values on demand");
-				jRadioButtonQuery1.setBackground(new java.awt.Color(255,255,255));
-				
-			}
-			{
-				jRadioButtonQuery2 = new JRadioButton();
-				buttonGroupQuerySelection.add(jRadioButtonQuery2);
-				getContentPane().add(jRadioButtonQuery2);
-				jRadioButtonQuery2.setBounds(29, 343, 337, 28);
-				jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
-				jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
-			}
-			{
-				jButtonPhaseNext = new JButton();
-				getContentPane().add(getJButtonPhase1Next());
-				jButtonPhaseNext.setText("Next");
-				jButtonPhaseNext.setBounds(381, 341, 80, 30);
-			}
-			{
-				jLabelInputN = new JLabel();
-				getContentPane().add(jLabelInputN);
-				jLabelInputN.setText("N:");
-				jLabelInputN.setBounds(29, 223, 22, 22);
-			}
-			{
-				jLabelInputTau = new JLabel();
-				getContentPane().add(jLabelInputTau);
-				jLabelInputTau.setText("<html>&tau;:</html>");
-				jLabelInputTau.setBounds(29, 251, 22, 22);
-			}
-			{
-				jLabelInputDelta = new JLabel();
-				getContentPane().add(jLabelInputDelta);
-				jLabelInputDelta.setText("<html>&delta;:</html>");
-				jLabelInputDelta.setBounds(29, 279, 22, 22);
-			}
-			{
-				jTextFieldInputN = new JTextField();
-				getContentPane().add(jTextFieldInputN);
-				jTextFieldInputN.setBounds(51, 223, 71, 22);
-			}
-			{
-				jTextFieldInputTau = new JTextField();
-				getContentPane().add(jTextFieldInputTau);
-				jTextFieldInputTau.setBounds(51, 251, 71, 22);
-			}
-			{
-				jTextFieldInputDelta = new JTextField();
-				getContentPane().add(jTextFieldInputDelta);
-				jTextFieldInputDelta.setBounds(51, 279, 71, 22);
-			}
-			{
-				jLabelInputFInfNorm = new JLabel();
-				getContentPane().add(jLabelInputFInfNorm);
-				jLabelInputFInfNorm.setText("<html>||f||<sub>&infin;</sub>:</html>");
-				jLabelInputFInfNorm.setBounds(155, 223, 49, 22);
-			}
-			{
-				jTextFieldInputFInfNorm = new JTextField();
-				getContentPane().add(jTextFieldInputFInfNorm);
-				jTextFieldInputFInfNorm.setBounds(204, 223, 71, 22);
-			}
-			{
-				jLabelInputFEuclideanNorm = new JLabel();
-				getContentPane().add(jLabelInputFEuclideanNorm);
-				jLabelInputFEuclideanNorm.setBounds(155, 251, 49, 22);
-				jLabelInputFEuclideanNorm.setText("<html>||f||<sub>2</sub>:</html>");
-			}
-			{
-				jTextFieldInputFEuclideanNorm = new JTextField();
-				getContentPane().add(jTextFieldInputFEuclideanNorm);
-				jTextFieldInputFEuclideanNorm.setBounds(204, 251, 71, 22);
-			}
-			{
-				jLabelInputCoeffDelta = new JLabel();
-				getContentPane().add(jLabelInputCoeffDelta);
-				jLabelInputCoeffDelta.setText("<html>Coeff for &delta;:</html>");
-				jLabelInputCoeffDelta.setBounds(290, 223, 92, 22);
-			}
-			{
-				jLabelInputCoeffmAmB = new JLabel();
-				getContentPane().add(jLabelInputCoeffmAmB);
-				jLabelInputCoeffmAmB.setBounds(290, 251, 92, 22);
-				jLabelInputCoeffmAmB.setText("<html>Coeff for m<sub>A</sub>, m<sub>B</sub>:</html>");
-			}
-			{
-				jTextFieldInputCoeffDelta = new JTextField();
-				getContentPane().add(jTextFieldInputCoeffDelta);
-				jTextFieldInputCoeffDelta.setBounds(390, 223, 71, 22);
-			}
-			{
-				jTextFieldInputCoeffmAmB = new JTextField();
-				getContentPane().add(jTextFieldInputCoeffmAmB);
-				jTextFieldInputCoeffmAmB.setBounds(390, 251, 71, 22);
-			}
-			{
-				jLabelInputXMLFile = new JLabel();
-				getContentPane().add(jLabelInputXMLFile);
-				jLabelInputXMLFile.setText("XML File:");
-				jLabelInputXMLFile.setBounds(155, 279, 49, 22);
-			}
-			{
-				jTextFieldInputXMLFile = new JTextField();
-				getContentPane().add(jTextFieldInputXMLFile);
-				jTextFieldInputXMLFile.setBounds(204, 280, 178, 21);
-			}
-			{
-				jButtonInputXMLBrowse = new JButton();
-				getContentPane().add(jButtonInputXMLBrowse);
-				jButtonInputXMLBrowse.setText("Browse");
-				jButtonInputXMLBrowse.setBounds(390, 280, 71, 22);
+				jPanelPhase1 = new JPanel();
+				getContentPane().add(jPanelPhase1);
+				jPanelPhase1.setBounds(3, 210, 495, 188);
+				jPanelPhase1.setBackground(new java.awt.Color(255,255,255));
+				jPanelPhase1.setLayout(null);
+				{
+					jRadioButtonQuery1 = new JRadioButton();
+					jPanelPhase1.add(jRadioButtonQuery1);
+					buttonGroupQuerySelection.add(jRadioButtonQuery1);
+					jRadioButtonQuery1.setBounds(26, 104, 337, 28);
+					jRadioButtonQuery1.setText("Interactive function query, user supplies f values on demand");
+					jRadioButtonQuery1.setBackground(new java.awt.Color(255,255,255));
+					jRadioButtonQuery1.setFont(AppletListeners.fontMainApplet);
+					
+				}
+				{
+					jRadioButtonQuery2 = new JRadioButton();
+					jPanelPhase1.add(jRadioButtonQuery2);
+					buttonGroupQuerySelection.add(jRadioButtonQuery2);
+					jRadioButtonQuery2.setBounds(26, 133, 337, 28);
+					jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
+					jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
+					jRadioButtonQuery2.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jButtonPhaseNext = new JButton();
+					jPanelPhase1.add(jButtonPhaseNext);
+					jButtonPhaseNext.setText("Next");
+					jButtonPhaseNext.setBounds(378, 131, 80, 30);
+					jButtonPhaseNext.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputN = new JLabel();
+					jPanelPhase1.add(jLabelInputN);
+					jLabelInputN.setText("N:");
+					jLabelInputN.setBounds(26, 13, 22, 22);
+					jLabelInputN.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputTau = new JLabel();
+					jPanelPhase1.add(jLabelInputTau);
+					jLabelInputTau.setText("<html>&tau;:</html>");
+					jLabelInputTau.setBounds(26, 41, 22, 22);
+					jLabelInputTau.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputDelta = new JLabel();
+					jPanelPhase1.add(jLabelInputDelta);
+					jLabelInputDelta.setText("<html>&delta;:</html>");
+					jLabelInputDelta.setBounds(26, 69, 22, 22);
+					jLabelInputDelta.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputN = new JTextField();
+					jPanelPhase1.add(jTextFieldInputN);
+					jTextFieldInputN.setBounds(48, 13, 71, 22);
+					jTextFieldInputN.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputTau = new JTextField();
+					jPanelPhase1.add(jTextFieldInputTau);
+					jTextFieldInputTau.setBounds(48, 41, 71, 22);
+					jTextFieldInputTau.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputDelta = new JTextField();
+					jPanelPhase1.add(jTextFieldInputDelta);
+					jTextFieldInputDelta.setBounds(48, 69, 71, 22);
+					jTextFieldInputDelta.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputFInfNorm = new JLabel();
+					jPanelPhase1.add(jLabelInputFInfNorm);
+					jLabelInputFInfNorm.setText("<html>||f||<sub>&infin;</sub>:</html>");
+					jLabelInputFInfNorm.setBounds(152, 13, 49, 22);
+					jLabelInputFInfNorm.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputFInfNorm = new JTextField();
+					jPanelPhase1.add(jTextFieldInputFInfNorm);
+					jTextFieldInputFInfNorm.setBounds(201, 13, 71, 22);
+					jTextFieldInputFInfNorm.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputFEuclideanNorm = new JLabel();
+					jPanelPhase1.add(jLabelInputFEuclideanNorm);
+					jLabelInputFEuclideanNorm.setBounds(152, 41, 49, 22);
+					jLabelInputFEuclideanNorm.setText("<html>||f||<sub>2</sub>:</html>");
+					jLabelInputFEuclideanNorm.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputFEuclideanNorm = new JTextField();
+					jPanelPhase1.add(jTextFieldInputFEuclideanNorm);
+					jTextFieldInputFEuclideanNorm.setBounds(201, 41, 71, 22);
+					jTextFieldInputFEuclideanNorm.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputCoeffDelta = new JLabel();
+					jPanelPhase1.add(jLabelInputCoeffDelta);
+					jLabelInputCoeffDelta.setText("<html>Coeff for &delta;:</html>");
+					jLabelInputCoeffDelta.setBounds(287, 13, 92, 22);
+					jLabelInputCoeffDelta.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputCoeffmAmB = new JLabel();
+					jPanelPhase1.add(jLabelInputCoeffmAmB);
+					jLabelInputCoeffmAmB.setBounds(287, 41, 92, 22);
+					jLabelInputCoeffmAmB.setText("<html>Coeff for m<sub>A</sub>, m<sub>B</sub>:</html>");
+					jLabelInputCoeffmAmB.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputCoeffDelta = new JTextField();
+					jPanelPhase1.add(jTextFieldInputCoeffDelta);
+					jTextFieldInputCoeffDelta.setBounds(387, 13, 71, 22);
+					jTextFieldInputCoeffDelta.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputCoeffmAmB = new JTextField();
+					jPanelPhase1.add(jTextFieldInputCoeffmAmB);
+					jTextFieldInputCoeffmAmB.setBounds(387, 41, 71, 22);
+					jTextFieldInputCoeffmAmB.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputXMLFile = new JLabel();
+					jPanelPhase1.add(jLabelInputXMLFile);
+					jLabelInputXMLFile.setText("XML File:");
+					jLabelInputXMLFile.setBounds(152, 69, 49, 22);
+					jLabelInputXMLFile.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jTextFieldInputXMLFile = new JTextField();
+					jPanelPhase1.add(jTextFieldInputXMLFile);
+					jTextFieldInputXMLFile.setBounds(201, 70, 178, 21);
+					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jButtonInputXMLBrowse = new JButton();
+					jPanelPhase1.add(jButtonInputXMLBrowse);
+					jButtonInputXMLBrowse.setText("Browse");
+					jButtonInputXMLBrowse.setBounds(387, 70, 71, 22);
+					jButtonInputXMLBrowse.setFont(AppletListeners.fontMainApplet);
+				}
 			}
 
 		} catch (Exception e) {
