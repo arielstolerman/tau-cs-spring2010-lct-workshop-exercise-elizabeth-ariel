@@ -100,8 +100,7 @@ public class SFT {
 		Set<Elem>[] res = new HashSet[logN+1];
 		
 		// generate random subset A partial to Z_N with m_A elements
-		//Set<Elem> A = generateRandomSubsetA(m_A, N); //TODO
-		res[0] = generateRandomSubsetA(10, N);
+		Set<Elem> A = generateRandomSubsetA(m_A, N);
 		
 		Debug.log("A:",DebugOutput.STDOUT);
 		for (Iterator<Elem> j = res[0].iterator(); j.hasNext(); ){
@@ -111,8 +110,7 @@ public class SFT {
 		// generate logN random subsets B_l partial to {0,...,2^(l-1)-1} with min{m_B,2^(l-1)} elements
 		// return an array of A,B1,...,Bl
 		for(int l=1; l<=logN; l++){
-			//res[l] = generateRandomSubsetBl(m_B,N,l);//TODO
-			res[l] = generateRandomSubsetBl(10,N,l);
+			res[l] = generateRandomSubsetBl(m_B,N,l);
 		}
 		
 		Debug.log("B's:",DebugOutput.STDOUT);
@@ -203,6 +201,8 @@ public class SFT {
 	 * @return:			decides whether to keep or discard the interval {a,b} 
 	 */
 	public static boolean distinguish(Elem[] interval, double tau, Set<Elem> A, Set<Elem> B, Query query){
+		Debug.log("SFT::distinguish started",DebugOutput.STDOUT);
+		
 		double est = 0;
 		Elem v = new Elem(Math.floor((interval[0].getValue()+interval[1].getValue())/2));
 		
@@ -221,8 +221,10 @@ public class SFT {
 		Debug.log("calculated est: "+est,DebugOutput.STDOUT);
 		
 		// compare to threshold and return result
-		
 		double threshold = 5*tau/36;
+		
+		Debug.log("SFT::distinguish finished",DebugOutput.STDOUT);
+		
 		return est >= threshold;
 	}
 	
@@ -304,7 +306,6 @@ public class SFT {
 	 */
 	public static void main(String[] args) {
 		Debug.log("Started",DebugOutput.STDOUT);
-		SFT.generateQueries(76, 1/36, 1, 0.1);
 	}
 	
 	// AUTO GENERATED GETTERS AND SETTERS
