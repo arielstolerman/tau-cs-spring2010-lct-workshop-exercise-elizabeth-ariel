@@ -53,6 +53,13 @@ public class Complex {
 		return res;
 	}
 	
+	/**
+	 * @return:		the Euclidean norm, that is |a+bi| = (a+bi)*(a-bi) = a^2 + b^2
+	 */
+	public double getNorm(){
+		return Math.pow(real, 2)+Math.pow(imaginary, 2);
+	}
+	
 	// setters
 	
 	/**
