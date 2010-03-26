@@ -12,12 +12,15 @@
 
 package SFT;
 
+import java.io.File;
 import java.util.*;
 
 public class Query {
 	private Map<Long,Complex> query;
 	private int numOfElements;
 	private final long N;
+	
+	public static File xmlFile = null;
 	
 	/**
 	 * default constructor for a query object
