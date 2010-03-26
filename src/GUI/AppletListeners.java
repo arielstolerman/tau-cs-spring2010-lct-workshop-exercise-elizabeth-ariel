@@ -3,11 +3,17 @@ package GUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 
+import javax.swing.JFileChooser;
 import javax.swing.event.*;
 import org.eclipse.swt.widgets.*;
 
 import SFT.*;
+import Utils.Debug;
+import Utils.Debug.DebugOutput;
 
 import java.util.*;
 
@@ -90,7 +96,7 @@ public class AppletListeners {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						// TODO Auto-generated method stub
-						
+						openFileDialog();
 					}
 				}
 		);
@@ -112,6 +118,7 @@ public class AppletListeners {
 	}
 	
 	public static boolean phase1NextButtonValidateSetFields(){
+		Debug.log("AppletListeners::phase1NextButtonValidateSetFields was called",DebugOutput.STDOUT);
 		// validate all user inputs and set SFT fields accordingly
 		
 		// validate that N is a positive integer (long) greater than 0
@@ -192,8 +199,17 @@ public class AppletListeners {
 			return false;
 		}
 		
+		// if xml input is selected, check that an input is given
+		if (MainJApplet.getjRadioButtonQuery2().isSelected()){
+			if (Query.xmlFile == null){
+				MainJApplet.getjLabelPhase1ErrorMsgBox().setText(wrapRed("Must enter an XML file"));
+				return false;
+			}
+		}
+		
 		// all fields validated and set, may go on
 		MainJApplet.getjLabelPhase1ErrorMsgBox().setText("");
+		Debug.log("All input checks completed successfuly",DebugOutput.STDOUT);
 		return true;
 	}
 	
@@ -202,9 +218,41 @@ public class AppletListeners {
 	 * @param visible:	visibility flag for XML input fields
 	 */
 	public static void setPhase1XMLVisible(boolean visible){
+		Debug.log("AppletListeners::setPhase1XMLVisible was called",DebugOutput.STDOUT);
 		MainJApplet.getjLabelInputXMLFile().setVisible(visible);
 		MainJApplet.getjTextFieldInputXMLFile().setVisible(visible);
 		MainJApplet.getjButtonInputXMLBrowse().setVisible(visible);
 	}
 	
+	/**
+	 * open file dialog box to browse for an XML file
+	 */
+	public static void openFileDialog(){
+		Debug.log("AppletListeners::openFileDialog was called",DebugOutput.STDOUT);
+		
+		JFileChooser xmlFileChoose = new JFileChooser();
+		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "XML files";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+				 return f.isDirectory() || f.getName().toLowerCase().endsWith(".xml");
+			}
+		};
+		xmlFileChoose.setFileFilter(filter);
+		int returnVal = xmlFileChoose.showOpenDialog(MainJApplet.getjPanelPhase1());
+		
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			Query.xmlFile = xmlFileChoose.getSelectedFile();
+			MainJApplet.getjTextFieldInputXMLFile().setText(Query.xmlFile.getPath());
+			MainJApplet.getjLabelPhase1ErrorMsgBox().setText("");
+			Debug.log("XML file openned: "+Query.xmlFile.getPath(),DebugOutput.STDOUT);
+        } else {
+            Debug.log("XML file open canceled",DebugOutput.STDOUT);
+        }
+	}
 }

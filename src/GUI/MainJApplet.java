@@ -391,4 +391,12 @@ public class MainJApplet extends javax.swing.JApplet {
 	public static JLabel getjLabelPhase1ErrorMsgBox() {
 		return jLabelPhase1ErrorMsgBox;
 	}
+
+	public static JPanel getjPanelPhase1() {
+		return jPanelPhase1;
+	}
+
+	public static void setjPanelPhase1(JPanel jPanelPhase1) {
+		MainJApplet.jPanelPhase1 = jPanelPhase1;
+	}
 }
