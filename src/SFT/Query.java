@@ -20,7 +20,8 @@ public class Query {
 	private int numOfElements;
 	private final long N;
 	
-	public static File xmlFile = null;
+	private static File xmlFile = null;
+	private static boolean isUserInteractive;
 	
 	/**
 	 * default constructor for a query object
@@ -48,13 +49,15 @@ public class Query {
 	 ****************************************/
 	
 	/**
-	 * main function to receive f-values for all element in Q (partial to Z_N)
+	 * main function to receive f-values for all elements in Q
+	 * invoked by the user, sets SFT.query to hold the query values
+	 * (next the user will invoke the rest of the SFT calculation)
 	 * @param Q:	a set of elements in Z_N
 	 * @param N:	the order of Z_N
 	 * @return:		a map of elements in Q and their f-value
 	 */
-	public static Query getQueryFromQ(Set<Elem> Q, long N){
-		return new Query(N); //TODO
+	public static void getQueryFromQ(Set<Elem> Q, long N, Set<Elem>[] sets){
+		//TODO
 	}
 	
 	// getters
@@ -109,5 +112,21 @@ public class Query {
 		if (!containsKey(key))
 			this.numOfElements++;
 		query.put(key, value);
+	}
+
+	public static File getXmlFile() {
+		return xmlFile;
+	}
+
+	public static void setXmlFile(File xmlFile) {
+		Query.xmlFile = xmlFile;
+	}
+
+	public static boolean isUserInteractive() {
+		return isUserInteractive;
+	}
+
+	public static void setUserInteractive(boolean isUserInteractive) {
+		Query.isUserInteractive = isUserInteractive;
 	}
 }

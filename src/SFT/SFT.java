@@ -18,7 +18,7 @@ import Utils.Debug.DebugOutput;
 public class SFT {
 	
 	/* ***************************
-	 * parameters used by the algorithm given by the user:
+	 * parameters used by the first part of the algorithm given by the user:
 	 * - the infinity norm of f
 	 * - the Euclidean norm of f
 	 * - a constant coefficient for calculating delta
@@ -38,15 +38,30 @@ public class SFT {
 	private static double tau;
 	private static double delta;
 	
+	/* **************************
+	 * parameters used by the second part of the algorithm
+	 * - the sets of elements to get their f-values
+	 * - an array of the sets A,B1,...,Bl
+	 * - the query map of Q and its f-values
+	 */
+	private static Set<Elem> Q;
+	private static Set<Elem>[] sets;
+	private static Query query;
+	
+	// the variable to hold the result
+	public static Set<Elem> L;
+	
 	/**
 	 * Main SFT procedure (3.4)
+	 * The main SFT is departed into two parts, where part one builds a set of elements to be
+	 * f-valued, and part two continues its calculations using these query results
 	 * @param N:		an integer value describing the group Z_N
 	 * @param tau:		threshold on the weight of the Fourier coefficients we seek
 	 * @param deltha_t:	confidence parameter
 	 * @return			a short list L in Z_N of the tau-significant Fourier coefficients
 	 * 					of f with probability at least 1-deltha_t
 	 */
-	public static Set<Elem> runMainSFTAlgorithm(long N, double tau, double delta_t){
+	public static void runMainSFTAlgorithm(long N, double tau, double delta_t){
 		Debug.log("SFT::runMainSFTAlgorithm started", DebugOutput.STDOUT);
 		
 		// run generateQueries on N, gamma = tau/36, ||f||_infinity and delta = delta_t/O((||f||_2^2/tau)^1.5*logN)
@@ -59,19 +74,33 @@ public class SFT {
 		Debug.log("generated sets A,B1,..,Bl",DebugOutput.STDOUT);
 		
 		// Build set Q
-		Set<Elem> BUnified = new HashSet<Elem>();
+		Set<Elem> Q = copyElemSet(sets[0]);
 		for (int i=1; i<sets.length; i++){
-			BUnified.addAll(sets[i]);
+			removeElemsFromSet(Q, sets[i]);
 		}
-		Set<Elem> Q = sets[0];
-		Q.removeAll(BUnified);
 		
-		Debug.log("created Q from A - union(B_i), i=1,...,log(N)",DebugOutput.STDOUT);
+		String QValues = "";
+		for (Iterator<Elem> j = Q.iterator(); j.hasNext();){
+			QValues += j.next()+" ";
+		}
+		Debug.log("created Q from A - union(B_i), i=1,...,log(N):\n"+QValues,DebugOutput.STDOUT);
 		
-		// query f to find values f(q) for all q in Q
-		Query query = Query.getQueryFromQ(Q, N); //TODO needs implementation in class Query
+		// set up public variables with Q and sets
+		// user will invoke the query calculation followed by the rest of the SFT algorithm execution
+		// (the runMainSFTAlgorithmCont procedure)
+		SFT.Q = Q;
+		SFT.sets = sets;
 		
-		Debug.log("fetched query for all elements in Q",DebugOutput.STDOUT);
+		Debug.log("SFT::runMainSFTAlgorithm finished - waiting for part 2 to be called\n\n", DebugOutput.STDOUT);
+	}
+	
+	/**
+	 * Main SFT Algorithm - continuation of the main procedure (3.4)
+	 * Called after the Query.getQueryFromQ procedure received \ calculated the f-value
+	 * of the set Q of elements in Z_N constructed on the first part (runMainSFTAlgorithm)
+	 */
+	public static Set<Elem> runMainSFTAlgorithmCont(long N, double tau, Set<Elem>[] sets, Query query){
+		Debug.log("SFT::runMainSFTAlgorithmCont started - part 2 is called", DebugOutput.STDOUT);
 		
 		// run getFixedQueriesSFT and return its output, L
 		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query); 
@@ -80,8 +109,8 @@ public class SFT {
 			Debug.log(String.valueOf(e.getValue())+" ",DebugOutput.STDOUT);
 		}
 		
-		Debug.log("SFT::runMainSFTAlgorithm finished", DebugOutput.STDOUT);
-		
+		Debug.log("SFT::runMainSFTAlgorithmCont finished - done calculating L", DebugOutput.STDOUT);
+		SFT.L = L;
 		return L;
 	}
 	
@@ -109,12 +138,13 @@ public class SFT {
 		Set<Elem>[] res = new HashSet[logN+1];
 		
 		// generate random subset A partial to Z_N with m_A elements
-		Set<Elem> A = generateRandomSubsetA(m_A, N);
+		res[0] = generateRandomSubsetA(m_A, N);
 		
-		Debug.log("A:",DebugOutput.STDOUT);
+		String AValues = "";
 		for (Iterator<Elem> j = res[0].iterator(); j.hasNext(); ){
-			Debug.log("- "+j.next(),DebugOutput.STDOUT);
+			AValues += j.next()+" ";
 		}
+		Debug.log("A: "+AValues,DebugOutput.STDOUT);
 
 		// generate logN random subsets B_l partial to {0,...,2^(l-1)-1} with min{m_B,2^(l-1)} elements
 		// return an array of A,B1,...,Bl
@@ -124,10 +154,11 @@ public class SFT {
 		
 		Debug.log("B's:",DebugOutput.STDOUT);
 		for (int i=1; i<=logN; i++){
-			Debug.log("B["+i+"]:",DebugOutput.STDOUT);
+			String BlValues = "";
 			for (Iterator<Elem> j = res[i].iterator(); j.hasNext(); ){
-				Debug.log("- "+j.next(),DebugOutput.STDOUT);
+				BlValues += j.next()+" ";
 			}
+			Debug.log("B["+i+"]: "+BlValues,DebugOutput.STDOUT);
 		}
 		
 		Debug.log("created A and B1,...,Bl",DebugOutput.STDOUT);
@@ -258,9 +289,10 @@ public class SFT {
 		Set<Elem> res = new HashSet<Elem>();
 		
 		// randomly choose elements
-		for(int i=0; i< m_A; i++)
-			if (!res.add(new Elem(getRandValue(N))))	// if add fails, another element is needed
-				i--;
+		for(int i=0; i< m_A; i++){
+			// create and add new element with value different from the elements already contained in a
+			res.add(genNewElem(res,N));
+		}
 		
 		return res;
 	}
@@ -280,11 +312,34 @@ public class SFT {
 		// create B_l
 		Set<Elem> res = new HashSet<Elem>();
 		for(int i=0; i<numOfElems; i++){
-			if (!res.add(new Elem(getRandValue(pow))))	// if add fails, another element is needed
-				i--;
+			// create and add new element with value different from the elements already contained in B_l
+			res.add(genNewElem(res, pow));
 		}
 		
 		return res;
+	}
+	
+	/**
+	 * @param set:		a set of elements
+	 * @param randBar:	a random barrier to be used
+	 * @return			a new element with value different from any element's value in the given set,
+	 * 					with value generated randomly between 0 and randBar
+	 */
+	private static Elem genNewElem(Set<Elem> set, long randBar){
+		long value;
+		boolean doAgain;
+		do{
+			value = getRandValue(randBar);
+			doAgain = false;
+			for (Elem e: set){
+				if (e.getValue() == value && value != 0){ //TODO: fix the problem with generating a group with barrier 1 - always generates the element 0
+					doAgain = true;
+					break;
+				}
+			}
+		} while (doAgain);
+		
+		return new Elem(value);
 	}
 	
 	/**
@@ -294,6 +349,34 @@ public class SFT {
 	private static long getRandValue(long barrier){
 		double value = Math.random()*(barrier-1);
 		return (long)Math.floor(value);
+	}
+	
+	/**
+	 * @param source:	source set of elements
+	 * @return:			a deep copy of the source set
+	 */
+	private static Set<Elem> copyElemSet(Set<Elem> source){
+		Set<Elem> dest = new HashSet<Elem>();
+		for (Iterator<Elem> j = source.iterator(); j.hasNext();){
+			dest.add(new Elem(j.next().getValue()));
+		}
+		return dest;
+	}
+	
+	/**
+	 * removes all elements in source that have the same value as some element in toRemove
+	 * @param source:		source set of elements to be changed
+	 * @param toRemove:		set of elements to be removed from source
+	 */
+	private static void removeElemsFromSet(Set<Elem> source, Set<Elem> toRemove){
+		for (Elem elemToRemove: toRemove){
+			for (Elem elem: source){
+				if (elem.getValue() == elemToRemove.getValue()){
+					source.remove(elem);
+					break; // assuming source set has exactly one element with that value
+				}
+			}
+		}
 	}
 	
 	/**
@@ -314,7 +397,8 @@ public class SFT {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Debug.log("Started",DebugOutput.STDOUT);
+		Debug.log("MAIN >> Started",DebugOutput.STDOUT);
+		Debug.log("MAIN >> Finished",DebugOutput.STDOUT);
 	}
 	
 	// AUTO GENERATED GETTERS AND SETTERS
@@ -373,5 +457,29 @@ public class SFT {
 
 	public static void setDelta(double delta) {
 		SFT.delta = delta;
+	}
+
+	public static Set<Elem>[] getSets() {
+		return sets;
+	}
+
+	public static void setSets(Set<Elem>[] sets) {
+		SFT.sets = sets;
+	}
+
+	public static Query getQuery() {
+		return query;
+	}
+
+	public static void setQuery(Query query) {
+		SFT.query = query;
+	}
+
+	public static Set<Elem> getL() {
+		return L;
+	}
+
+	public static void setL(Set<Elem> l) {
+		L = l;
 	}
 }
