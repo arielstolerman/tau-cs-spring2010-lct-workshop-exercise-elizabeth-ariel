@@ -2,7 +2,8 @@ package GUI;
 
 import java.awt.Dimension;
 import javax.swing.*;
-
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -30,11 +31,16 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JLabel jLabelTitle;
 	private static ButtonGroup buttonGroupQuerySelection = new ButtonGroup();
 	private static JRadioButton jRadioButtonQuery1;
+	private static JRadioButton jRadioButtonQuery2;
 	private static JButton jButtonPhase1Next;
 	private static JSeparator jSeparator1;
 	private static JLabel jLabelExplanationTitle;
 	private static JTabbedPane jTabbedPaneMain;
-	private static JLabel jLabelPhase1ErrorMsgBox;
+	private static JButton jButtonCalcQuery;
+	private static JButton jButtonNextPhase2;
+	private static JTable jTableUserInput;
+	private static JPanel jPanelPhase2;
+	private static JLabel jLabelErrorMsgBox;
 	private static JPanel jPanelPhase1;
 	private static JButton jButtonInputXMLBrowse;
 	private static JLabel jLabelInputXMLFile;
@@ -54,7 +60,7 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JLabel jLabelInputTau;
 	private static JLabel jLabelInputN;
 	private static JLabel jLabelExplanation;
-	private static JRadioButton jRadioButtonQuery2;
+	private static TableModel jTableUserInputModel;
 
 	/**
 	* Auto-generated main method to display this 
@@ -88,7 +94,7 @@ public class MainJApplet extends javax.swing.JApplet {
 			setSize(new Dimension(500, 400));
 			getContentPane().setLayout(null);
 			getContentPane().setBackground(new java.awt.Color(255,255,255));
-			
+
 			// Main title
 			{
 				jLabelTitle = new JLabel();
@@ -103,7 +109,7 @@ public class MainJApplet extends javax.swing.JApplet {
 			{
 				jLabelExplanationTitle = new JLabel();
 				getContentPane().add(jLabelExplanationTitle);
-				jLabelExplanationTitle.setText("Phase #1");
+				jLabelExplanationTitle.setText(AppletListeners.phasesExplanationTitle.get("phase1"));
 				jLabelExplanationTitle.setBounds(29, 54, 441, 21);
 				jLabelExplanationTitle.setFont(new java.awt.Font("Verdana",1,14));
 			}
@@ -120,19 +126,41 @@ public class MainJApplet extends javax.swing.JApplet {
 				jLabelExplanation.setVerticalAlignment(JLabel.TOP);
 				jLabelExplanation.setFont(new java.awt.Font("Verdana",0,12));
 			}
+			{
+				jLabelErrorMsgBox = new JLabel();
+				getContentPane().add(jLabelErrorMsgBox);
+				jLabelErrorMsgBox.setBounds(82, 379, 337, 18);
+				jLabelErrorMsgBox.setText("");
+				jLabelErrorMsgBox.setHorizontalAlignment(JLabel.CENTER);
+			}
 			
 			// actions zone
+			/* *************/
+			
+			// Phase #1
 			{
-				jPanelPhase1 = new JPanel();
-				getContentPane().add(jPanelPhase1);
-				jPanelPhase1.setBounds(3, 210, 495, 188);
-				jPanelPhase1.setBackground(new java.awt.Color(255,255,255));
-				jPanelPhase1.setLayout(null);
+				jPanelPhase2 = new JPanel();
+				getContentPane().add(jPanelPhase2);
+				jPanelPhase2.setBounds(3, 136, 495, 262);				
+				jPanelPhase2.setBackground(new java.awt.Color(255,255,255));
+				jPanelPhase2.setLayout(null);
+				{
+					jTableUserInputModel = 
+						new DefaultTableModel(
+								new String[][] { { "One", "Two" }, { "Three", "Four" } },
+								new String[] { "Column 1", "Column 2" });
+					jTableUserInput = new JTable();
+					jPanelPhase2.add(jTableUserInput);
+					jTableUserInput.setModel(jTableUserInputModel);
+					jTableUserInput.setBounds(10, 102, 348, 152);
+					
+					String[] columnNames = {"x","<html>&fnof;</html>(x) real part","<html>&fnof;</html>(x) imaginary part"};
+				}
 				{
 					jRadioButtonQuery1 = new JRadioButton();
-					jPanelPhase1.add(jRadioButtonQuery1);
+					jPanelPhase2.add(jRadioButtonQuery1);
 					buttonGroupQuerySelection.add(jRadioButtonQuery1);
-					jRadioButtonQuery1.setBounds(26, 110, 337, 23);
+					jRadioButtonQuery1.setBounds(26, 10, 339, 22);
 					jRadioButtonQuery1.setText("<html>Interactive function query, user supplies &fnof; values on demand</html>");
 					jRadioButtonQuery1.setBackground(new java.awt.Color(255,255,255));
 					jRadioButtonQuery1.setFont(AppletListeners.fontMainApplet);
@@ -141,13 +169,59 @@ public class MainJApplet extends javax.swing.JApplet {
 				}
 				{
 					jRadioButtonQuery2 = new JRadioButton();
-					jPanelPhase1.add(jRadioButtonQuery2);
+					jPanelPhase2.add(jRadioButtonQuery2);
 					buttonGroupQuerySelection.add(jRadioButtonQuery2);
-					jRadioButtonQuery2.setBounds(26, 134, 337, 23);
+					jRadioButtonQuery2.setBounds(26, 36, 339, 24);
 					jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
 					jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
 					jRadioButtonQuery2.setFont(AppletListeners.fontMainApplet);
 				}
+				{
+					jLabelInputXMLFile = new JLabel();
+					jPanelPhase2.add(jLabelInputXMLFile);
+					jLabelInputXMLFile.setText("XML File:");
+					jLabelInputXMLFile.setBounds(26, 69, 49, 21);
+					jLabelInputXMLFile.setFont(AppletListeners.fontMainApplet);
+					jLabelInputXMLFile.setVisible(false);
+				}
+				{
+					jTextFieldInputXMLFile = new JTextField();
+					jPanelPhase2.add(jTextFieldInputXMLFile);
+					jTextFieldInputXMLFile.setBounds(87, 69, 178, 21);
+					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
+					jTextFieldInputXMLFile.setVisible(false);
+					jTextFieldInputXMLFile.setEditable(false);
+				}
+				{
+					jButtonInputXMLBrowse = new JButton();
+					jPanelPhase2.add(jButtonInputXMLBrowse);
+					jButtonInputXMLBrowse.setText("Browse");
+					jButtonInputXMLBrowse.setBounds(277, 69, 71, 21);
+					jButtonInputXMLBrowse.setFont(AppletListeners.fontMainApplet);
+					jButtonInputXMLBrowse.setVisible(false);
+				}
+				{
+					jButtonCalcQuery = new JButton();
+					jPanelPhase2.add(jButtonCalcQuery);
+					jButtonCalcQuery.setText("Calculate Values");
+					jButtonCalcQuery.setBounds(354, 69, 90, 21);
+					jButtonCalcQuery.setEnabled(false);
+					jButtonCalcQuery.setVisible(false);
+				}
+				{
+					jButtonNextPhase2 = new JButton();
+					jPanelPhase2.add(jButtonNextPhase2);
+					jButtonNextPhase2.setText("Next");
+					jButtonNextPhase2.setBounds(378, 206, 80, 30);
+				}
+				jPanelPhase2.setVisible(false);
+			}
+			{
+				jPanelPhase1 = new JPanel();
+				getContentPane().add(jPanelPhase1);
+				jPanelPhase1.setBounds(3, 210, 495, 188);
+				jPanelPhase1.setBackground(new java.awt.Color(255,255,255));
+				jPanelPhase1.setLayout(null);
 				{
 					jButtonPhase1Next = new JButton();
 					jPanelPhase1.add(jButtonPhase1Next);
@@ -246,38 +320,8 @@ public class MainJApplet extends javax.swing.JApplet {
 					jTextFieldInputCoeffmAmB.setBounds(387, 41, 71, 22);
 					jTextFieldInputCoeffmAmB.setFont(AppletListeners.fontMainApplet);
 				}
-				{
-					jLabelInputXMLFile = new JLabel();
-					jPanelPhase1.add(jLabelInputXMLFile);
-					jLabelInputXMLFile.setText("XML File:");
-					jLabelInputXMLFile.setBounds(152, 69, 49, 22);
-					jLabelInputXMLFile.setFont(AppletListeners.fontMainApplet);
-					jLabelInputXMLFile.setVisible(false);
-				}
-				{
-					jTextFieldInputXMLFile = new JTextField();
-					jPanelPhase1.add(jTextFieldInputXMLFile);
-					jTextFieldInputXMLFile.setBounds(201, 70, 178, 21);
-					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
-					jTextFieldInputXMLFile.setVisible(false);
-				}
-				{
-					jButtonInputXMLBrowse = new JButton();
-					jPanelPhase1.add(jButtonInputXMLBrowse);
-					jButtonInputXMLBrowse.setText("Browse");
-					jButtonInputXMLBrowse.setBounds(387, 70, 71, 22);
-					jButtonInputXMLBrowse.setFont(AppletListeners.fontMainApplet);
-					jButtonInputXMLBrowse.setVisible(false);
-				}
-				{
-					jLabelPhase1ErrorMsgBox = new JLabel();
-					jPanelPhase1.add(jLabelPhase1ErrorMsgBox);
-					jLabelPhase1ErrorMsgBox.setBounds(79, 169, 337, 18);
-					jLabelPhase1ErrorMsgBox.setText("");
-					jLabelPhase1ErrorMsgBox.setHorizontalAlignment(JLabel.CENTER);
-				}
 			}
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -388,8 +432,8 @@ public class MainJApplet extends javax.swing.JApplet {
 		return jRadioButtonQuery2;
 	}
 
-	public static JLabel getjLabelPhase1ErrorMsgBox() {
-		return jLabelPhase1ErrorMsgBox;
+	public static JLabel getjLabelErrorMsgBox() {
+		return jLabelErrorMsgBox;
 	}
 
 	public static JPanel getjPanelPhase1() {
@@ -398,5 +442,45 @@ public class MainJApplet extends javax.swing.JApplet {
 
 	public static void setjPanelPhase1(JPanel jPanelPhase1) {
 		MainJApplet.jPanelPhase1 = jPanelPhase1;
+	}
+
+	public static JPanel getjPanelPhase2() {
+		return jPanelPhase2;
+	}
+
+	public static void setjPanelPhase2(JPanel jPanelPhase2user) {
+		MainJApplet.jPanelPhase2 = jPanelPhase2user;
+	}
+
+	public static JTable getjTableUserInput() {
+		return jTableUserInput;
+	}
+
+	public static void setjTableUserInput(JTable jTableUserInput) {
+		MainJApplet.jTableUserInput = jTableUserInput;
+	}
+
+	public static TableModel getjTableUserInputModel() {
+		return jTableUserInputModel;
+	}
+
+	public static void setjTableUserInputModel(TableModel jTableUserInputModel) {
+		MainJApplet.jTableUserInputModel = jTableUserInputModel;
+	}
+
+	public static JButton getjButtonCalcQuery() {
+		return jButtonCalcQuery;
+	}
+
+	public static void setjButtonCalcQuery(JButton jButtonCalcQuery) {
+		jButtonCalcQuery = jButtonCalcQuery;
+	}
+
+	public static JButton getjButtonNextPhase2() {
+		return jButtonNextPhase2;
+	}
+
+	public static void setjButtonNextPhase2(JButton jButtonNextPhase2) {
+		jButtonNextPhase2 = jButtonNextPhase2;
 	}
 }
