@@ -1,9 +1,15 @@
 package GUI;
+import java.awt.BorderLayout;
+import java.awt.Canvas;
 
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -61,6 +67,9 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JLabel jLabelInputN;
 	private static JLabel jLabelExplanation;
 	private static TableModel jTableUserInputModel;
+	
+	private static JFrame frame;
+	private static MainJApplet inst;
 
 	/**
 	* Auto-generated main method to display this 
@@ -69,9 +78,9 @@ public class MainJApplet extends javax.swing.JApplet {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JFrame frame = new JFrame();
+				frame = new JFrame();
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				MainJApplet inst = new MainJApplet();
+				inst = new MainJApplet();
 				frame.getContentPane().add(inst);
 				((JComponent)frame.getContentPane()).setPreferredSize(inst.getSize());
 				frame.pack();
@@ -86,7 +95,7 @@ public class MainJApplet extends javax.swing.JApplet {
 		// initialize framework variables
 		AppletListeners.initAll();
 		// initialize GUI
-		initGUI();
+		initSwtAwtGUI();
 	}
 	
 	private void initGUI() {
@@ -138,84 +147,6 @@ public class MainJApplet extends javax.swing.JApplet {
 			/* *************/
 			
 			// Phase #1
-			{
-				jPanelPhase2 = new JPanel();
-				getContentPane().add(jPanelPhase2);
-				jPanelPhase2.setBounds(3, 136, 495, 262);				
-				jPanelPhase2.setBackground(new java.awt.Color(255,255,255));
-				jPanelPhase2.setLayout(null);
-				{
-					jTableUserInputModel = 
-						new DefaultTableModel(
-								new String[][] { { "One", "Two" }, { "Three", "Four" } },
-								new String[] { "Column 1", "Column 2" });
-					jTableUserInput = new JTable();
-					jPanelPhase2.add(jTableUserInput);
-					jTableUserInput.setModel(jTableUserInputModel);
-					jTableUserInput.setBounds(10, 102, 348, 152);
-					
-					String[] columnNames = {"x","<html>&fnof;</html>(x) real part","<html>&fnof;</html>(x) imaginary part"};
-				}
-				{
-					jRadioButtonQuery1 = new JRadioButton();
-					jPanelPhase2.add(jRadioButtonQuery1);
-					buttonGroupQuerySelection.add(jRadioButtonQuery1);
-					jRadioButtonQuery1.setBounds(26, 10, 339, 22);
-					jRadioButtonQuery1.setText("<html>Interactive function query, user supplies &fnof; values on demand</html>");
-					jRadioButtonQuery1.setBackground(new java.awt.Color(255,255,255));
-					jRadioButtonQuery1.setFont(AppletListeners.fontMainApplet);
-					jRadioButtonQuery1.setSelected(true);
-					
-				}
-				{
-					jRadioButtonQuery2 = new JRadioButton();
-					jPanelPhase2.add(jRadioButtonQuery2);
-					buttonGroupQuerySelection.add(jRadioButtonQuery2);
-					jRadioButtonQuery2.setBounds(26, 36, 339, 24);
-					jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
-					jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
-					jRadioButtonQuery2.setFont(AppletListeners.fontMainApplet);
-				}
-				{
-					jLabelInputXMLFile = new JLabel();
-					jPanelPhase2.add(jLabelInputXMLFile);
-					jLabelInputXMLFile.setText("XML File:");
-					jLabelInputXMLFile.setBounds(26, 69, 49, 21);
-					jLabelInputXMLFile.setFont(AppletListeners.fontMainApplet);
-					jLabelInputXMLFile.setVisible(false);
-				}
-				{
-					jTextFieldInputXMLFile = new JTextField();
-					jPanelPhase2.add(jTextFieldInputXMLFile);
-					jTextFieldInputXMLFile.setBounds(87, 69, 178, 21);
-					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
-					jTextFieldInputXMLFile.setVisible(false);
-					jTextFieldInputXMLFile.setEditable(false);
-				}
-				{
-					jButtonInputXMLBrowse = new JButton();
-					jPanelPhase2.add(jButtonInputXMLBrowse);
-					jButtonInputXMLBrowse.setText("Browse");
-					jButtonInputXMLBrowse.setBounds(277, 69, 71, 21);
-					jButtonInputXMLBrowse.setFont(AppletListeners.fontMainApplet);
-					jButtonInputXMLBrowse.setVisible(false);
-				}
-				{
-					jButtonCalcQuery = new JButton();
-					jPanelPhase2.add(jButtonCalcQuery);
-					jButtonCalcQuery.setText("Calculate Values");
-					jButtonCalcQuery.setBounds(354, 69, 90, 21);
-					jButtonCalcQuery.setEnabled(false);
-					jButtonCalcQuery.setVisible(false);
-				}
-				{
-					jButtonNextPhase2 = new JButton();
-					jPanelPhase2.add(jButtonNextPhase2);
-					jButtonNextPhase2.setText("Next");
-					jButtonNextPhase2.setBounds(378, 206, 80, 30);
-				}
-				jPanelPhase2.setVisible(false);
-			}
 			{
 				jPanelPhase1 = new JPanel();
 				getContentPane().add(jPanelPhase1);
@@ -320,6 +251,75 @@ public class MainJApplet extends javax.swing.JApplet {
 					jTextFieldInputCoeffmAmB.setBounds(387, 41, 71, 22);
 					jTextFieldInputCoeffmAmB.setFont(AppletListeners.fontMainApplet);
 				}
+			}
+			
+			// Phase #2
+			{
+				jPanelPhase2 = new JPanel();
+				getContentPane().add(jPanelPhase2);
+				jPanelPhase2.setBounds(3, 136, 495, 262);				
+				jPanelPhase2.setBackground(new java.awt.Color(255,255,255));
+				jPanelPhase2.setLayout(null);
+				// table will be added in AppletListeners::switchToPhase2()
+				{
+					jRadioButtonQuery1 = new JRadioButton();
+					jPanelPhase2.add(jRadioButtonQuery1);
+					buttonGroupQuerySelection.add(jRadioButtonQuery1);
+					jRadioButtonQuery1.setBounds(26, 10, 339, 22);
+					jRadioButtonQuery1.setText("<html>Interactive function query, user supplies &fnof; values on demand</html>");
+					jRadioButtonQuery1.setBackground(new java.awt.Color(255,255,255));
+					jRadioButtonQuery1.setFont(AppletListeners.fontMainApplet);
+					jRadioButtonQuery1.setSelected(true);
+					
+				}
+				{
+					jRadioButtonQuery2 = new JRadioButton();
+					jPanelPhase2.add(jRadioButtonQuery2);
+					buttonGroupQuerySelection.add(jRadioButtonQuery2);
+					jRadioButtonQuery2.setBounds(26, 36, 339, 24);
+					jRadioButtonQuery2.setText("Supply XML with pairs of monoms and their coefficients");
+					jRadioButtonQuery2.setBackground(new java.awt.Color(255,255,255));
+					jRadioButtonQuery2.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jLabelInputXMLFile = new JLabel();
+					jPanelPhase2.add(jLabelInputXMLFile);
+					jLabelInputXMLFile.setText("XML File:");
+					jLabelInputXMLFile.setBounds(26, 69, 49, 21);
+					jLabelInputXMLFile.setFont(AppletListeners.fontMainApplet);
+					jLabelInputXMLFile.setVisible(false);
+				}
+				{
+					jTextFieldInputXMLFile = new JTextField();
+					jPanelPhase2.add(jTextFieldInputXMLFile);
+					jTextFieldInputXMLFile.setBounds(87, 69, 178, 21);
+					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
+					jTextFieldInputXMLFile.setVisible(false);
+					jTextFieldInputXMLFile.setEditable(false);
+				}
+				{
+					jButtonInputXMLBrowse = new JButton();
+					jPanelPhase2.add(jButtonInputXMLBrowse);
+					jButtonInputXMLBrowse.setText("Browse");
+					jButtonInputXMLBrowse.setBounds(277, 69, 71, 21);
+					jButtonInputXMLBrowse.setFont(AppletListeners.fontMainApplet);
+					jButtonInputXMLBrowse.setVisible(false);
+				}
+				{
+					jButtonCalcQuery = new JButton();
+					jPanelPhase2.add(jButtonCalcQuery);
+					jButtonCalcQuery.setText("Calculate Values");
+					jButtonCalcQuery.setBounds(354, 69, 90, 21);
+					jButtonCalcQuery.setEnabled(false);
+					jButtonCalcQuery.setVisible(false);
+				}
+				{
+					jButtonNextPhase2 = new JButton();
+					jPanelPhase2.add(jButtonNextPhase2);
+					jButtonNextPhase2.setText("Next");
+					jButtonNextPhase2.setBounds(378, 206, 80, 30);
+				}
+				jPanelPhase2.setVisible(false);
 			}
 			
 		} catch (Exception e) {
@@ -483,4 +483,81 @@ public class MainJApplet extends javax.swing.JApplet {
 	public static void setjButtonNextPhase2(JButton jButtonNextPhase2) {
 		jButtonNextPhase2 = jButtonNextPhase2;
 	}
+
+	public static JFrame getFrame() {
+		return frame;
+	}
+
+	public static void setFrame(JFrame frame) {
+		MainJApplet.frame = frame;
+	}
+
+	public static MainJApplet getInst() {
+		return inst;
+	}
+
+	public static void setInst(MainJApplet inst) {
+		MainJApplet.inst = inst;
+	}
+
+	//$protect>>$
+	//===== start of SWT_AWT special handler code =============
+
+	/**
+	 * This method should be called instead of initGUI to initialize
+	 * and make visible this GUI, since it handles all the threading
+	 * and other "quirks" of embedding SWT objects inside AWT ones.
+	 */
+	public void initSwtAwtGUI() {
+		new DisplayThread().start();
+	}
+		
+	/**
+	 * This class makes sure that the SWT controls will be created
+	 * and behave correctly
+	 */
+	private class DisplayThread extends Thread {
+
+		public void run() {
+			Display.getDefault().syncExec(new Runnable() {
+				public void run() {
+					//make sure the GUI is created inside the SWT display thread
+					//otherwise you will get invalid-thread-access errors, and
+					//make sure it is visible before calling the SWT_AWT.new_Shell
+					//method, otherwise a "No handles" error will be thrown.
+					setVisible(true);
+					initGUI();
+				}
+			});
+			
+			//"wiggling" the size is one way to make sure that the
+			//SWT controls are displayed correctly
+			java.awt.Dimension sz = getSize();
+			int w = sz.width;
+			int h = sz.height;
+			setSize(w+1, h);
+			validate();
+			setSize(w, h);
+			validate();
+			
+			swtEventLoop();
+		}
+
+		/**
+		 * Listen for and dispatch SWT events
+		 */
+		private void swtEventLoop() {
+			Display display = Display.getDefault();
+			while (true) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		}
+
+	}
+
+	//===== end of SWT_AWT special handler code =============
+	//$protect<<$
+	
 }

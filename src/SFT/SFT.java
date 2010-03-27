@@ -482,4 +482,12 @@ public class SFT {
 	public static void setL(Set<Elem> l) {
 		L = l;
 	}
+
+	public static Set<Elem> getQ() {
+		return Q;
+	}
+
+	public static void setQ(Set<Elem> q) {
+		Q = q;
+	}
 }

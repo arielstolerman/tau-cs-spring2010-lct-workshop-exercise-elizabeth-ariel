@@ -1,10 +1,20 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.TableColumnModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
+import org.eclipse.swt.widgets.Display;
 
 import SFT.*;
 import Utils.Debug;
@@ -68,7 +78,6 @@ public class AppletListeners {
 					public void actionPerformed(ActionEvent arg0) {
 						// check inputs and set parameters
 						if (phase1NextButtonValidateSetFields()){
-							// run the first phase of the algorithm - calculate the set Q
 							SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
 							// switch to phase #2 view
 							switchToPhase2();
@@ -87,8 +96,6 @@ public class AppletListeners {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						setPhase2XMLVisible(false);
-						// enable manual editing of the f-values in the table
-						MainJApplet.getjTableUserInput().setEnabled(true);
 					}
 				}
 		);
@@ -100,8 +107,6 @@ public class AppletListeners {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						setPhase2XMLVisible(true);
-						// disable manual editing of the f-values in the table
-						MainJApplet.getjTableUserInput().setEnabled(false);
 					}
 				}
 		);
@@ -259,6 +264,28 @@ public class AppletListeners {
 		// set explanation
 		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase2"));
 		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase2"));
+		// set table contents
+		
+
+		{
+			// initialize list of elements for which f-values are to be fetched
+			String[] columnNames = {"x","<html>&fnof;</html>(x) real part","<html>&fnof;</html>(x) imaginary part"};
+			String[][] tableContent = new String[SFT.getQ().size()][3];
+			int i=0;
+			for (Elem elem: SFT.getQ()){
+				tableContent[i][0] = elem.toString();
+				tableContent[i][1] = "";
+				tableContent[i][2] = "";
+				i++;
+			}
+			
+			MainJApplet.setjTableUserInputModel(new DefaultTableModel(tableContent,columnNames));
+			MainJApplet.setjTableUserInput(new JTable());
+			MainJApplet.getjPanelPhase2().add(MainJApplet.getjTableUserInput());
+			MainJApplet.getjTableUserInput().setModel(MainJApplet.getjTableUserInputModel());
+			MainJApplet.getjTableUserInput().setBounds(10, 102, 348, 152);
+			//TODO set header for table
+		}
 	}
 	
 	// phase #2 listeners actions
