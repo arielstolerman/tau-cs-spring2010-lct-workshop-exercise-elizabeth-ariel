@@ -1,20 +1,13 @@
 package GUI;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.TableColumnModelListener;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-
-import org.eclipse.swt.widgets.Display;
 
 import SFT.*;
 import Utils.Debug;
@@ -67,8 +60,12 @@ public class AppletListeners {
 	 *****************************************************************/
 	
 	public static void invokedByPhase1Next(){
-		// switch to phase #2 view
-		switchToPhase2();
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+				// switch to phase #2 view
+				switchToPhase2();
+			}
+		});
 	}
 	
 	public static void invokedByPhase2NextUserInteractive(){
@@ -98,7 +95,8 @@ public class AppletListeners {
 					public void actionPerformed(ActionEvent arg0) {
 						// check inputs and set parameters
 						if (phase1NextButtonValidateSetFields()){
-							SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
+							//SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
+							(new Thread(sftRunner.new RunMainSFTAlgorithm())).start();
 						}
 					}
 				}

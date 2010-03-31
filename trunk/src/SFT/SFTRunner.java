@@ -12,7 +12,9 @@
 
 package SFT;
 
-import java.util.Set;
+import GUI.AppletListeners;
+import Utils.Debug;
+import Utils.Debug.DebugOutput;
 
 public class SFTRunner {
 	
@@ -28,9 +30,12 @@ public class SFTRunner {
 		 * runs the first part of the SFT algorithm - preparing the set of elements in Z_N
 		 * for which f-values are to be set by the user
 		 */
-		public void run(){			
+		public void run(){
 			// call main procedure (the first part of the SFT algorithm)
 			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
+			// call gui updater
+			AppletListeners.invokedByPhase1Next();
+			Debug.log("invoked gui phase1 next",DebugOutput.STDOUT);
 		}
 	}
 	
