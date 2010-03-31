@@ -181,7 +181,7 @@ public class AppletListeners {
 	 * @return:		true iff all inputs are inserted correctly
 	 */
 	public static boolean phase1NextButtonValidateSetFields(){
-		Debug.log("AppletListeners::phase1NextButtonValidateSetFields was called",DebugOutput.STDOUT);
+		Debug.log("AppletListeners::phase1NextButtonValidateSetFields was called");
 		// validate all user inputs and set SFT fields accordingly
 		
 		// validate that N is a positive integer (long) greater than 0
@@ -264,7 +264,7 @@ public class AppletListeners {
 		
 		// all fields validated and set, may go on
 		MainJApplet.getjLabelErrorMsgBox().setText("");
-		Debug.log("All input checks completed successfuly",DebugOutput.STDOUT);
+		Debug.log("All input checks completed successfuly");
 		return true;
 	}
 	
@@ -272,7 +272,7 @@ public class AppletListeners {
 	 * switch view to phase #2 - user input or xml input
 	 */
 	public static void switchToPhase2(){
-		Debug.log("AppletListeners::switchToPhase2 was called",DebugOutput.STDOUT);
+		Debug.log("AppletListeners::switchToPhase2 was called");
 		
 		// switch to phase2-user view
 		MainJApplet.getjPanelPhase1().setVisible(false);
@@ -312,7 +312,7 @@ public class AppletListeners {
 	 * @param visible:	visibility flag for XML input fields
 	 */
 	public static void setPhase2XMLVisible(boolean visible){
-		Debug.log("AppletListeners::setPhase2XMLVisible was called",DebugOutput.STDOUT);
+		Debug.log("AppletListeners::setPhase2XMLVisible was called");
 		MainJApplet.getjLabelInputXMLFile().setVisible(visible);
 		MainJApplet.getjTextFieldInputXMLFile().setVisible(visible);
 		MainJApplet.getjButtonInputXMLBrowse().setVisible(visible);
@@ -323,7 +323,7 @@ public class AppletListeners {
 	 * open file dialog box to browse for an XML file
 	 */
 	public static void openFileDialog(){
-		Debug.log("AppletListeners::openFileDialog was called",DebugOutput.STDOUT);
+		Debug.log("AppletListeners::openFileDialog was called");
 		
 		JFileChooser xmlFileChoose = new JFileChooser();
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
@@ -346,9 +346,9 @@ public class AppletListeners {
 			MainJApplet.getjTextFieldInputXMLFile().setText(Query.getXmlFile().getPath());
 			MainJApplet.getjLabelErrorMsgBox().setText("");
 			MainJApplet.getjButtonCalcQuery().setEnabled(true);
-			Debug.log("XML file openned: "+Query.getXmlFile().getPath(),DebugOutput.STDOUT);
+			Debug.log("XML file openned: "+Query.getXmlFile().getPath());
         } else {
-            Debug.log("XML file open canceled",DebugOutput.STDOUT);
+            Debug.log("XML file open canceled");
         }
 	}
 

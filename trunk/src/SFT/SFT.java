@@ -24,7 +24,7 @@ public class SFT {
 	 * - the infinity norm of f
 	 * - the Euclidean norm of f
 	 * - a constant coefficient for calculating delta
-	 * - a constant coefficient for calculating m_A nad m_B
+	 * - a constant coefficient for calculating m_A and m_B
 	 * - N the order of Z_N
 	 * - tau the threshold
 	 * - delta the confidence parameter
@@ -64,7 +64,7 @@ public class SFT {
 	 * 					of f with probability at least 1-deltha_t
 	 */
 	public static void runMainSFTAlgorithm(long N, double tau, double delta_t){
-		Debug.log("SFT::runMainSFTAlgorithm started", DebugOutput.STDOUT);
+		Debug.log("SFT::runMainSFTAlgorithm started");
 		
 		// run generateQueries on N, gamma = tau/36, ||f||_infinity and delta = delta_t/O((||f||_2^2/tau)^1.5*logN)
 		double gamma = tau/36;
@@ -72,7 +72,7 @@ public class SFT {
 		double delta = delta_t/( deltaCalculationConst * Math.pow(Math.pow(getfEuclideanNorm(),2)/tau,1.5) *
 				(Math.log(N)/Math.log(2)) );
 		Set<Elem>[] sets = generateQueries(N, gamma, fInfNorm, delta);
-		Debug.log("generated sets A,B1,..,Bl",DebugOutput.STDOUT);
+		Debug.log("generated sets A,B1,..,Bl");
 		
 		// Build set Q
 		Set<Elem> Q = copyElemSet(sets[0]);
@@ -84,7 +84,7 @@ public class SFT {
 		for (Iterator<Elem> j = Q.iterator(); j.hasNext();){
 			QValues += j.next()+" ";
 		}
-		Debug.log("created Q from A - union(B_i), i=1,...,log(N):\n"+QValues,DebugOutput.STDOUT);
+		Debug.log("created Q from A - union(B_i), i=1,...,log(N):\n"+QValues);
 		
 		// set up public variables with Q and sets
 		// user will invoke the query calculation followed by the rest of the SFT algorithm execution
@@ -92,7 +92,7 @@ public class SFT {
 		SFT.Q = Q;
 		SFT.sets = sets;
 		
-		Debug.log("SFT::runMainSFTAlgorithm finished - waiting for part 2 to be called\n\n", DebugOutput.STDOUT);
+		Debug.log("SFT::runMainSFTAlgorithm finished - waiting for part 2 to be called\n\n");
 	}
 	
 	/**
@@ -101,16 +101,16 @@ public class SFT {
 	 * of the set Q of elements in Z_N constructed on the first part (runMainSFTAlgorithm)
 	 */
 	public static void runMainSFTAlgorithmCont(Set<Elem>[] sets, Query query){
-		Debug.log("SFT::runMainSFTAlgorithmCont started - part 2 is called", DebugOutput.STDOUT);
+		Debug.log("SFT::runMainSFTAlgorithmCont started - part 2 is called");
 		
 		// run getFixedQueriesSFT and return its output, L
 		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query); 
-		Debug.log("finished calculating L, the list of significant Fourier coefficients for f. L elements:",DebugOutput.STDOUT);
+		Debug.log("finished calculating L, the list of significant Fourier coefficients for f. L elements:");
 		for (Elem e: L){
-			Debug.log(String.valueOf(e.getValue())+" ",DebugOutput.STDOUT);
+			Debug.log(String.valueOf(e.getValue())+" ");
 		}
 		
-		Debug.log("SFT::runMainSFTAlgorithmCont finished - done calculating L", DebugOutput.STDOUT);
+		Debug.log("SFT::runMainSFTAlgorithmCont finished - done calculating L");
 		SFT.L = L;
 	}
 	
@@ -124,14 +124,14 @@ public class SFT {
 	 * 					create the set of x's to ask their f-value
 	 */
 	public static Set<Elem>[] generateQueries(long N, double gamma, double fInfNorm, double delta){
-		Debug.log("SFT::generateQueries started", DebugOutput.STDOUT);
+		Debug.log("SFT::generateQueries started");
 		
 		// compute m_A and m_B
 		double tmp = 1.0/Math.pow(gamma, 2);
 		int m_A = (int) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/delta)));
 		int m_B = (int) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/(delta*gamma))));
 		
-		Debug.log("m_A is: "+m_A+", m_B is: "+m_B, DebugOutput.STDOUT);
+		Debug.log("m_A is: "+m_A+", m_B is: "+m_B);
 		
 		// generate A,B1,...,Bl
 		int logN = calcLogN(N);
@@ -144,7 +144,7 @@ public class SFT {
 		for (Iterator<Elem> j = res[0].iterator(); j.hasNext(); ){
 			AValues += j.next()+" ";
 		}
-		Debug.log("A: "+AValues,DebugOutput.STDOUT);
+		Debug.log("A: "+AValues);
 
 		// generate logN random subsets B_l partial to {0,...,2^(l-1)-1} with min{m_B,2^(l-1)} elements
 		// return an array of A,B1,...,Bl
@@ -152,17 +152,17 @@ public class SFT {
 			res[l] = generateRandomSubsetBl(m_B,N,l);
 		}
 		
-		Debug.log("B's:",DebugOutput.STDOUT);
+		Debug.log("B's:");
 		for (int i=1; i<=logN; i++){
 			String BlValues = "";
 			for (Iterator<Elem> j = res[i].iterator(); j.hasNext(); ){
 				BlValues += j.next()+" ";
 			}
-			Debug.log("B["+i+"]: "+BlValues,DebugOutput.STDOUT);
+			Debug.log("B["+i+"]: "+BlValues);
 		}
 		
-		Debug.log("created A and B1,...,Bl",DebugOutput.STDOUT);
-		Debug.log("SFT::generateQueries finished",DebugOutput.STDOUT);
+		Debug.log("created A and B1,...,Bl");
+		Debug.log("SFT::generateQueries finished");
 		
 		return res;
 	}
@@ -177,7 +177,7 @@ public class SFT {
 	 * 						of f with probability at least 1-deltha_t
 	 */
 	public static Set<Elem> getFixedQueriesSFT(long N, double tau, Set<Elem>[] querySets, Query query){
-		Debug.log("SFT::getFixedQueriesSFT started",DebugOutput.STDOUT);
+		Debug.log("SFT::getFixedQueriesSFT started");
 		
 		// initialize candidate (candidate_0)
 		Elem[] initInterval = new Elem[2];
@@ -214,7 +214,7 @@ public class SFT {
 			candidate = tmpCandidate; // update candidate_i to candidate_(i+1)
 		}
 		
-		Debug.log("candidate iterations finished",DebugOutput.STDOUT);
+		Debug.log("candidate iterations finished");
 		
 		// build L and return it
 		Set<Elem> L = new HashSet<Elem>();
@@ -225,8 +225,8 @@ public class SFT {
 			}
 		}
 		
-		Debug.log("Done creating L",DebugOutput.STDOUT);
-		Debug.log("SFT::getFixedQueriesSFT finished",DebugOutput.STDOUT);
+		Debug.log("Done creating L");
+		Debug.log("SFT::getFixedQueriesSFT finished");
 		
 		return L;
 	}
@@ -241,7 +241,7 @@ public class SFT {
 	 * @return:			decides whether to keep or discard the interval {a,b} 
 	 */
 	public static boolean distinguish(Elem[] interval, double tau, Set<Elem> A, Set<Elem> B, Query query){
-		Debug.log("SFT::distinguish started",DebugOutput.STDOUT);
+		Debug.log("SFT::distinguish started");
 		
 		double est = 0;
 		Elem v = new Elem(Math.floor((interval[0].getValue()+interval[1].getValue())/2));
@@ -258,12 +258,12 @@ public class SFT {
 		
 		est /= A.size()*B.size()*B.size();
 		
-		Debug.log("calculated est: "+est,DebugOutput.STDOUT);
+		Debug.log("calculated est: "+est);
 		
 		// compare to threshold and return result
 		double threshold = 5*tau/36;
 		
-		Debug.log("SFT::distinguish finished",DebugOutput.STDOUT);
+		Debug.log("SFT::distinguish finished");
 		
 		return est >= threshold;
 	}
@@ -397,8 +397,8 @@ public class SFT {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Debug.log("MAIN >> Started",DebugOutput.STDOUT);
-		Debug.log("MAIN >> Finished",DebugOutput.STDOUT);
+		Debug.log("MAIN >> Started");
+		Debug.log("MAIN >> Finished");
 	}
 	
 	// AUTO GENERATED GETTERS AND SETTERS
