@@ -92,10 +92,6 @@ public class SFT {
 		SFT.Q = Q;
 		SFT.sets = sets;
 		
-		// call gui updater
-		AppletListeners.invokedByPhase1Next();
-		Debug.log("invoked gui phase1 next",DebugOutput.STDOUT);
-		
 		Debug.log("SFT::runMainSFTAlgorithm finished - waiting for part 2 to be called\n\n", DebugOutput.STDOUT);
 	}
 	
