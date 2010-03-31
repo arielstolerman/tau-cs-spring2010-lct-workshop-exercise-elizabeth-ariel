@@ -73,7 +73,7 @@ public class Debug {
 	 * Calls log with FILE as DebugOutput
 	 */
 	public static void log(String message){
-		log(message, DebugOutput.FILE);
+		log(message, DebugOutput.FILE, DebugOutput.STDOUT);
 	}
 
 	/**
