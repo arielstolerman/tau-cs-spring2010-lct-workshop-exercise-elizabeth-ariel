@@ -27,6 +27,8 @@ public class AppletListeners {
 	public static Map<String,String> phasesExplanationTitle = new HashMap<String,String>();
 	public static java.awt.Font fontMainApplet = new Font("Tahoma", Font.PLAIN, 11);
 	
+	private static SFTRunner sftRunner = new SFTRunner();
+	
 	/**
 	 * initialize all static parameters and values
 	 */
@@ -59,6 +61,24 @@ public class AppletListeners {
 		phasesExplanationTitle.put("phase2", phase2Title);
 	}
 	
+	/* ***************************************************************
+	 * 		methods called by the SFT once calculations are done
+	 * 		to invoke the GUI
+	 *****************************************************************/
+	
+	public static void invokedByPhase1Next(){
+		// switch to phase #2 view
+		switchToPhase2();
+	}
+	
+	public static void invokedByPhase2NextUserInteractive(){
+		//TODO
+	}
+	
+	public static void invokedByPhase2NextXML(){
+		//TODO
+	}
+	
 	/* ***********************
 	 * 		Listeners
 	 *************************/
@@ -79,8 +99,6 @@ public class AppletListeners {
 						// check inputs and set parameters
 						if (phase1NextButtonValidateSetFields()){
 							SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
-							// switch to phase #2 view
-							switchToPhase2();
 						}
 					}
 				}

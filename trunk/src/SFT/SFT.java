@@ -12,6 +12,8 @@
 package SFT;
 
 import java.util.*;
+
+import GUI.AppletListeners;
 import Utils.Debug;
 import Utils.Debug.DebugOutput;
 
@@ -70,7 +72,6 @@ public class SFT {
 		double delta = delta_t/( deltaCalculationConst * Math.pow(Math.pow(getfEuclideanNorm(),2)/tau,1.5) *
 				(Math.log(N)/Math.log(2)) );
 		Set<Elem>[] sets = generateQueries(N, gamma, fInfNorm, delta);
-		
 		Debug.log("generated sets A,B1,..,Bl",DebugOutput.STDOUT);
 		
 		// Build set Q
@@ -91,6 +92,10 @@ public class SFT {
 		SFT.Q = Q;
 		SFT.sets = sets;
 		
+		// call gui updater
+		AppletListeners.invokedByPhase1Next();
+		Debug.log("invoked gui phase1 next",DebugOutput.STDOUT);
+		
 		Debug.log("SFT::runMainSFTAlgorithm finished - waiting for part 2 to be called\n\n", DebugOutput.STDOUT);
 	}
 	
@@ -99,7 +104,7 @@ public class SFT {
 	 * Called after the Query.getQueryFromQ procedure received \ calculated the f-value
 	 * of the set Q of elements in Z_N constructed on the first part (runMainSFTAlgorithm)
 	 */
-	public static Set<Elem> runMainSFTAlgorithmCont(long N, double tau, Set<Elem>[] sets, Query query){
+	public static void runMainSFTAlgorithmCont(Set<Elem>[] sets, Query query){
 		Debug.log("SFT::runMainSFTAlgorithmCont started - part 2 is called", DebugOutput.STDOUT);
 		
 		// run getFixedQueriesSFT and return its output, L
@@ -111,7 +116,6 @@ public class SFT {
 		
 		Debug.log("SFT::runMainSFTAlgorithmCont finished - done calculating L", DebugOutput.STDOUT);
 		SFT.L = L;
-		return L;
 	}
 	
 	/**
