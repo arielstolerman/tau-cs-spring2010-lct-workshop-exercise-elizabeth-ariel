@@ -1,15 +1,12 @@
 package GUI;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
-import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -41,7 +38,6 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JButton jButtonPhase1Next;
 	private static JSeparator jSeparator1;
 	private static JLabel jLabelExplanationTitle;
-	private static JTabbedPane jTabbedPaneMain;
 	private static JButton jButtonCalcQuery;
 	private static JButton jButtonNextPhase2;
 	private static JTable jTableUserInput;
@@ -66,7 +62,7 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JLabel jLabelInputTau;
 	private static JLabel jLabelInputN;
 	private static JLabel jLabelExplanation;
-	private static TableModel jTableUserInputModel;
+	private static DefaultTableModel jTableModelUserInput;
 	
 	private static JFrame frame;
 	private static MainJApplet inst;
@@ -260,7 +256,6 @@ public class MainJApplet extends javax.swing.JApplet {
 				jPanelPhase2.setBounds(3, 136, 495, 262);				
 				jPanelPhase2.setBackground(new java.awt.Color(255,255,255));
 				jPanelPhase2.setLayout(null);
-				// table will be added in AppletListeners::switchToPhase2()
 				{
 					jRadioButtonQuery1 = new JRadioButton();
 					jPanelPhase2.add(jRadioButtonQuery1);
@@ -318,6 +313,16 @@ public class MainJApplet extends javax.swing.JApplet {
 					jPanelPhase2.add(jButtonNextPhase2);
 					jButtonNextPhase2.setText("Next");
 					jButtonNextPhase2.setBounds(378, 206, 80, 30);
+				}
+				{
+					String[] columnNames = {"x","<html>&fnof;(x) real part</html>","<html>&fnof;(x) imaginary part</html>"};
+					jTableModelUserInput = new DefaultTableModel(null,columnNames);
+					jTableUserInput = new JTable();
+					jTableUserInput.setModel(jTableModelUserInput);
+					jTableUserInput.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					JScrollPane pane = new JScrollPane(jTableUserInput);
+					pane.setBounds(10, 102, 348, 152);
+					jPanelPhase2.add(pane);
 				}
 				jPanelPhase2.setVisible(false);
 			}
@@ -460,12 +465,12 @@ public class MainJApplet extends javax.swing.JApplet {
 		MainJApplet.jTableUserInput = jTableUserInput;
 	}
 
-	public static TableModel getjTableUserInputModel() {
-		return jTableUserInputModel;
+	public static DefaultTableModel getjTableModelUserInput() {
+		return jTableModelUserInput;
 	}
 
-	public static void setjTableUserInputModel(TableModel jTableUserInputModel) {
-		MainJApplet.jTableUserInputModel = jTableUserInputModel;
+	public static void setjTableModelUserInput(DefaultTableModel jTableUserInputModel) {
+		MainJApplet.jTableModelUserInput = jTableUserInputModel;
 	}
 
 	public static JButton getjButtonCalcQuery() {
