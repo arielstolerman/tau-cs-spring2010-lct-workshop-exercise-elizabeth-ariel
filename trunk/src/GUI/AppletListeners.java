@@ -9,10 +9,10 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import org.eclipse.swt.layout.RowData;
+
 import SFT.*;
 import Utils.Debug;
-import Utils.Debug.DebugOutput;
-
 import java.util.*;
 
 public class AppletListeners {
@@ -21,6 +21,10 @@ public class AppletListeners {
 	public static java.awt.Font fontMainApplet = new Font("Tahoma", Font.PLAIN, 11);
 	
 	private static SFTRunner sftRunner = new SFTRunner();
+	
+	/* **************************
+	 * 		initializers
+	 ****************************/
 	
 	/**
 	 * initialize all static parameters and values
@@ -56,7 +60,7 @@ public class AppletListeners {
 	
 	/* ***************************************************************
 	 * 		methods called by the SFT once calculations are done
-	 * 		to invoke the GUI
+	 * 		to update the GUI asynchronously
 	 *****************************************************************/
 	
 	public static void invokedByPhase1Next(){
@@ -285,21 +289,11 @@ public class AppletListeners {
 
 		{
 			// initialize list of elements for which f-values are to be fetched
-			String[] columnNames = {"x","<html>&fnof;</html>(x) real part","<html>&fnof;</html>(x) imaginary part"};
-			String[][] tableContent = new String[SFT.getQ().size()][3];
-			int i=0;
 			for (Elem elem: SFT.getQ()){
-				tableContent[i][0] = elem.toString();
-				tableContent[i][1] = "";
-				tableContent[i][2] = "";
-				i++;
+				String[] row = new String[]{elem.toString(),"",""};
+				MainJApplet.getjTableModelUserInput().addRow(row);
 			}
 			
-			MainJApplet.setjTableUserInputModel(new DefaultTableModel(tableContent,columnNames));
-			MainJApplet.setjTableUserInput(new JTable());
-			MainJApplet.getjPanelPhase2().add(MainJApplet.getjTableUserInput());
-			MainJApplet.getjTableUserInput().setModel(MainJApplet.getjTableUserInputModel());
-			MainJApplet.getjTableUserInput().setBounds(10, 102, 348, 152);
 			//TODO set header for table
 		}
 	}
