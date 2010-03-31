@@ -1,11 +1,8 @@
 package GUI;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableModel;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -64,9 +61,6 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JLabel jLabelExplanation;
 	private static DefaultTableModel jTableModelUserInput;
 	
-	private static JFrame frame;
-	private static MainJApplet inst;
-
 	/**
 	* Auto-generated main method to display this 
 	* JApplet inside a new JFrame.
@@ -74,9 +68,9 @@ public class MainJApplet extends javax.swing.JApplet {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				frame = new JFrame();
+				JFrame frame = new JFrame();
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				inst = new MainJApplet();
+				MainJApplet inst = new MainJApplet();
 				frame.getContentPane().add(inst);
 				((JComponent)frame.getContentPane()).setPreferredSize(inst.getSize());
 				frame.pack();
@@ -91,7 +85,7 @@ public class MainJApplet extends javax.swing.JApplet {
 		// initialize framework variables
 		AppletListeners.initAll();
 		// initialize GUI
-		initSwtAwtGUI();
+		initGUI();
 	}
 	
 	private void initGUI() {
@@ -488,81 +482,4 @@ public class MainJApplet extends javax.swing.JApplet {
 	public static void setjButtonNextPhase2(JButton jButtonNextPhase2) {
 		jButtonNextPhase2 = jButtonNextPhase2;
 	}
-
-	public static JFrame getFrame() {
-		return frame;
-	}
-
-	public static void setFrame(JFrame frame) {
-		MainJApplet.frame = frame;
-	}
-
-	public static MainJApplet getInst() {
-		return inst;
-	}
-
-	public static void setInst(MainJApplet inst) {
-		MainJApplet.inst = inst;
-	}
-
-	//$protect>>$
-	//===== start of SWT_AWT special handler code =============
-
-	/**
-	 * This method should be called instead of initGUI to initialize
-	 * and make visible this GUI, since it handles all the threading
-	 * and other "quirks" of embedding SWT objects inside AWT ones.
-	 */
-	public void initSwtAwtGUI() {
-		new DisplayThread().start();
-	}
-		
-	/**
-	 * This class makes sure that the SWT controls will be created
-	 * and behave correctly
-	 */
-	private class DisplayThread extends Thread {
-
-		public void run() {
-			Display.getDefault().syncExec(new Runnable() {
-				public void run() {
-					//make sure the GUI is created inside the SWT display thread
-					//otherwise you will get invalid-thread-access errors, and
-					//make sure it is visible before calling the SWT_AWT.new_Shell
-					//method, otherwise a "No handles" error will be thrown.
-					setVisible(true);
-					initGUI();
-				}
-			});
-			
-			//"wiggling" the size is one way to make sure that the
-			//SWT controls are displayed correctly
-			java.awt.Dimension sz = getSize();
-			int w = sz.width;
-			int h = sz.height;
-			setSize(w+1, h);
-			validate();
-			setSize(w, h);
-			validate();
-			
-			swtEventLoop();
-		}
-
-		/**
-		 * Listen for and dispatch SWT events
-		 */
-		private void swtEventLoop() {
-			Display display = Display.getDefault();
-			while (true) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
-				}
-			}
-		}
-
-	}
-
-	//===== end of SWT_AWT special handler code =============
-	//$protect<<$
-	
 }
