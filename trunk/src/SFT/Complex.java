@@ -54,6 +54,13 @@ public class Complex {
 	}
 	
 	/**
+	 * string representation of the complex number
+	 */
+	public String toString(){
+		return real+(imaginary<0?"":"+")+imaginary+"i";
+	}
+	
+	/**
 	 * @return:		the Euclidean norm, that is |a+bi| = (a+bi)*(a-bi) = a^2 + b^2
 	 */
 	public double getNorm(){
