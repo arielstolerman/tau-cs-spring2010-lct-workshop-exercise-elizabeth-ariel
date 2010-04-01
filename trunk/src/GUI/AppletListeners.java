@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 import org.xml.sax.SAXException;
 
@@ -22,6 +24,7 @@ public class AppletListeners {
 	public static java.awt.Font fontMainApplet = new Font("Tahoma", Font.PLAIN, 11);
 	
 	private static SFTRunner sftRunner = new SFTRunner();
+	private static Thread sftThread = null;
 	
 	/* **************************
 	 * 		initializers
@@ -77,7 +80,8 @@ public class AppletListeners {
 						
 						// check inputs and set parameters
 						if (phase1NextButtonValidateSetFields()){
-							(new Thread(sftRunner.new RunMainSFTAlgorithm())).start();
+							sftThread = (new Thread(sftRunner.new RunMainSFTAlgorithm()));
+							sftThread.start();
 							switchToPhase2();
 						}
 					}
@@ -125,6 +129,17 @@ public class AppletListeners {
 				}
 		);
 		
+		// XML input text changed
+		MainJApplet.getjTextFieldInputXMLFile().addCaretListener(new CaretListener() {
+			
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				Debug.log("AppletListeners -> XML input text changed");
+				
+				setCalcButtonOnTextChange();
+			}
+		});
+				
 		// calculate f-values via XML button clicked
 		MainJApplet.getjButtonCalcQuery().addActionListener(
 				new ActionListener() {
@@ -134,6 +149,19 @@ public class AppletListeners {
 						Debug.log("AppletListeners -> calculate via XML button clicked");
 						
 						calcValuesFromXML();
+					}
+				}
+		);
+		
+		// phase #2 BACK button clicked
+		MainJApplet.getjButtonPhase2Back().addActionListener(
+				new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> phase #2 BACK button clicked");
+						
+						switchBackToPhase1();
 					}
 				}
 		);
@@ -353,6 +381,15 @@ public class AppletListeners {
 	}
 	
 	/**
+	 * enables the calculate button on text change
+	 * disables it on empty text filed
+	 */
+	public static void setCalcButtonOnTextChange(){
+		boolean set = MainJApplet.getjTextFieldInputXMLFile().getText().equals("");
+		MainJApplet.getjButtonCalcQuery().setEnabled(!set);
+	}
+	
+	/**
 	 * calculates the f-values using according to the input XML file
 	 * if the XML is invalid, notifies the user
 	 */
@@ -412,6 +449,32 @@ public class AppletListeners {
 		}
 		
 		Debug.log("AppletListeners -> calcValuesFromXML completed");
+	}
+	
+	/**
+	 * switch back to phase #1, invoked by clicking on phase #2 back button
+	 * stops SFT thread if running switches the view
+	 */
+	public static void switchBackToPhase1(){
+		Debug.log("AppletListeners -> switchBackToPhase1 started");
+		
+		// switch to phase2-user view
+		MainJApplet.getjPanelPhase1().setVisible(true);
+		MainJApplet.getjPanelPhase2().setVisible(false);
+		// set explanation
+		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase1"));
+		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase1"));
+		
+		// stop SFT thread if running
+		if (sftThread != null){
+			sftThread.stop();
+		}
+		sftThread = null;
+		
+		// clear phase #2's table
+		MainJApplet.getjTableModelUserInput().setRowCount(0);
+		
+		Debug.log("AppletListeners -> switchBackToPhase1 completed");
 	}
 
 	/**
