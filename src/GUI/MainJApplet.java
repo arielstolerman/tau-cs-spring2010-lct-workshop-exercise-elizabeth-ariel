@@ -294,7 +294,7 @@ public class MainJApplet extends javax.swing.JApplet {
 					jTextFieldInputXMLFile.setBounds(87, 69, 178, 21);
 					jTextFieldInputXMLFile.setFont(AppletListeners.fontMainApplet);
 					jTextFieldInputXMLFile.setVisible(false);
-					jTextFieldInputXMLFile.setEditable(false);
+					//jTextFieldInputXMLFile.setEditable(false);
 				}
 				{
 					jButtonInputXMLBrowse = new JButton();
