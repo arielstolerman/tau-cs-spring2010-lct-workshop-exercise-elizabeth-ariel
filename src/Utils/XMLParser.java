@@ -42,7 +42,7 @@ public class XMLParser extends DefaultHandler{
 	 * Main parsing procedure
 	 * parses the input XML file
 	 */
-	private void parseDocument() {
+	public void parseDocument() {
 
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
