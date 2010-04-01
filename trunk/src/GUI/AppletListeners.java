@@ -27,6 +27,8 @@ public class AppletListeners {
 	 * to explain each phase in the application run
 	 */
 	public static void initPhasesExplanation(){
+		Debug.log("AppletListeners -> initPhasesExplanation started");
+		
 		// initialize explanations
 		String phase1 =	"<html>" +
 				"Insert an integer N representing the function's domain group, τ the <br>" +
@@ -45,6 +47,8 @@ public class AppletListeners {
 		
 		phasesExplanationTitle.put("phase1", phase1Title);
 		phasesExplanationTitle.put("phase2", phase2Title);
+		
+		Debug.log("AppletListeners -> initPhasesExplanation completed");
 	}
 
 	/* ***********************
@@ -64,6 +68,8 @@ public class AppletListeners {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> phase #1 NEXT button clicked");
+						
 						// check inputs and set parameters
 						if (phase1NextButtonValidateSetFields()){
 							(new Thread(sftRunner.new RunMainSFTAlgorithm())).start();
@@ -82,6 +88,8 @@ public class AppletListeners {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> user input option selected");
+						
 						setPhase2XMLVisible(false);
 					}
 				}
@@ -93,6 +101,7 @@ public class AppletListeners {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> XML input option selected");
 						setPhase2XMLVisible(true);
 					}
 				}
@@ -104,6 +113,8 @@ public class AppletListeners {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> browse for XML file button clicked");
+						
 						openFileDialog();
 					}
 				}
@@ -115,6 +126,8 @@ public class AppletListeners {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> calculate via XML button clicked");
+						
 						//TODO
 					}
 				}
@@ -126,6 +139,8 @@ public class AppletListeners {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> phase #2 NEXT button clicked");
+						
 						//TODO
 					}
 				}
@@ -152,7 +167,7 @@ public class AppletListeners {
 	 * @return:		true iff all inputs are inserted correctly
 	 */
 	public static boolean phase1NextButtonValidateSetFields(){
-		Debug.log("AppletListeners::phase1NextButtonValidateSetFields was called");
+		Debug.log("AppletListeners -> phase1NextButtonValidateSetFields started");
 		// validate all user inputs and set SFT fields accordingly
 		
 		// validate that N is a positive integer (long) greater than 0
@@ -164,6 +179,9 @@ public class AppletListeners {
 		} catch (NumberFormatException nfe){
 			// N is not a number
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("N must be a positive integer"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad N");
+			
 			return false;
 		}
 		
@@ -175,6 +193,9 @@ public class AppletListeners {
 			else SFT.setTau(tau);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&tau; must be a positive double")); //TODO correct?
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad tau");
+			
 			return false;
 		}
 		
@@ -186,6 +207,9 @@ public class AppletListeners {
 			else SFT.setDelta(delta);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&delta; must be a double in (0,1)"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad delta");
+			
 			return false;
 		}
 		
@@ -197,6 +221,9 @@ public class AppletListeners {
 			else SFT.setfInfNorm(fInfNorm);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("||f||<sub>&infin;</sub> must be a positive double"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad ||f||_infinity");
+			
 			return false;
 		}
 		
@@ -208,6 +235,9 @@ public class AppletListeners {
 			else SFT.setfEuclideanNorm(fEuclideanNorm);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("||f||<sub>2</sub> must be a positive double"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad ||f||_2");
+			
 			return false;
 		}
 		
@@ -219,6 +249,9 @@ public class AppletListeners {
 			else SFT.setDeltaCalculationConst(deltaCalculationConst);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&delta;'s coefficient must be a positive double"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad delta coeff");
+			
 			return false;
 		}
 		
@@ -230,12 +263,16 @@ public class AppletListeners {
 			else SFT.setM_A_m_B_CalculationConst(m_A_m_B_CalculationConst);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("m<sub>A</sub> and m<sub>B</sub> coefficient must be a positive double"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad mA,mB coeff");
+			
 			return false;
 		}
 		
 		// all fields validated and set, may go on
 		MainJApplet.getjLabelErrorMsgBox().setText("");
-		Debug.log("All input checks completed successfuly");
+		Debug.log("\tAll input checks completed successfuly");
+		Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed");
 		
 		return true;
 	}
@@ -244,7 +281,7 @@ public class AppletListeners {
 	 * switch view to phase #2 - user input or xml input
 	 */
 	public static void switchToPhase2(){
-		Debug.log("AppletListeners::switchToPhase2 was called");
+		Debug.log("AppletListeners -> switchToPhase2 started");
 		
 		// switch to phase2-user view
 		MainJApplet.getjPanelPhase1().setVisible(false);
@@ -252,6 +289,8 @@ public class AppletListeners {
 		// set explanation
 		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase2"));
 		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase2"));
+		
+		Debug.log("AppletListeners -> switchToPhase2 completed");
 	}
 	
 	// phase #2 listeners actions
@@ -262,18 +301,21 @@ public class AppletListeners {
 	 * @param visible:	visibility flag for XML input fields
 	 */
 	public static void setPhase2XMLVisible(boolean visible){
-		Debug.log("AppletListeners::setPhase2XMLVisible was called");
+		Debug.log("AppletListeners -> setPhase2XMLVisible started");
+		
 		MainJApplet.getjLabelInputXMLFile().setVisible(visible);
 		MainJApplet.getjTextFieldInputXMLFile().setVisible(visible);
 		MainJApplet.getjButtonInputXMLBrowse().setVisible(visible);
 		MainJApplet.getjButtonCalcQuery().setVisible(visible);
+		
+		Debug.log("AppletListeners -> setPhase2XMLVisible completed");
 	}
 	
 	/**
 	 * open file dialog box to browse for an XML file
 	 */
 	public static void openFileDialog(){
-		Debug.log("AppletListeners::openFileDialog was called");
+		Debug.log("AppletListeners -> openFileDialog started");
 		
 		JFileChooser xmlFileChoose = new JFileChooser();
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
@@ -296,10 +338,12 @@ public class AppletListeners {
 			MainJApplet.getjTextFieldInputXMLFile().setText(Query.getXmlFile().getPath());
 			MainJApplet.getjLabelErrorMsgBox().setText("");
 			MainJApplet.getjButtonCalcQuery().setEnabled(true);
-			Debug.log("XML file opened: "+Query.getXmlFile().getPath());
+			Debug.log("\tXML file opened: "+Query.getXmlFile().getPath());
         } else {
-            Debug.log("XML file open canceled");
+            Debug.log("\tXML file open canceled");
         }
+		
+		Debug.log("AppletListeners -> openFileDialog completed");
 	}
 
 	/**

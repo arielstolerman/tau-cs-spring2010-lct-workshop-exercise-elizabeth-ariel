@@ -32,6 +32,8 @@ public class SFTRunner {
 		 * for which f-values are to be set by the user
 		 */
 		public void run(){
+			Debug.log("SFTRunner -> RunMainSFTAlgorithm thread started");
+			
 			// call main procedure (the first part of the SFT algorithm)
 			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());			
 
@@ -41,6 +43,8 @@ public class SFTRunner {
 				String[] row = new String[]{elem.toString(),"",""};
 				MainJApplet.getjTableModelUserInput().addRow(row);
 			}
+			
+			Debug.log("SFTRunner -> RunMainSFTAlgorithm thread completed");
 		}
 	}
 	
@@ -57,8 +61,12 @@ public class SFTRunner {
 		 * calculates the significant Fourier coefficients of f
 		 */
 		public void run(){
+			Debug.log("SFTRunner -> RunMainSFTAlgorithmCont thread started");
+			
 			// call main procedure (the second part of the SFT algorithm)
 			SFT.runMainSFTAlgorithmCont(SFT.getSets(), SFT.getQuery());
+			
+			Debug.log("SFTRunner -> RunMainSFTAlgorithmCont thread completed");
 		}
 	}
 }
