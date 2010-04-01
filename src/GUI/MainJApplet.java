@@ -25,6 +25,7 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JButton jButtonPhase1Next;
 	private static JSeparator jSeparator1;
 	private static JLabel jLabelExplanationTitle;
+	private static JButton jButtonPhase2Back;
 	private static JButton jButtonCalcQuery;
 	private static JButton jButtonNextPhase2;
 	private static JTable jTableUserInput;
@@ -314,6 +315,12 @@ public class MainJApplet extends javax.swing.JApplet {
 					jButtonCalcQuery.setVisible(false);
 				}
 				{
+					jButtonPhase2Back = new JButton();
+					jPanelPhase2.add(jButtonPhase2Back);
+					jButtonPhase2Back.setText("Back");
+					jButtonPhase2Back.setBounds(378, 171, 80, 28);
+				}
+				{
 					jButtonNextPhase2 = new JButton();
 					jPanelPhase2.add(jButtonNextPhase2);
 					jButtonNextPhase2.setText("Next");
@@ -493,5 +500,13 @@ public class MainJApplet extends javax.swing.JApplet {
 
 	public static void setjButtonNextPhase2(JButton jButtonNextPhase2) {
 		MainJApplet.jButtonNextPhase2 = jButtonNextPhase2;
+	}
+
+	public static JButton getjButtonPhase2Back() {
+		return jButtonPhase2Back;
+	}
+
+	public static void setjButtonPhase2Back(JButton jButtonPhase2Back) {
+		MainJApplet.jButtonPhase2Back = jButtonPhase2Back;
 	}
 }
