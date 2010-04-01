@@ -43,6 +43,8 @@ public class XMLParser extends DefaultHandler{
 	 * parses the input XML file
 	 */
 	public void parseDocument() throws Exception {
+		
+		Debug.log("XMLParser -> parseDocument started");
 
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -62,6 +64,8 @@ public class XMLParser extends DefaultHandler{
 		}catch (IOException ie) {
 			ie.printStackTrace();
 		}*/
+		
+		Debug.log("XMLParser -> parseDocument completed");
 	}
 	
 	// Event handlers
@@ -70,7 +74,7 @@ public class XMLParser extends DefaultHandler{
 	 * handlers for start tags
 	 */
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
+		
 		if(qName.equalsIgnoreCase("functions")) {
 			// set runid
 			runId = attributes.getValue(0);
@@ -78,6 +82,8 @@ public class XMLParser extends DefaultHandler{
 			Query.setPolynomials(new HashMap<String,Polynomial>());
 			// set current tag
 			currTag = Tag.FUNCTIONS;
+			
+			Debug.log("<functions runid=\""+runId+"\">");
 		}
 		
 		if(qName.equalsIgnoreCase("function")){
@@ -92,27 +98,37 @@ public class XMLParser extends DefaultHandler{
 			}
 			// set current tag
 			currTag = Tag.FUNCTION;
+			
+			Debug.log("\t<function id=\""+funcId+"\">");
 		}
 		
 		if(qName.equalsIgnoreCase("term")){
 			// do nothing
 			// set current tag
 			currTag = Tag.TERM;
+			
+			Debug.log("\t\t<term>");
 		}
 		
 		if(qName.equalsIgnoreCase("rcoeff")){
 			// set current tag
 			currTag = Tag.RCOEFF;
+			
+			Debug.log("\t\t\t<rcoeff>");
 		}
 		
 		if(qName.equalsIgnoreCase("icoeff")){
 			// set current tag
 			currTag = Tag.ICOEFF;
+			
+			Debug.log("\t\t\t<icoeff>");
 		}
 		
 		if(qName.equalsIgnoreCase("exp")){
 			// set current tag
 			currTag = Tag.EXP;
+			
+			Debug.log("\t\t\t<exp>");
 		}
 	}
 	
@@ -120,38 +136,52 @@ public class XMLParser extends DefaultHandler{
 	 * handlers for end tags
 	 */
 	public void endElement(String uri, String localName,String qName) throws SAXException {
+		
 		if(qName.equalsIgnoreCase("functions")) {
 			// set current tag
 			currTag = Tag.END;
+			
+			Debug.log("</functions>");
 		}
 		
 		if(qName.equalsIgnoreCase("function")){
 			funcId = null;
 			// set current tag
 			currTag = Tag.FUNCTIONS;
+			
+			Debug.log("\t</function>");
 		}
 		
 		if(qName.equalsIgnoreCase("term")){
-			// add a new term to the current polynomial
-			Query.getPolynomials().get(funcId).addUpdateTerm(exp, rcoeff, icoeff);
+			// add a new term to the current polynomial (only if needed)
+			Polynomial p = Query.getPolynomials().get(funcId);
+			if (p != null) p.addUpdateTerm(exp, rcoeff, icoeff);
 			
 			// set current tag
 			currTag = Tag.FUNCTION;
+			
+			Debug.log("\t\t</term>");
 		}
 		
 		if(qName.equalsIgnoreCase("rcoeff")){
 			// set current tag
 			currTag = Tag.TERM;
+			
+			Debug.log("\t\t\t</rcoeff>");
 		}
 		
 		if(qName.equalsIgnoreCase("icoeff")){
 			// set current tag
 			currTag = Tag.TERM;
+			
+			Debug.log("\t\t\t</icoeff>");
 		}
 		
 		if(qName.equalsIgnoreCase("exp")){
 			// set current tag
 			currTag = Tag.TERM;
+			
+			Debug.log("\t\t\t</exp>");
 		}
 	}
 	
@@ -175,6 +205,7 @@ public class XMLParser extends DefaultHandler{
 		case RCOEFF:
 			try{
 				rcoeff = Double.parseDouble(str);
+				Debug.log("\t\t\t\t"+str);
 			} catch (NumberFormatException nfe){
 				//TODO add error message
 			}
@@ -182,6 +213,7 @@ public class XMLParser extends DefaultHandler{
 		case ICOEFF:
 			try{
 				icoeff = Double.parseDouble(str);
+				Debug.log("\t\t\t\t"+str);
 			} catch (NumberFormatException nfe){
 				//TODO add error message
 			}
@@ -189,6 +221,7 @@ public class XMLParser extends DefaultHandler{
 		case EXP:
 			try{
 				exp = Integer.parseInt(str);
+				Debug.log("\t\t\t\t"+str);
 			} catch (NumberFormatException nfe){
 				//TODO add error message
 			}
