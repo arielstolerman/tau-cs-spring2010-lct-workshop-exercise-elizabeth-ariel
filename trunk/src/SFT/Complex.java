@@ -71,4 +71,14 @@ public class Complex {
 		this.real = real;
 		this.imaginary = imaginary;
 	}
+	
+	/**
+	 * adds the given complex number
+	 * @param real:			real value to add
+	 * @param imaginary:	imaginary value to add
+	 */
+	public void addComplex(double real, double imaginary){
+		this.real = this.real+real;
+		this.imaginary = this.imaginary+imaginary;
+	}
 }
