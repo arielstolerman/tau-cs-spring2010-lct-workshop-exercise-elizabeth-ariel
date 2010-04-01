@@ -17,16 +17,7 @@ import org.eclipse.swt.widgets.Display;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class MainJApplet extends javax.swing.JApplet {
-
-	{
-		//Set Look & Feel
-		try {
-			javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
+public class MainJApplet extends javax.swing.JApplet{// implements Runnable{
 
 	private static JLabel jLabelTitle;
 	private static ButtonGroup buttonGroupQuerySelection = new ButtonGroup();
@@ -60,30 +51,50 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JLabel jLabelInputN;
 	private static JLabel jLabelExplanation;
 	private static DefaultTableModel jTableModelUserInput;
+
+	
+	/* ********************************
+	 * 		GUI objects definitions
+	 **********************************/
+	{
+		//Set Look & Feel
+		try {
+			javax.swing.UIManager.setLookAndFeel("com.jgoodies.looks.plastic.PlasticXPLookAndFeel");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	* Auto-generated main method to display this 
 	* JApplet inside a new JFrame.
 	*/
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JFrame frame = new JFrame();
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				MainJApplet inst = new MainJApplet();
-				frame.getContentPane().add(inst);
-				((JComponent)frame.getContentPane()).setPreferredSize(inst.getSize());
-				frame.pack();
-				frame.setVisible(true);
-			}
-		});
-
+		try{
+			SwingUtilities.invokeLater(new Runnable() {
+			//SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					JFrame frame = new JFrame();
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					MainJApplet inst = new MainJApplet();
+					frame.getContentPane().add(inst);
+					((JComponent)frame.getContentPane()).setPreferredSize(inst.getSize());
+					frame.pack();
+					frame.setVisible(true);
+				}
+			});
+		}catch(Exception e){
+			System.err.println("couldn't invoke and wait");
+		}
 	}
 	
+	/**
+	 * default constructor
+	 */
 	public MainJApplet() {
 		super();
 		// initialize framework variables
-		AppletListeners.initAll();
+		AppletListeners.initPhasesExplanation();
 		// initialize GUI
 		initGUI();
 	}
@@ -472,7 +483,7 @@ public class MainJApplet extends javax.swing.JApplet {
 	}
 
 	public static void setjButtonCalcQuery(JButton jButtonCalcQuery) {
-		jButtonCalcQuery = jButtonCalcQuery;
+		MainJApplet.jButtonCalcQuery = jButtonCalcQuery;
 	}
 
 	public static JButton getjButtonNextPhase2() {
@@ -480,6 +491,6 @@ public class MainJApplet extends javax.swing.JApplet {
 	}
 
 	public static void setjButtonNextPhase2(JButton jButtonNextPhase2) {
-		jButtonNextPhase2 = jButtonNextPhase2;
+		MainJApplet.jButtonNextPhase2 = jButtonNextPhase2;
 	}
 }

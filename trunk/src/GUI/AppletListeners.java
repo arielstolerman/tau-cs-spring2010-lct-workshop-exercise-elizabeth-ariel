@@ -16,6 +16,7 @@ import Utils.Debug;
 import java.util.*;
 
 public class AppletListeners {
+	public static int tmp = 0;
 	public static Map<String,String> phasesExplanation = new HashMap<String,String>();
 	public static Map<String,String> phasesExplanationTitle = new HashMap<String,String>();
 	public static java.awt.Font fontMainApplet = new Font("Tahoma", Font.PLAIN, 11);
@@ -25,13 +26,6 @@ public class AppletListeners {
 	/* **************************
 	 * 		initializers
 	 ****************************/
-	
-	/**
-	 * initialize all static parameters and values
-	 */
-	public static void initAll(){
-		initPhasesExplanation();
-	}
 	
 	/**
 	 * initialize the phases explanation used in the applet
@@ -62,7 +56,7 @@ public class AppletListeners {
 	 * 		methods called by the SFT once calculations are done
 	 * 		to update the GUI asynchronously
 	 *****************************************************************/
-	
+	/*
 	public static void invokedByPhase1Next(){
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
@@ -99,8 +93,8 @@ public class AppletListeners {
 					public void actionPerformed(ActionEvent arg0) {
 						// check inputs and set parameters
 						if (phase1NextButtonValidateSetFields()){
-							//SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
 							(new Thread(sftRunner.new RunMainSFTAlgorithm())).start();
+							switchToPhase2();
 						}
 					}
 				}
@@ -269,6 +263,7 @@ public class AppletListeners {
 		// all fields validated and set, may go on
 		MainJApplet.getjLabelErrorMsgBox().setText("");
 		Debug.log("All input checks completed successfuly");
+		
 		return true;
 	}
 	
@@ -284,18 +279,6 @@ public class AppletListeners {
 		// set explanation
 		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase2"));
 		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase2"));
-		// set table contents
-		
-
-		{
-			// initialize list of elements for which f-values are to be fetched
-			for (Elem elem: SFT.getQ()){
-				String[] row = new String[]{elem.toString(),"",""};
-				MainJApplet.getjTableModelUserInput().addRow(row);
-			}
-			
-			//TODO set header for table
-		}
 	}
 	
 	// phase #2 listeners actions

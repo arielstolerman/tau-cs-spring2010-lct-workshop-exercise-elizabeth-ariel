@@ -158,6 +158,8 @@ public class SFT {
 			for (Iterator<Elem> j = res[i].iterator(); j.hasNext(); ){
 				BlValues += j.next()+" ";
 			}
+			BlValues += "size: "+res[i].size();
+			
 			Debug.log("B["+i+"]: "+BlValues);
 		}
 		
@@ -304,16 +306,21 @@ public class SFT {
 	 * @return		a set of elements in {0,...,2^(l-1)-1}
 	 */
 	private static Set<Elem> generateRandomSubsetBl(int m_B, long N, int l){
-		// generate B_l
-		// define number of elements by min{m_B, 2^(l-1)}
-		long pow = (long)Math.pow(2, l-1);
-		long numOfElems = Math.min((long)m_B, pow);
-
-		// create B_l
 		Set<Elem> res = new HashSet<Elem>();
-		for(int i=0; i<numOfElems; i++){
-			// create and add new element with value different from the elements already contained in B_l
-			res.add(genNewElem(res, pow));
+		
+		// if 2^(l-1) < m_B, no need to randomly choose elements for be, take all 0,...,2^(l-1)-1
+		long pow = (long)Math.pow(2, l-1);
+		if (pow <= m_B){
+			// take all elements in {0,...,2^(l-1)-1} to B_l
+			for (long i=0; i<pow; i++){
+				res.add(new Elem(i));
+			}
+		}
+		// otherwise, choose randomly m_B elements from 0,...,2^(l-1)-1
+		else {
+			for (long i=0; i<m_B; i++){
+				res.add(genNewElem(res, pow));
+			}
 		}
 		
 		return res;
@@ -332,7 +339,7 @@ public class SFT {
 			value = getRandValue(randBar);
 			doAgain = false;
 			for (Elem e: set){
-				if (e.getValue() == value && value != 0){ //TODO: fix the problem with generating a group with barrier 1 - always generates the element 0
+				if (e.getValue() == value){ //: fix the problem with generating a group with barrier 1 - always generates the element 0
 					doAgain = true;
 					break;
 				}
