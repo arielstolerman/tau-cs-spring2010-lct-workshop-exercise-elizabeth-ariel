@@ -309,6 +309,7 @@ public class MainJApplet extends javax.swing.JApplet {
 					jPanelPhase2.add(jButtonCalcQuery);
 					jButtonCalcQuery.setText("Calculate Values");
 					jButtonCalcQuery.setBounds(354, 69, 90, 21);
+					jButtonCalcQuery.setFont(AppletListeners.fontMainApplet);
 					jButtonCalcQuery.setEnabled(false);
 					jButtonCalcQuery.setVisible(false);
 				}
@@ -317,6 +318,7 @@ public class MainJApplet extends javax.swing.JApplet {
 					jPanelPhase2.add(jButtonNextPhase2);
 					jButtonNextPhase2.setText("Next");
 					jButtonNextPhase2.setBounds(378, 206, 80, 30);
+					jButtonNextPhase2.setFont(AppletListeners.fontMainApplet);
 				}
 				{
 					String[] columnNames = {"x","<html>&fnof;(x) real part</html>","<html>&fnof;(x) imaginary part</html>"};
