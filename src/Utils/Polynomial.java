@@ -8,13 +8,13 @@ import SFT.Elem;
 
 public class Polynomial {
 	private Map<Integer,Complex> terms;
-	private int id;
+	private String id;
 	
 	/**
 	 * default constructor
 	 * @param id
 	 */
-	public Polynomial(int id){
+	public Polynomial(String id){
 		this.id = id;
 		terms = new HashMap<Integer,Complex>();
 	}
@@ -27,6 +27,25 @@ public class Polynomial {
 	 */
 	public Complex getCoeff(int exp){
 		return terms.get(exp);
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	/**
+	 * get the string representation of the polynomial
+	 */
+	public String toString(){
+		String str = "";
+		
+		for (int exp: terms.keySet()){
+			Complex coeff = terms.get(exp);
+			str += "("+coeff.toString()+")*X^"+exp+"+";
+		}
+		str = str.substring(0,str.length());
+		
+		return str;
 	}
 	
 	// setters
@@ -67,4 +86,5 @@ public class Polynomial {
 		
 		return ans;
 	}
+
 }

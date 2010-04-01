@@ -22,7 +22,6 @@ public class Query {
 	private final long N;
 	
 	private static File xmlFile = null;
-	private static String runId = null;
 	private static Map<String,Polynomial> polynomials = null;
 	
 	/**
@@ -122,14 +121,6 @@ public class Query {
 
 	public static void setXmlFile(File xmlFile) {
 		Query.xmlFile = xmlFile;
-	}
-
-	public static void setRunId(String runId) {
-		Query.runId = runId;
-	}
-
-	public static String getRunId() {
-		return runId;
 	}
 
 	public static void setPolynomials(Map<String,Polynomial> polynomials) {
