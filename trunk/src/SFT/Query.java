@@ -45,22 +45,6 @@ public class Query {
 		this.N = N;
 	}
 	
-	/* **************************************
-	 * 	Query build functions for class SFT
-	 ****************************************/
-	
-	/**
-	 * main function to receive f-values for all elements in Q
-	 * invoked by the user, sets SFT.query to hold the query values
-	 * (next the user will invoke the rest of the SFT calculation)
-	 * @param Q:	a set of elements in Z_N
-	 * @param N:	the order of Z_N
-	 * @return:		a map of elements in Q and their f-value
-	 */
-	public static void getQueryFromQ(Set<Elem> Q, long N, Set<Elem>[] sets){
-		//TODO
-	}
-	
 	// getters
 	
 	/**

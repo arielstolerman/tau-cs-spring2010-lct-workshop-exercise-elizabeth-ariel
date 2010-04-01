@@ -6,8 +6,13 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 
+import org.xml.sax.SAXException;
+
 import SFT.*;
 import Utils.Debug;
+import Utils.Polynomial;
+import Utils.XMLParser;
+
 import java.util.*;
 
 public class AppletListeners {
@@ -128,7 +133,7 @@ public class AppletListeners {
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> calculate via XML button clicked");
 						
-						//TODO
+						calcValuesFromXML();
 					}
 				}
 		);
@@ -307,6 +312,7 @@ public class AppletListeners {
 		MainJApplet.getjTextFieldInputXMLFile().setVisible(visible);
 		MainJApplet.getjButtonInputXMLBrowse().setVisible(visible);
 		MainJApplet.getjButtonCalcQuery().setVisible(visible);
+		MainJApplet.getjTableUserInput().setEnabled(!visible);
 		
 		Debug.log("AppletListeners -> setPhase2XMLVisible completed");
 	}
@@ -344,6 +350,55 @@ public class AppletListeners {
         }
 		
 		Debug.log("AppletListeners -> openFileDialog completed");
+	}
+	
+	/**
+	 * calculates the f-values using according to the input XML file
+	 * if the XML is invalid, notifies the user
+	 */
+	public static void calcValuesFromXML(){
+		Debug.log("AppletListeners -> calcValuesFromXML started");
+		
+		try{
+			// parse the XML file and create list of polynomials for f-calculation
+			XMLParser parser = new XMLParser();
+			parser.parseDocument();
+			
+			// remove all rows from the table
+			MainJApplet.getjTableModelUserInput().setRowCount(0);
+			Query query = new Query(SFT.getN());
+			
+			// case random - randomly choose a function from a list of function for each element in Q
+			if (Query.getPolynomials().size() > 1){
+				Polynomial[] polys = (Polynomial[])Query.getPolynomials().values().toArray();
+				
+			}
+			
+			// otherwise - calculate using the polynomial whose id is selected
+			else {
+				for (Polynomial p: Query.getPolynomials().values()){ // will be only one
+					for(Elem elem: SFT.getQ()){
+						// calculate the value
+						Complex value = p.getValue(elem);
+						
+						// update query
+						query.addChangeValue(elem.getValue(), value);
+						
+						// update table
+						String[] row = new String[]{elem.toString(),value.getRe()+"",value.getIm()+""};
+						MainJApplet.getjTableModelUserInput().addRow(row);
+					}
+				}
+			}
+			
+			// set query
+			SFT.setQuery(query);
+			
+		} catch (Exception e){
+			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("XML parsing error"));
+		}
+		
+		Debug.log("AppletListeners -> calcValuesFromXML completed");
 	}
 
 	/**
