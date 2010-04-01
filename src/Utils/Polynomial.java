@@ -41,9 +41,25 @@ public class Polynomial {
 		
 		for (int exp: terms.keySet()){
 			Complex coeff = terms.get(exp);
-			str += "("+coeff.toString()+")*X^"+exp+"+";
+			str += "("+coeff.toString()+")*x^"+exp+" + ";
 		}
-		str = str.substring(0,str.length());
+		str = str.substring(0,str.length()-3);
+		
+		return str;
+	}
+	
+	/**
+	 * 
+	 * @return:		the string representation in html code of the polynomial
+	 */
+	public String toHTMLString(){
+String str = "<html>";
+		
+		for (int exp: terms.keySet()){
+			Complex coeff = terms.get(exp);
+			str += "("+coeff.toString()+")*x<sup>"+exp+"</sup> + ";
+		}
+		str = str.substring(0,str.length()-3) + "</html>";
 		
 		return str;
 	}
