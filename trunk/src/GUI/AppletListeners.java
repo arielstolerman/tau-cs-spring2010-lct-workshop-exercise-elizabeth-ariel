@@ -370,8 +370,20 @@ public class AppletListeners {
 			
 			// case random - randomly choose a function from a list of function for each element in Q
 			if (Query.getPolynomials().size() > 1){
-				Polynomial[] polys = (Polynomial[])Query.getPolynomials().values().toArray();
 				
+				for(Elem elem: SFT.getQ()){
+					int randIndex = (int)Math.ceil(Math.random()*Query.getPolynomials().size());
+					
+					// calculate the value
+					Complex value = Query.getPolynomials().get(randIndex+"").getValue(elem);
+					
+					// update query
+					query.addChangeValue(elem.getValue(), value);
+					
+					// update table
+					String[] row = new String[]{elem.toString(),value.getRe()+"",value.getIm()+""};
+					MainJApplet.getjTableModelUserInput().addRow(row);
+				}
 			}
 			
 			// otherwise - calculate using the polynomial whose id is selected
@@ -395,6 +407,7 @@ public class AppletListeners {
 			SFT.setQuery(query);
 			
 		} catch (Exception e){
+			e.printStackTrace();
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("XML parsing error"));
 		}
 		
