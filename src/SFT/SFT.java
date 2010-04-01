@@ -94,8 +94,8 @@ public class SFT {
 	
 	/**
 	 * Main SFT Algorithm - continuation of the main procedure (3.4)
-	 * Called after the Query.getQueryFromQ procedure received \ calculated the f-value
-	 * of the set Q of elements in Z_N constructed on the first part (runMainSFTAlgorithm)
+	 * Called after the f-values of the set Q of elements in Z_N constructed on the first part
+	 * (runMainSFTAlgorithm) were calculated
 	 */
 	public static void runMainSFTAlgorithmCont(Set<Elem>[] sets, Query query){
 		Debug.log("SFT -> runMainSFTAlgorithmCont - main algorithm part 2 started");

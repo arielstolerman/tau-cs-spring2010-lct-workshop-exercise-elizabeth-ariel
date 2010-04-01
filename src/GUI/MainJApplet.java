@@ -325,7 +325,7 @@ public class MainJApplet extends javax.swing.JApplet {
 					jTableUserInput.setModel(jTableModelUserInput);
 					jTableUserInput.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 					JScrollPane pane = new JScrollPane(jTableUserInput);
-					pane.setBounds(10, 102, 348, 152);
+					pane.setBounds(10, 102, 348, 134);
 					jPanelPhase2.add(pane);
 				}
 				jPanelPhase2.setVisible(false);
