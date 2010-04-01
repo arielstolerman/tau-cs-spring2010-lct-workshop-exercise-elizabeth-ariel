@@ -3,7 +3,6 @@ package GUI;
 import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import org.eclipse.swt.widgets.Display;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -17,7 +16,7 @@ import org.eclipse.swt.widgets.Display;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class MainJApplet extends javax.swing.JApplet{// implements Runnable{
+public class MainJApplet extends javax.swing.JApplet {
 
 	private static JLabel jLabelTitle;
 	private static ButtonGroup buttonGroupQuerySelection = new ButtonGroup();

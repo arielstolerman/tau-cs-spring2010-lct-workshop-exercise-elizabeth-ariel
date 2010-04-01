@@ -36,7 +36,7 @@ public class SFTRunner {
 			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());			
 
 			// update gui: set table contents
-			// initialize list of elements for which f-values are to be fetched
+			// initialize list of elements for which f-values are to be fetched)
 			for (Elem elem: SFT.getQ()){
 				String[] row = new String[]{elem.toString(),"",""};
 				MainJApplet.getjTableModelUserInput().addRow(row);

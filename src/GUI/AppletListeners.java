@@ -5,11 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
-
-import org.eclipse.swt.layout.RowData;
 
 import SFT.*;
 import Utils.Debug;
@@ -51,29 +46,7 @@ public class AppletListeners {
 		phasesExplanationTitle.put("phase1", phase1Title);
 		phasesExplanationTitle.put("phase2", phase2Title);
 	}
-	
-	/* ***************************************************************
-	 * 		methods called by the SFT once calculations are done
-	 * 		to update the GUI asynchronously
-	 *****************************************************************/
-	/*
-	public static void invokedByPhase1Next(){
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run(){
-				// switch to phase #2 view
-				switchToPhase2();
-			}
-		});
-	}
-	
-	public static void invokedByPhase2NextUserInteractive(){
-		//TODO
-	}
-	
-	public static void invokedByPhase2NextXML(){
-		//TODO
-	}
-	
+
 	/* ***********************
 	 * 		Listeners
 	 *************************/
@@ -323,7 +296,7 @@ public class AppletListeners {
 			MainJApplet.getjTextFieldInputXMLFile().setText(Query.getXmlFile().getPath());
 			MainJApplet.getjLabelErrorMsgBox().setText("");
 			MainJApplet.getjButtonCalcQuery().setEnabled(true);
-			Debug.log("XML file openned: "+Query.getXmlFile().getPath());
+			Debug.log("XML file opened: "+Query.getXmlFile().getPath());
         } else {
             Debug.log("XML file open canceled");
         }
@@ -341,9 +314,6 @@ public class AppletListeners {
 				return false;
 			}
 		}
-		
-		// set Query is user interactive flag
-		Query.setUserInteractive(MainJApplet.getjRadioButtonQuery1().isSelected());
 		return true; //TODO
 	}
 	

@@ -14,6 +14,7 @@ package SFT;
 
 import java.io.File;
 import java.util.*;
+import Utils.Polynomial;
 
 public class Query {
 	private Map<Long,Complex> query;
@@ -21,7 +22,8 @@ public class Query {
 	private final long N;
 	
 	private static File xmlFile = null;
-	private static boolean isUserInteractive;
+	private static String runId = null;
+	private static Map<String,Polynomial> polynomials = null;
 	
 	/**
 	 * default constructor for a query object
@@ -122,11 +124,19 @@ public class Query {
 		Query.xmlFile = xmlFile;
 	}
 
-	public static boolean isUserInteractive() {
-		return isUserInteractive;
+	public static void setRunId(String runId) {
+		Query.runId = runId;
 	}
 
-	public static void setUserInteractive(boolean isUserInteractive) {
-		Query.isUserInteractive = isUserInteractive;
+	public static String getRunId() {
+		return runId;
+	}
+
+	public static void setPolynomials(Map<String,Polynomial> polynomials) {
+		Query.polynomials = polynomials;
+	}
+
+	public static Map<String,Polynomial> getPolynomials() {
+		return polynomials;
 	}
 }
