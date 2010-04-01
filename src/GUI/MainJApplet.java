@@ -319,6 +319,7 @@ public class MainJApplet extends javax.swing.JApplet {
 					jPanelPhase2.add(jButtonPhase2Back);
 					jButtonPhase2Back.setText("Back");
 					jButtonPhase2Back.setBounds(378, 171, 80, 28);
+					jButtonPhase2Back.setFont(AppletListeners.fontMainApplet);
 				}
 				{
 					jButtonNextPhase2 = new JButton();
