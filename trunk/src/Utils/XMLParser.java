@@ -42,17 +42,18 @@ public class XMLParser extends DefaultHandler{
 	 * Main parsing procedure
 	 * parses the input XML file
 	 */
-	public void parseDocument() {
+	public void parseDocument() throws Exception {
 
 		//get a factory
 		SAXParserFactory spf = SAXParserFactory.newInstance();
-		try {
 
-			//get a new instance of parser
-			SAXParser sp = spf.newSAXParser();
+		//get a new instance of parser
+		SAXParser sp = spf.newSAXParser();
 
-			//parse the file and also register this class for call backs
-			sp.parse(Query.getXmlFile(), this);
+		//parse the file and also register this class for call backs
+		sp.parse(Query.getXmlFile(), this);
+		
+		/*try {
 
 		}catch(SAXException se) {
 			se.printStackTrace();
@@ -60,7 +61,7 @@ public class XMLParser extends DefaultHandler{
 			pce.printStackTrace();
 		}catch (IOException ie) {
 			ie.printStackTrace();
-		}
+		}*/
 	}
 	
 	// Event handlers
@@ -209,9 +210,13 @@ public class XMLParser extends DefaultHandler{
 	public static void main(String[] args) {
 		Query.setXmlFile(new File("d:\\tmp\\tmp.xml"));
 		XMLParser parser = new XMLParser();
-		parser.parseDocument();
-		for(Polynomial poly: Query.getPolynomials().values()){
-			System.out.println(poly);
+		try{
+			parser.parseDocument();
+			for(Polynomial poly: Query.getPolynomials().values()){
+				System.out.println(poly);
+			}
+		} catch (Exception e) {
+			System.err.println("parsing error");
 		}
 	}
 }
