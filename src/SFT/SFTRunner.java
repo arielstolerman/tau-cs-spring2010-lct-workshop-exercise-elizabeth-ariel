@@ -13,6 +13,7 @@
 package SFT;
 
 import GUI.AppletListeners;
+import GUI.MainJApplet;
 import Utils.Debug;
 import Utils.Debug.DebugOutput;
 
@@ -32,10 +33,14 @@ public class SFTRunner {
 		 */
 		public void run(){
 			// call main procedure (the first part of the SFT algorithm)
-			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());
-			// call gui updater
-			AppletListeners.invokedByPhase1Next();
-			Debug.log("invoked gui phase1 next",DebugOutput.STDOUT);
+			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());			
+
+			// update gui: set table contents
+			// initialize list of elements for which f-values are to be fetched
+			for (Elem elem: SFT.getQ()){
+				String[] row = new String[]{elem.toString(),"",""};
+				MainJApplet.getjTableModelUserInput().addRow(row);
+			}
 		}
 	}
 	

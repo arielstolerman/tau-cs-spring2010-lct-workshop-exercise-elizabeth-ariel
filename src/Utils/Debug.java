@@ -30,30 +30,30 @@ public class Debug {
 	 * @param logger: The destination to write the message (STDOUT, STDERR, FILE)
 	 */
 	public static void log(String message, DebugOutput logger) {
-		switch (logger) {
-		case STDOUT : {
-			if (DEBUG_MODE)
-				System.out.println(message);
-			break;
-		}
-		case STDERR : {
-			if (DEBUG_MODE)
-				System.err.println(message);    
-			break;
-		}
-		case FILE : {
-			try {
-				if (outputFile == null) {
-					outputFile = new BufferedWriter(new FileWriter(LOG_FILE));
-				}
-				cal = Calendar.getInstance();
-				outputFile.write(sdf.format(cal.getTime())+" > "+message + "\r\n");
-				outputFile.flush();
-			} catch (IOException e) {
-				System.err.println(e);
+		if (DEBUG_MODE){
+			switch (logger) {
+			case STDOUT : {
+				System.out.println(message);				
+				break;
 			}
-			break;
-		}
+			case STDERR : {
+				System.err.println(message);    
+				break;
+			}
+			case FILE : {
+				try {
+					if (outputFile == null) {
+						outputFile = new BufferedWriter(new FileWriter(LOG_FILE));
+					}
+					cal = Calendar.getInstance();
+					outputFile.write(sdf.format(cal.getTime())+" > "+message + "\r\n");
+					outputFile.flush();
+				} catch (IOException e) {
+					System.err.println(e);
+				}
+				break;
+			}
+			}
 		}
 	}
 
