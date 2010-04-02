@@ -34,9 +34,10 @@
 				polynomial number of inputs (in log(N)) from Z<sub>N</sub>.<br>
 				The querying can be done in two methods:<br>
 				<ul><i>
-					<li> Interactive function query, user supplies &fnof; values on demand. 
-					<li> The user supplies an XML file describing the function, e.g. monoms and their coefficients.
+					<li>Interactive function query, user supplies &fnof; values on demand. 
+					<li>The user supplies an XML file describing the function, e.g. monoms and their coefficients.
 				</i></ul>
+				Explanation on the XML format can be found at the bottom of the page.
 			
 				<p align="center">
 
@@ -48,6 +49,43 @@
     				deployJava.runApplet(attributes, parameters, '1.6'); 
 				</script>
 				 </p>
+				 
+				 <br>
+				 
+				 <font size=1>
+				 The input XML should be in the following format:<br>
+				<ul>
+					<li>
+						<b>&lt;functions&gt;</b>: the opening tag, must have a <b>runid</b> attribute with the value
+						<i>random</i> for the function to be chosen randomly from a list of functions each time an element's
+						&fnof;-value is calculated, or <i>an integer id of a function</i> in the list of functions ahead.<br>
+						examples: <b>&lt;functions runid="random"&gt;, &lt;functions runid="2"&gt;</b>
+					</li>
+					<li>
+						<b>&lt;function&gt;</b>: the opening tag of a function description. Must have an <b>id</b> attribute
+						with some positive integer value (1, 2, ...).<br>
+						example: <b>&lt;function id="3"&gt;</b>
+					</li>
+					<li>
+						<b>&lt;term&gt;</b>: opening tag of a term (representing (a + bi)*x<sup>e</sup>). Has no attributes.
+					</li>
+					<li>
+						<b>&lt;rcoeff&gt;</b>: opening tag of the real coefficient of the term (a in the example above). The
+						text in it should be some double.<br>
+						example: <b>&lt;rcoeff&gt;19.58&lt;/rcoeff&gt;</b>
+					</li>
+					<li>
+						<b>&lt;icoeff&gt;</b>: opening tag of the imaginary coefficient of the term (b in the example above). The
+						text in it should be some double.
+					</li>
+					<li>
+						<b>&lt;exp&gt;</b>: opening tag of the exponent of the term (e in the example above). The
+						text in it should be some integer.<br>
+						example: <b>&lt;exp&gt;3&lt;/exp&gt;</b>
+					</li>
+				</ul>
+				Download an exmaple file: <a href="example.xml">example.xml</a>
+				</font>
 				 
 				 <br>
 				 <center>Created by Elizabeth Firman &amp; Ariel Stolerman, CS Workshop, TAU Spring 2010</center>
