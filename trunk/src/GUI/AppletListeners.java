@@ -7,6 +7,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableModel;
 
 import org.xml.sax.SAXException;
 
@@ -45,16 +46,22 @@ public class AppletListeners {
 				"and a constant coefficient for m<sub>A</sub> and m<sub>B</sub>.<br>" +
 				"</html>";
 		String phase2 = "<html>For each x below, please fill in its &fnof;-value or select an XML file.</html>";
+		String phase3 = "<html>" +
+			"The significant Fourier coefficients are now being calculated and will be displayed below." +
+			"</html>";
 		
 		phasesExplanation.put("phase1",phase1);
 		phasesExplanation.put("phase2",phase2);
+		phasesExplanation.put("phase3",phase3);
 		
 		// initialize explanations titles 
 		String phase1Title = "Phase #1";
 		String phase2Title = "Phase #2";
+		String phase3Title = "Phase #3";
 		
 		phasesExplanationTitle.put("phase1", phase1Title);
 		phasesExplanationTitle.put("phase2", phase2Title);
+		phasesExplanationTitle.put("phase3", phase3Title);
 		
 		Debug.log("AppletListeners -> initPhasesExplanation completed");
 	}
@@ -174,7 +181,40 @@ public class AppletListeners {
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> phase #2 NEXT button clicked");
 						
-						//TODO
+						if (validatePhase2Inputs()){
+							sftThread = (new Thread(sftRunner.new RunMainSFTAlgorithmCont()));
+							sftThread.start();
+							switchToPhase3();
+						}
+					}
+				}
+		);
+		
+		// Phase #3 listeners
+		/* **************** */
+		
+		// phase #3 BACK button clicked
+		MainJApplet.getjButtonPhase3Back().addActionListener(
+				new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> phase #3 BACK button clicked");
+						
+						switchBackToPhase2();
+					}
+				}
+		);
+		
+		// phase #3 RESTART button clicked
+		MainJApplet.getjButtonPhase3Restart().addActionListener(
+				new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						Debug.log("AppletListeners -> phase #3 RESTART button clicked");
+						
+						switchBackToPhase1();
 					}
 				}
 		);
@@ -458,9 +498,10 @@ public class AppletListeners {
 	public static void switchBackToPhase1(){
 		Debug.log("AppletListeners -> switchBackToPhase1 started");
 		
-		// switch to phase2-user view
+		// switch to phase1 - user input
 		MainJApplet.getjPanelPhase1().setVisible(true);
 		MainJApplet.getjPanelPhase2().setVisible(false);
+		MainJApplet.getjPanelPhase3().setVisible(false);
 		// set explanation
 		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase1"));
 		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase1"));
@@ -471,25 +512,108 @@ public class AppletListeners {
 		}
 		sftThread = null;
 		
-		// clear phase #2's table
+		// clear phase #2's table and phase #3's result label
 		MainJApplet.getjTableModelUserInput().setRowCount(0);
+		MainJApplet.getjLabelPhase3SFTOutput().setText("");
 		
 		Debug.log("AppletListeners -> switchBackToPhase1 completed");
 	}
 
+	// phase #3 listeners actions
+	/* *************************/
+	
 	/**
-	 * validate all input fields and set the corresponding inputs
-	 * @return:		true iff all inputs are inserted correctly
+	 * validates the f-values inputs for each element in the table in phase #2
+	 * @return:	true iff the validation has completed successfuly
 	 */
-	public static boolean phase2NextButtonValidateSetFields(){
-		// if xml input is selected, check that an input is given
-		if (MainJApplet.getjRadioButtonQuery2().isSelected()){
-			if (Query.getXmlFile() == null){
-				MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("Must enter an XML file"));
+	public static boolean validatePhase2Inputs(){
+		Debug.log("AppletListeners -> validatePhase2Inputs started");
+		
+		// if the user-input option is selected, verify that all values have input
+		if (MainJApplet.getjRadioButtonQuery1().isSelected()){
+			DefaultTableModel model = MainJApplet.getjTableModelUserInput();
+			for (int i=0; i<model.getRowCount(); i++){
+				String x = (String)model.getValueAt(i, 0);
+				String re = (String)model.getValueAt(i, 1);
+				String im = (String)model.getValueAt(i, 2);
+				
+				try{
+					Long.parseLong(x);
+					Double.parseDouble(re);
+					Double.parseDouble(im);
+				} catch (NumberFormatException nfe){
+					MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("Inputs incorrect, check all inputs"));
+					return false;
+				}
+			}
+		}
+		// otherwise check that a calculation (based on an XML input) has been done
+		else {
+			if (SFT.getQuery() == null){
+				MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("No calculation is done. click the \"Calculate...\" button"));
 				return false;
 			}
 		}
-		return true; //TODO
+		
+		// validation completed successfuly
+		MainJApplet.getjLabelErrorMsgBox().setText("");
+		Debug.log("AppletListeners -> validatePhase2Inputs completed");
+		return true;
+	}
+	
+	/**
+	 * switches the view from phase #2 to phase #3
+	 */
+	public static void switchToPhase3(){
+		Debug.log("AppletListeners -> switchToPhase3 started");
+		
+		// switch to phase2-user view
+		MainJApplet.getjPanelPhase2().setVisible(false);
+		MainJApplet.getjPanelPhase3().setVisible(true);
+		// set explanation
+		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase3"));
+		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase3"));
+		
+		Debug.log("AppletListeners -> switchToPhase3 completed");
+	}
+	
+	/**
+	 * switches the view back from phase #3 to phase #2 and stops SFT calculation in the back 
+	 */
+	public static void switchBackToPhase2(){
+		Debug.log("AppletListeners -> switchBackToPhase2 started");
+		
+		// switch to phase2-user view
+		MainJApplet.getjPanelPhase2().setVisible(true);
+		MainJApplet.getjPanelPhase3().setVisible(false);
+		// set explanation
+		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase2"));
+		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase2"));
+		
+		// stop SFT thread if running
+		if (sftThread != null){
+			sftThread.stop();
+		}
+		sftThread = null;
+		
+		// clear phase #3's result label
+		MainJApplet.getjLabelPhase3SFTOutput().setText("");
+		
+		Debug.log("AppletListeners -> switchBackToPhase2 completed");
+	}
+	
+	/**
+	 * sets the output label to display the SFT algorithm output - elements in L
+	 */
+	public static void setSFTOutputLabel(){
+		String output = "<html>The significant Fourier coefficients are:<br>";
+		Set<Elem> L = SFT.getL();
+		for (Elem elem: L){
+			output += elem.getValue()+", ";
+		}
+		output = output.substring(0, output.length()-2)+".</html>";
+		
+		MainJApplet.getjLabelPhase3SFTOutput().setText(output);
 	}
 	
 	// getters and setters

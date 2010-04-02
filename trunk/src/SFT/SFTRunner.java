@@ -66,6 +66,16 @@ public class SFTRunner {
 			// call main procedure (the second part of the SFT algorithm)
 			SFT.runMainSFTAlgorithmCont(SFT.getSets(), SFT.getQuery());
 			
+			//TODO: for debugging, remove later
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			// display the output
+			AppletListeners.setSFTOutputLabel();
+			
 			Debug.log("SFTRunner -> RunMainSFTAlgorithmCont thread completed");
 		}
 	}
