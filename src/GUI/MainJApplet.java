@@ -364,11 +364,13 @@ public class MainJApplet extends javax.swing.JApplet {
 					jPanelPhase3.add(jButtonPhase3Restart);
 					jButtonPhase3Restart.setText("Restart");
 					jButtonPhase3Restart.setBounds(378, 131, 80, 29);
+					jButtonPhase3Restart.setFont(AppletListeners.fontMainApplet);
 				}
 				{
 					jLabelPhase3SFTOutput = new JLabel();
 					jPanelPhase3.add(jLabelPhase3SFTOutput);
 					jLabelPhase3SFTOutput.setBounds(12, 12, 348, 148);
+					jLabelPhase3SFTOutput.setFont(AppletListeners.fontMainApplet);
 				}
 			}
 
