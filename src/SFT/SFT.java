@@ -45,7 +45,7 @@ public class SFT {
 	 */
 	private static Set<Elem> Q;
 	private static Set<Elem>[] sets;
-	private static Query query;
+	private static Query query = null;
 	
 	// the variable to hold the result
 	public static Set<Elem> L;
@@ -101,7 +101,13 @@ public class SFT {
 		Debug.log("SFT -> runMainSFTAlgorithmCont - main algorithm part 2 started");
 		
 		// run getFixedQueriesSFT and return its output, L
-		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query);
+		//Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query);
+		// TODO: unmark the above line and remove the following loop; for testing purposes only
+		Set<Elem> L = new HashSet<Elem>();
+		for (int i=0; i<30; i++){
+			L.add(new Elem(i));
+		}
+		
 		SFT.L = L;
 		
 		String LValues = "";

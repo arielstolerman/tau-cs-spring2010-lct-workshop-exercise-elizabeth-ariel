@@ -25,6 +25,9 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JButton jButtonPhase1Next;
 	private static JSeparator jSeparator1;
 	private static JLabel jLabelExplanationTitle;
+	private static JButton jButtonPhase3Restart;
+	private static JButton jButtonPhase3Back;
+	private static JPanel jPanelPhase3;
 	private static JButton jButtonPhase2Back;
 	private static JButton jButtonCalcQuery;
 	private static JButton jButtonNextPhase2;
@@ -41,6 +44,7 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JTextField jTextFieldInputFEuclideanNorm;
 	private static JTextField jTextFieldInputFInfNorm;
 	private static JTextField jTextFieldInputXMLFile;
+	private static JLabel jLabelPhase3SFTOutput;
 	private static JLabel jLabelInputFEuclideanNorm;
 	private static JLabel jLabelInputFInfNorm;
 	private static JTextField jTextFieldInputDelta;
@@ -341,6 +345,33 @@ public class MainJApplet extends javax.swing.JApplet {
 				jPanelPhase2.setVisible(false);
 			}
 			
+			// Phase #3
+			{
+				jPanelPhase3 = new JPanel();
+				getContentPane().add(jPanelPhase3);
+				jPanelPhase3.setBounds(3, 210, 495, 188);
+				jPanelPhase3.setBackground(new java.awt.Color(255,255,255));
+				jPanelPhase3.setLayout(null);
+				{
+					jButtonPhase3Back = new JButton();
+					jPanelPhase3.add(jButtonPhase3Back);
+					jButtonPhase3Back.setText("Back");
+					jButtonPhase3Back.setBounds(378, 97, 80, 28);
+					jButtonPhase3Back.setFont(AppletListeners.fontMainApplet);
+				}
+				{
+					jButtonPhase3Restart = new JButton();
+					jPanelPhase3.add(jButtonPhase3Restart);
+					jButtonPhase3Restart.setText("Restart");
+					jButtonPhase3Restart.setBounds(378, 131, 80, 29);
+				}
+				{
+					jLabelPhase3SFTOutput = new JLabel();
+					jPanelPhase3.add(jLabelPhase3SFTOutput);
+					jLabelPhase3SFTOutput.setBounds(12, 12, 348, 148);
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -509,5 +540,37 @@ public class MainJApplet extends javax.swing.JApplet {
 
 	public static void setjButtonPhase2Back(JButton jButtonPhase2Back) {
 		MainJApplet.jButtonPhase2Back = jButtonPhase2Back;
+	}
+
+	public static JPanel getjPanelPhase3() {
+		return jPanelPhase3;
+	}
+
+	public static void setjPanelPhase3(JPanel jPanelPhase3) {
+		MainJApplet.jPanelPhase3 = jPanelPhase3;
+	}
+
+	public static JButton getjButtonPhase3Back() {
+		return jButtonPhase3Back;
+	}
+
+	public static void setjButtonPhase3Back(JButton jButtonPhase3Back) {
+		MainJApplet.jButtonPhase3Back = jButtonPhase3Back;
+	}
+
+	public static JButton getjButtonPhase3Restart() {
+		return jButtonPhase3Restart;
+	}
+
+	public static void setjButtonPhase3Restart(JButton jButtonPhase3Restart) {
+		MainJApplet.jButtonPhase3Restart = jButtonPhase3Restart;
+	}
+
+	public static JLabel getjLabelPhase3SFTOutput() {
+		return jLabelPhase3SFTOutput;
+	}
+
+	public static void setjLabelPhase3SFTOutput(JLabel jLabelPhase3SFTOutput) {
+		MainJApplet.jLabelPhase3SFTOutput = jLabelPhase3SFTOutput;
 	}
 }
