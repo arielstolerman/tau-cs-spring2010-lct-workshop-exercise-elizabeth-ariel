@@ -128,6 +128,7 @@ public class SFT {
 	 * @return:			sets of elements in Z_N from which the main procedure will
 	 * 					create the set of x's to ask their f-value
 	 */
+	@SuppressWarnings("unchecked")
 	public static Set<Elem>[] generateQueries(long N, double gamma, double fInfNorm, double delta){
 		Debug.log("SFT -> generateQueries started");
 		
@@ -256,6 +257,7 @@ public class SFT {
 			double tmpBSum = 0;
 			for (Elem y: B){
 				//TODO calculate tmpBSum
+				x.getValue(); y.getValue(); chi(v,y);
 			}
 			tmpBSum *= tmpBSum;
 			est += tmpBSum;
@@ -396,11 +398,16 @@ public class SFT {
 	 * @return:			chi_(floor[(a+b)/2]) (y)
 	 */
 	private static Complex chi(Elem v, Elem y){
-		return new Complex(1.0, 1.0); //TODO
+		// chi_v (y) = e^(i2pi * v/N * y) = cos(2pi * v/N * y) + i*sin(2pi * v/N * y)
+		double arg = 2 * Math.PI * (((double)v.getValue())/N) * ((double)y.getValue());
+		double re = Math.cos(arg);
+		double im = Math.sin(arg);
+		
+		return new Complex(re, im);
 	}
 	
 	
-	// AUTO GENERATED GETTERS AND SETTERS
+	// AUTO GENERATED GETTERS AND SETTER
 
 	public static double getfInfNorm() {
 		return fInfNorm;
