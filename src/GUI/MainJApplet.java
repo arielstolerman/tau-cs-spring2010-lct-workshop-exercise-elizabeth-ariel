@@ -44,7 +44,8 @@ public class MainJApplet extends javax.swing.JApplet {
 	private static JTextField jTextFieldInputFEuclideanNorm;
 	private static JTextField jTextFieldInputFInfNorm;
 	private static JTextField jTextFieldInputXMLFile;
-	private static JLabel jLabelPhase3SFTOutput;
+	private static JScrollPane jScrollPaneResultsLabel;
+	private static JTextArea jTextAreaPhase3SFTOutput;
 	private static JLabel jLabelInputFEuclideanNorm;
 	private static JLabel jLabelInputFInfNorm;
 	private static JTextField jTextFieldInputDelta;
@@ -367,11 +368,21 @@ public class MainJApplet extends javax.swing.JApplet {
 					jButtonPhase3Restart.setFont(AppletListeners.fontMainApplet);
 				}
 				{
-					jLabelPhase3SFTOutput = new JLabel();
-					jPanelPhase3.add(jLabelPhase3SFTOutput);
-					jLabelPhase3SFTOutput.setBounds(12, 12, 348, 148);
-					jLabelPhase3SFTOutput.setFont(AppletListeners.fontMainApplet);
+					jScrollPaneResultsLabel = new JScrollPane();
+					jPanelPhase3.add(jScrollPaneResultsLabel);
+					jScrollPaneResultsLabel.setBounds(12, 12, 348, 148);
+					jScrollPaneResultsLabel.setBackground(new java.awt.Color(255,255,255));
+					jScrollPaneResultsLabel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+					jScrollPaneResultsLabel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+					{
+						jTextAreaPhase3SFTOutput = new JTextArea("Calculating...");
+						jTextAreaPhase3SFTOutput.setBounds(12, 12, 348, 148);
+						jTextAreaPhase3SFTOutput.setFont(AppletListeners.fontMainApplet);
+						jScrollPaneResultsLabel.getViewport().add(jTextAreaPhase3SFTOutput);
+						jScrollPaneResultsLabel.setViewportView(jTextAreaPhase3SFTOutput);
+					}
 				}
+				jPanelPhase3.setVisible(false);
 			}
 
 		} catch (Exception e) {
@@ -568,11 +579,11 @@ public class MainJApplet extends javax.swing.JApplet {
 		MainJApplet.jButtonPhase3Restart = jButtonPhase3Restart;
 	}
 
-	public static JLabel getjLabelPhase3SFTOutput() {
-		return jLabelPhase3SFTOutput;
+	public static JTextArea getjLabelPhase3SFTOutput() {
+		return jTextAreaPhase3SFTOutput;
 	}
 
-	public static void setjLabelPhase3SFTOutput(JLabel jLabelPhase3SFTOutput) {
-		MainJApplet.jLabelPhase3SFTOutput = jLabelPhase3SFTOutput;
+	public static void setjLabelPhase3SFTOutput(JTextArea jTextAreaPhase3SFTOutput) {
+		MainJApplet.jTextAreaPhase3SFTOutput = jTextAreaPhase3SFTOutput;
 	}
 }

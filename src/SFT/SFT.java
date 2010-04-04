@@ -72,16 +72,25 @@ public class SFT {
 		Debug.log("\tgenerated sets A,B1,..,Bl");
 		
 		// Build set Q
-		Set<Elem> Q = copyElemSet(sets[0]);
+		Set<Elem> Q = new HashSet<Elem>();
+		Set<Elem> A = sets[0];
+		
 		for (int i=1; i<sets.length; i++){
-			removeElemsFromSet(Q, sets[i]);
+			Set<Elem> Bl = sets[i];
+			for(Elem e_a: A){
+				for(Elem e_b: Bl){
+					Elem elem = Elem.sub(e_a, e_b); // subtraction modulo N
+					if (!Elem.contains(Q, elem))
+						Q.add(elem);
+				}
+			}
 		}
 		
 		String QValues = "";
 		for (Iterator<Elem> j = Q.iterator(); j.hasNext();){
 			QValues += j.next()+" ";
 		}
-		Debug.log("\tcreated Q from A - union(B_i), i=1,...,log(N): "+QValues);
+		Debug.log("\tcreated Q = {x - y | x in A, y in union(B_i), i=1,...,log(N)}: "+QValues);
 		
 		// set up public variables with Q and sets
 		// user will invoke the query calculation followed by the rest of the SFT algorithm execution
@@ -101,13 +110,7 @@ public class SFT {
 		Debug.log("SFT -> runMainSFTAlgorithmCont - main algorithm part 2 started");
 		
 		// run getFixedQueriesSFT and return its output, L
-		//Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query);
-		// TODO: unmark the above line and remove the following loop; for testing purposes only
-		Set<Elem> L = new HashSet<Elem>();
-		for (int i=0; i<30; i++){
-			L.add(new Elem(i));
-		}
-		
+		Set<Elem> L = getFixedQueriesSFT(N,tau,sets,query);
 		SFT.L = L;
 		
 		String LValues = "";
@@ -187,8 +190,8 @@ public class SFT {
 		
 		// initialize candidate (candidate_0)
 		Elem[] initInterval = new Elem[2];
-		initInterval[0].setValue(0);
-		initInterval[1].setValue(N);
+		initInterval[0] = new Elem(0);
+		initInterval[1] = new Elem(N);
 		Candidate candidate = new Candidate(initInterval);
 		
 		// run iterations over l = 0,...,log_2(N)-1
@@ -256,14 +259,15 @@ public class SFT {
 		for (Elem x: A){
 			double tmpBSum = 0;
 			for (Elem y: B){
-				//TODO calculate tmpBSum
-				x.getValue(); y.getValue(); chi(v,y);
+				long x_sub_y = (Elem.sub(x, y)).getValue();
+				tmpBSum += innerProduct(chi(v,y),query.getValue(x_sub_y));
 			}
+			tmpBSum /= B.size();
 			tmpBSum *= tmpBSum;
 			est += tmpBSum;
 		}
 		
-		est /= A.size()*B.size()*B.size();
+		est /= A.size();
 		
 		Debug.log("\tcalculated est: "+est);
 		
@@ -364,34 +368,6 @@ public class SFT {
 	}
 	
 	/**
-	 * @param source:	source set of elements
-	 * @return:			a deep copy of the source set
-	 */
-	private static Set<Elem> copyElemSet(Set<Elem> source){
-		Set<Elem> dest = new HashSet<Elem>();
-		for (Iterator<Elem> j = source.iterator(); j.hasNext();){
-			dest.add(new Elem(j.next().getValue()));
-		}
-		return dest;
-	}
-	
-	/**
-	 * removes all elements in source that have the same value as some element in toRemove
-	 * @param source:		source set of elements to be changed
-	 * @param toRemove:		set of elements to be removed from source
-	 */
-	private static void removeElemsFromSet(Set<Elem> source, Set<Elem> toRemove){
-		for (Elem elemToRemove: toRemove){
-			for (Elem elem: source){
-				if (elem.getValue() == elemToRemove.getValue()){
-					source.remove(elem);
-					break; // assuming source set has exactly one element with that value
-				}
-			}
-		}
-	}
-	
-	/**
 	 * calculate Chi
 	 * @param v:		floor( (a+b)/2 )
 	 * @param y:		input for the chi function
@@ -404,6 +380,16 @@ public class SFT {
 		double im = Math.sin(arg);
 		
 		return new Complex(re, im);
+	}
+	
+	/**
+	 * calculate the inner product over C
+	 * @param x:	first element in the inner product
+	 * @param y:	first element in the inner product
+	 * @return:		the inner product <x,y> = sum[x_i * y_i] (i = 1,2)
+	 */
+	private static double innerProduct(Complex x, Complex y){
+		return x.getRe()*y.getRe()+x.getIm()*y.getIm();
 	}
 	
 	
