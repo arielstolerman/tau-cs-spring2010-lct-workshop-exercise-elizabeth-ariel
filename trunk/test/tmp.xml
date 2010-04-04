@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<functions runid="1">
+<functions runid="random">
 	<function id="1">
 		<term>
 			<rcoeff>0.3</rcoeff>

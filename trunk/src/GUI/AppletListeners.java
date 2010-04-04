@@ -606,12 +606,11 @@ public class AppletListeners {
 	 * sets the output label to display the SFT algorithm output - elements in L
 	 */
 	public static void setSFTOutputLabel(){
-		String output = "<html>The significant Fourier coefficients are:<br>";
+		String output = "The significant Fourier coefficients are:\n";
 		Set<Elem> L = SFT.getL();
 		for (Elem elem: L){
-			output += elem.getValue()+", ";
+			output += elem.getValue()+"\n";
 		}
-		output = output.substring(0, output.length()-2)+".</html>";
 		
 		MainJApplet.getjLabelPhase3SFTOutput().setText(output);
 	}

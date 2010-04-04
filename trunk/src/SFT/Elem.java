@@ -11,11 +11,11 @@
 
 package SFT;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 public class Elem {
-	// static members
-	private static long N = 2;
-	
-	// dynamic members
 	public long value;
 	
 	/**
@@ -31,13 +31,6 @@ public class Elem {
 	// getters
 	
 	/**
-	 * @return:		the order N
-	 */
-	public long getOrder(){
-		return N;
-	}
-	
-	/**
 	 * @return:		the value
 	 */
 	public long getValue(){
@@ -51,13 +44,6 @@ public class Elem {
 	// setters
 	
 	/**
-	 * @param N:	new order for Z_N
-	 */
-	public void setOrder(long N){
-		Elem.N= N;
-	}
-	
-	/**
 	 * setter for the value
 	 * @param value:	new value
 	 */
@@ -67,6 +53,9 @@ public class Elem {
 	
 	// static functions on elements
 	// mathematical functions modulo the group order
+	// Set<Elem> operations
+	
+	// Math operations:
 	
 	/**
 	 * addition modulo N
@@ -75,7 +64,7 @@ public class Elem {
 	 * @return:				(elem1 + elem2) mod N
 	 */
 	public static Elem add(Elem elem1, Elem elem2){
-		return new Elem((elem1.value + elem2.value)%N);
+		return new Elem((elem1.value + elem2.value)%SFT.getN());
 	}
 	
 	/**
@@ -85,9 +74,8 @@ public class Elem {
 	 * @return:				(elem1 - elem2) mod N
 	 */
 	public static Elem sub(Elem elem1, Elem elem2){
-		long value = (elem1.value - elem2.value)%N;
-		if (value < 0)
-			value += N;
+		long value = elem1.value - elem2.value;
+		if (value < 0) value += SFT.getN();
 		return new Elem(value);
 	}
 	
@@ -98,17 +86,50 @@ public class Elem {
 	 * @return:				(elem1 * elem2) mod N
 	 */
 	public static Elem mul(Elem elem1, Elem elem2){
-		return new Elem((elem1.value * elem2.value)%N);
+		return new Elem((elem1.value * elem2.value)%SFT.getN());
+	}
+		
+	// Set<Elem> operations:
+	
+	/**
+	 * @param set:	set of Elem
+	 * @param elem:	element to check if contained in the set
+	 * @return:		true iff elem is already ontained in the set
+	 */
+	public static boolean contains(Set<Elem> set, Elem elem){
+		for(Elem e: set){
+			if (e.getValue() == elem.getValue())
+				return true;
+		}
+		
+		return false;
 	}
 	
 	/**
-	 * division modulo N
-	 * @param elem1:		first element for div
-	 * @param elem2:		second element for div
-	 * @return:				(elem1 * elem2^-1) mod N
+	 * @param source:	source set of elements
+	 * @return:			a deep copy of the source set
 	 */
-	public static Elem div(Elem elem1, Elem elem2){
-		//TODO
-		return new Elem((elem1.value * elem2.value)%N);
+	public static Set<Elem> copyElemSet(Set<Elem> source){
+		Set<Elem> dest = new HashSet<Elem>();
+		for (Iterator<Elem> j = source.iterator(); j.hasNext();){
+			dest.add(new Elem(j.next().getValue()));
+		}
+		return dest;
+	}
+	
+	/**
+	 * removes all elements in source that have the same value as some element in toRemove
+	 * @param source:		source set of elements to be changed
+	 * @param toRemove:		set of elements to be removed from source
+	 */
+	public static void removeElemsFromSet(Set<Elem> source, Set<Elem> toRemove){
+		for (Elem elemToRemove: toRemove){
+			for (Elem elem: source){
+				if (elem.getValue() == elemToRemove.getValue()){
+					source.remove(elem);
+					break; // assuming source set has exactly one element with that value
+				}
+			}
+		}
 	}
 }
