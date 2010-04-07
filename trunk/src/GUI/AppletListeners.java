@@ -484,8 +484,7 @@ public class AppletListeners {
 			SFT.setQuery(query);
 			
 		} catch (Exception e){
-			e.printStackTrace();
-			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("XML parsing error"));
+			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed(e.getMessage()));
 		}
 		
 		Debug.log("AppletListeners -> calcValuesFromXML completed");

@@ -279,9 +279,9 @@ public class SFT {
 		return est >= threshold;
 	}
 	
-	/* *****************************
-	 * private assistance methods
-	 *******************************/
+	/* *******************
+	 * assistance methods
+	 *********************/
 	
 	/**
 	 * @param N:	the order of Z_N
@@ -373,7 +373,7 @@ public class SFT {
 	 * @param y:		input for the chi function
 	 * @return:			chi_(floor[(a+b)/2]) (y)
 	 */
-	private static Complex chi(Elem v, Elem y){
+	public static Complex chi(Elem v, Elem y){
 		// chi_v (y) = e^(i2pi * v/N * y) = cos(2pi * v/N * y) + i*sin(2pi * v/N * y)
 		double arg = 2 * Math.PI * (((double)v.getValue())/N) * ((double)y.getValue());
 		double re = Math.cos(arg);
@@ -388,7 +388,7 @@ public class SFT {
 	 * @param y:	first element in the inner product
 	 * @return:		the inner product <x,y> = sum[x_i * y_i] (i = 1,2)
 	 */
-	private static double innerProduct(Complex x, Complex y){
+	public static double innerProduct(Complex x, Complex y){
 		return x.getRe()*y.getRe()+x.getIm()*y.getIm();
 	}
 	
