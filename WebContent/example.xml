@@ -2,50 +2,50 @@
 <functions runid="random">
 	<function id="1">
 		<term>
-			<rcoeff>0.3</rcoeff>
-			<icoeff>1.4</icoeff>
-			<exp>0</exp>
+			<recoeff>0.3</recoeff>
+			<imcoeff>1.4</imcoeff>
+			<alpha>0</alpha>
 		</term>
 		<term>
-			<rcoeff>4.3</rcoeff>
-			<icoeff>9</icoeff>
-			<exp>1</exp>
+			<recoeff>4.3</recoeff>
+			<imcoeff>9</imcoeff>
+			<alpha>1</alpha>
 		</term>
 		<term>
-			<rcoeff>-15</rcoeff>
-			<icoeff>2.89</icoeff>
-			<exp>2</exp>
+			<recoeff>-15</recoeff>
+			<imcoeff>2.89</imcoeff>
+			<alpha>2</alpha>
 		</term>
 		<term>
-			<rcoeff>17</rcoeff>
-			<icoeff>-20</icoeff>
-			<exp>3</exp>
+			<recoeff>17</recoeff>
+			<imcoeff>-20</imcoeff>
+			<alpha>3</alpha>
 		</term>
 	</function>
 	
 	<function id="2">
 		<term>
-			<rcoeff>29</rcoeff>
-			<icoeff>38</icoeff>
-			<exp>0</exp>
+			<recoeff>29</recoeff>
+			<imcoeff>38</imcoeff>
+			<alpha>0</alpha>
 		</term>
 		<term>
-			<rcoeff>1</rcoeff>
-			<icoeff>-2</icoeff>
-			<exp>1</exp>
+			<recoeff>1</recoeff>
+			<imcoeff>-2</imcoeff>
+			<alpha>1</alpha>
 		</term>
 	</function>
 	
 	<function id="3">
 		<term>
-			<rcoeff>19</rcoeff>
-			<icoeff>-28</icoeff>
-			<exp>0</exp>
+			<recoeff>19</recoeff>
+			<imcoeff>-28</imcoeff>
+			<alpha>0</alpha>
 		</term>
 		<term>
-			<rcoeff>12</rcoeff>
-			<icoeff>0</icoeff>
-			<exp>1</exp>
+			<recoeff>12</recoeff>
+			<imcoeff>0</imcoeff>
+			<alpha>1</alpha>
 		</term>
 	</function>
 </functions>

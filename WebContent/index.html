@@ -35,7 +35,7 @@
 				The querying can be done in two methods:<br>
 				<ul><i>
 					<li>Interactive function query, user supplies &fnof; values on demand. 
-					<li>The user supplies an XML file describing the function, e.g. monoms and their coefficients.
+					<li>The user supplies an XML file describing the function by its Fourier polynomial.
 				</i></ul>
 				Explanation on the XML format can be found at the bottom of the page.
 			
@@ -71,21 +71,21 @@
 						example: <b>&lt;function id="3"&gt;</b>
 					</li>
 					<li>
-						<b>&lt;term&gt;</b>: opening tag of a term (representing (a + bi)*x<sup>e</sup>). Has no attributes.
+						<b>&lt;term&gt;</b>: opening tag of a term (representing (a + bi)&sdot;&chi;<sub>&alpha;</sub>(x)). Has no attributes.
 					</li>
 					<li>
-						<b>&lt;rcoeff&gt;</b>: opening tag of the real coefficient of the term (a in the example above). The
+						<b>&lt;reCoeff&gt;</b>: opening tag of the real coefficient of the term (a in the example above). The
 						text in it should be some double.<br>
-						example: <b>&lt;rcoeff&gt;19.58&lt;/rcoeff&gt;</b>
+						example: <b>&lt;reCoeff&gt;19.58&lt;/reCoeff&gt;</b>
 					</li>
 					<li>
-						<b>&lt;icoeff&gt;</b>: opening tag of the imaginary coefficient of the term (b in the example above). The
+						<b>&lt;imCoeff&gt;</b>: opening tag of the imaginary coefficient of the term (b in the example above). The
 						text in it should be some double.
 					</li>
 					<li>
-						<b>&lt;exp&gt;</b>: opening tag of the exponent of the term (e in the example above). The
-						text in it should be some integer.<br>
-						example: <b>&lt;exp&gt;3&lt;/exp&gt;</b>
+						<b>&lt;alpha&gt;</b>: opening tag of the element of the term (&alpha; in the example above). The
+						text in it should be some integer in Z<sub>N</sub>.<br>
+						example: <b>&lt;alpha&gt;3&lt;/alpha&gt;</b>
 					</li>
 				</ul>
 				Download an exmaple file: <a href="example.xml">example.xml</a>
