@@ -29,14 +29,14 @@ public class XMLParser extends DefaultHandler{
 	 * enum to indicate the current scope we are in
 	 */
 	public enum Tag{
-		FUNCTIONS,FUNCTION,TERM,RCOEFF,ICOEFF,EXP,END;
+		FUNCTIONS,FUNCTION,TERM,ALPHA,RECOEFF,IMCOEFF,END;
 	}
 
 	private Tag currTag;
 	private String runId;
 	private String funcId = null;
-	private double rcoeff, icoeff;
-	private int exp;
+	private double recoeff, imcoeff;
+	private Elem alpha;
 	
 	/**
 	 * Main parsing procedure
@@ -78,6 +78,14 @@ public class XMLParser extends DefaultHandler{
 		if(qName.equalsIgnoreCase("functions")) {
 			// set runid
 			runId = attributes.getValue(0);
+			// check if valid, else throw exception
+			try{
+				Integer.parseInt(runId);
+			} catch (NumberFormatException nfe){
+				if (!runId.equalsIgnoreCase("random"))
+					throw new SAXException("functions opening tag has invalid runid (not \"random\" or an integer): "+runId);
+			}
+			
 			// initialize polynomials map
 			Query.setPolynomials(new HashMap<String,Polynomial>());
 			// set current tag
@@ -86,8 +94,15 @@ public class XMLParser extends DefaultHandler{
 			Debug.log("<functions runid=\""+runId+"\">");
 		}
 		
-		if(qName.equalsIgnoreCase("function")){
+		else if(qName.equalsIgnoreCase("function")){
 			String funcId = attributes.getValue(0);
+			// check if valid, else throw exception
+			try{
+				Integer.parseInt(funcId);
+			} catch (NumberFormatException nfe){
+				throw new SAXException("function opening tag has invalid id (not an integer): "+funcId);
+			}
+			
 			// if this function is the one we're looking for, or we're in random mode, get it
 			if (runId.equalsIgnoreCase("random") || runId.equals(funcId)){
 				Polynomial poly = new Polynomial(funcId);
@@ -102,7 +117,7 @@ public class XMLParser extends DefaultHandler{
 			Debug.log("\t<function id=\""+funcId+"\">");
 		}
 		
-		if(qName.equalsIgnoreCase("term")){
+		else if(qName.equalsIgnoreCase("term")){
 			// do nothing
 			// set current tag
 			currTag = Tag.TERM;
@@ -110,25 +125,30 @@ public class XMLParser extends DefaultHandler{
 			Debug.log("\t\t<term>");
 		}
 		
-		if(qName.equalsIgnoreCase("rcoeff")){
+		else if(qName.equalsIgnoreCase("alpha")){
 			// set current tag
-			currTag = Tag.RCOEFF;
+			currTag = Tag.ALPHA;
 			
-			Debug.log("\t\t\t<rcoeff>");
+			Debug.log("\t\t\t<alpha>");
 		}
 		
-		if(qName.equalsIgnoreCase("icoeff")){
+		else if(qName.equalsIgnoreCase("reCoeff")){
 			// set current tag
-			currTag = Tag.ICOEFF;
+			currTag = Tag.RECOEFF;
 			
-			Debug.log("\t\t\t<icoeff>");
+			Debug.log("\t\t\t<reCoeff>");
 		}
 		
-		if(qName.equalsIgnoreCase("exp")){
+		else if(qName.equalsIgnoreCase("imCoeff")){
 			// set current tag
-			currTag = Tag.EXP;
+			currTag = Tag.IMCOEFF;
 			
-			Debug.log("\t\t\t<exp>");
+			Debug.log("\t\t\t<imCoeff>");
+		}
+		
+		// otherwise
+		else {
+			throw new SAXException("unrecognized opening tag: "+qName);
 		}
 	}
 	
@@ -144,7 +164,7 @@ public class XMLParser extends DefaultHandler{
 			Debug.log("</functions>");
 		}
 		
-		if(qName.equalsIgnoreCase("function")){
+		else if(qName.equalsIgnoreCase("function")){
 			funcId = null;
 			// set current tag
 			currTag = Tag.FUNCTIONS;
@@ -152,10 +172,10 @@ public class XMLParser extends DefaultHandler{
 			Debug.log("\t</function>");
 		}
 		
-		if(qName.equalsIgnoreCase("term")){
+		else if(qName.equalsIgnoreCase("term")){
 			// add a new term to the current polynomial (only if needed)
 			Polynomial p = Query.getPolynomials().get(funcId);
-			if (p != null) p.addUpdateTerm(exp, rcoeff, icoeff);
+			if (p != null) p.addUpdateTerm(alpha, recoeff, imcoeff);
 			
 			// set current tag
 			currTag = Tag.FUNCTION;
@@ -163,25 +183,30 @@ public class XMLParser extends DefaultHandler{
 			Debug.log("\t\t</term>");
 		}
 		
-		if(qName.equalsIgnoreCase("rcoeff")){
+		else if(qName.equalsIgnoreCase("alpha")){
 			// set current tag
 			currTag = Tag.TERM;
 			
-			Debug.log("\t\t\t</rcoeff>");
+			Debug.log("\t\t\t</alpha>");
 		}
 		
-		if(qName.equalsIgnoreCase("icoeff")){
+		else if(qName.equalsIgnoreCase("reCoeff")){
 			// set current tag
 			currTag = Tag.TERM;
 			
-			Debug.log("\t\t\t</icoeff>");
+			Debug.log("\t\t\t</reCoeff>");
 		}
 		
-		if(qName.equalsIgnoreCase("exp")){
+		else if(qName.equalsIgnoreCase("imCoeff")){
 			// set current tag
 			currTag = Tag.TERM;
 			
-			Debug.log("\t\t\t</exp>");
+			Debug.log("\t\t\t</imCoeff>");
+		}
+		
+		// otherwise
+		else {
+			throw new SAXException("unrecognized closing tag: "+qName);
 		}
 	}
 	
@@ -194,43 +219,45 @@ public class XMLParser extends DefaultHandler{
 		
 		switch (currTag){
 		case FUNCTIONS:
-			//TODO add error message
+			// do nothing
 			break;
 		case FUNCTION:
-			//TODO add error message
+			// do nothing
 			break;
 		case TERM:
-			//TODO add error message
+			// do nothing
 			break;
-		case RCOEFF:
+		case ALPHA:
 			try{
-				rcoeff = Double.parseDouble(str);
+				Long value = Long.parseLong(str);
+				alpha = new Elem(value);
 				Debug.log("\t\t\t\t"+str);
+				if (alpha.getValue() < 0 || alpha.getValue() >= SFT.getN())
+					throw new SAXException("alpha not in range [0,1,...,N-1]: "+(alpha==null?"null":alpha.getValue()));
 			} catch (NumberFormatException nfe){
-				//TODO add error message
+				throw new SAXException("alpha must be a number in range [0,1,...,N-1]: "+(alpha==null?"null":alpha.getValue()));
 			}
 			break;
-		case ICOEFF:
+		case RECOEFF:
 			try{
-				icoeff = Double.parseDouble(str);
+				recoeff = Double.parseDouble(str);
 				Debug.log("\t\t\t\t"+str);
 			} catch (NumberFormatException nfe){
-				//TODO add error message
+				throw new SAXException("reCoeff not a double");
 			}
 			break;
-		case EXP:
+		case IMCOEFF:
 			try{
-				exp = Integer.parseInt(str);
+				imcoeff = Double.parseDouble(str);
 				Debug.log("\t\t\t\t"+str);
 			} catch (NumberFormatException nfe){
-				//TODO add error message
+				throw new SAXException("imCoeff not a double");
 			}
 			break;
 		case END:
-			//TODO add error message
-			break;
+			throw new SAXException("XML parsing error");
 		default:
-			//TODO add error message
+			// do nothing
 		}
 	}
 
@@ -242,6 +269,7 @@ public class XMLParser extends DefaultHandler{
 	 */
 	public static void main(String[] args) {
 		Query.setXmlFile(new File("d:\\tmp\\tmp.xml"));
+		SFT.setN(10);
 		XMLParser parser = new XMLParser();
 		try{
 			parser.parseDocument();
@@ -249,7 +277,7 @@ public class XMLParser extends DefaultHandler{
 				System.out.println(poly);
 			}
 		} catch (Exception e) {
-			System.err.println("parsing error");
+			System.err.println(e.getMessage());
 		}
 	}
 }

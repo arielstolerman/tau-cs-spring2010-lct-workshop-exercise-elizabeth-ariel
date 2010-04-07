@@ -3,11 +3,10 @@
 package Utils;
 
 import java.util.*;
-import SFT.Complex;
-import SFT.Elem;
+import SFT.*;
 
 public class Polynomial {
-	private Map<Integer,Complex> terms;
+	private Map<Elem,Complex> terms;
 	private String id;
 	
 	/**
@@ -16,17 +15,21 @@ public class Polynomial {
 	 */
 	public Polynomial(String id){
 		this.id = id;
-		terms = new HashMap<Integer,Complex>();
+		terms = new HashMap<Elem,Complex>();
 	}
 	
 	// getters
 	
 	/**
-	 * @param exp:	the exponent for which the coefficient is fetched
-	 * @return:		the coefficient
+	 * @param alpha:	the element for which the coefficient is fetched
+	 * @return:			the coefficient or null if doesn't exist
 	 */
-	public Complex getCoeff(int exp){
-		return terms.get(exp);
+	public Complex getCoeff(Elem alpha){
+		for(Elem elem: terms.keySet()){
+			if (elem.getValue() == alpha.getValue())
+				return terms.get(elem); // found it, return the coeff
+		}
+		return null;
 	}
 	
 	public String getId() {
@@ -39,9 +42,9 @@ public class Polynomial {
 	public String toString(){
 		String str = "";
 		
-		for (int exp: terms.keySet()){
-			Complex coeff = terms.get(exp);
-			str += "("+coeff.toString()+")*x^"+exp+" + ";
+		for (Elem elem: terms.keySet()){
+			Complex coeff = terms.get(elem);
+			str += "("+coeff.toString()+")*chi_("+elem.getValue()+")[x] + ";
 		}
 		str = str.substring(0,str.length()-3);
 		
@@ -53,32 +56,24 @@ public class Polynomial {
 	 * @return:		the string representation in html code of the polynomial
 	 */
 	public String toHTMLString(){
-String str = "<html>";
-		
-		for (int exp: terms.keySet()){
-			Complex coeff = terms.get(exp);
-			str += "("+coeff.toString()+")*x<sup>"+exp+"</sup> + ";
-		}
-		str = str.substring(0,str.length()-3) + "</html>";
-		
-		return str;
+		return "<html>"+this.toString()+"</html>";
 	}
 	
 	// setters
 	
 	/**
 	 * adds the term to the polynomial
-	 * if already exist, adds the coefficients of the exponent
-	 * @param exp:	exponent
-	 * @param re:	real part
-	 * @param im:	imaginary part
+	 * if already exist, adds the coefficients
+	 * @param alpha:	the element
+	 * @param re:		real part
+	 * @param im:		imaginary part
 	 */
-	public void addUpdateTerm(int exp, double re, double im){
-		Complex coeff = terms.get(exp);
+	public void addUpdateTerm(Elem alpha, double re, double im){
+		Complex coeff = this.getCoeff(alpha);
 		if (coeff == null){
 			// create new entry
 			coeff = new Complex(re,im);
-			terms.put(exp,coeff);
+			terms.put(alpha,coeff);
 		} else {
 			// add to existing coefficient
 			coeff.addComplex(re, im);
@@ -89,15 +84,16 @@ String str = "<html>";
 	
 	/**
 	 * @param x:	input for the polynomial p
-	 * @return:		the complex value of p(x)
+	 * @return:		the complex value of p(x) which is SUM_(alpha in Z_N) [coeff_alpha * chi_alpha(x)]
 	 */
+	//TODO: fix calculation
 	public Complex getValue(Elem x){
 		Complex ans = new Complex(0,0);
-		double expValue;
-		for(int exp: terms.keySet()){
-			Complex coeff = terms.get(exp);
-			expValue = Math.pow(x.getValue(), exp);
-			ans.addComplex(coeff.getRe()*expValue, coeff.getIm()*expValue);
+		
+		for(Elem alpha: terms.keySet()){
+			Complex coeff = terms.get(alpha);
+			double val = SFT.innerProduct(coeff, SFT.chi(alpha, x));
+			ans.addComplex(val, 0);
 		}
 		
 		return ans;
