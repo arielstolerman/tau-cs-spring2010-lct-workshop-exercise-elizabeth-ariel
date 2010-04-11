@@ -1,3 +1,14 @@
+/**
+ * 
+ * Workshop Learning & Coding Theory Exercise
+ * TAU, Spring Semester 2010
+ * Elizabeth Firman and Ariel Stolerman
+ * 
+ * Filename: AppletListeners.java
+ * Description: code for the main jApplet's listeners and event handlers
+ * 
+ */
+
 package GUI;
 
 import java.awt.Font;
@@ -8,8 +19,6 @@ import javax.swing.JFileChooser;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
-
-import org.xml.sax.SAXException;
 
 import SFT.*;
 import Utils.Debug;
