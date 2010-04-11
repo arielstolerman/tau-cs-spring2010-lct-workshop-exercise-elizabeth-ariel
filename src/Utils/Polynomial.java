@@ -86,14 +86,12 @@ public class Polynomial {
 	 * @param x:	input for the polynomial p
 	 * @return:		the complex value of p(x) which is SUM_(alpha in Z_N) [coeff_alpha * chi_alpha(x)]
 	 */
-	//TODO: fix calculation
 	public Complex getValue(Elem x){
 		Complex ans = new Complex(0,0);
 		
 		for(Elem alpha: terms.keySet()){
 			Complex coeff = terms.get(alpha);
-			double val = SFT.innerProduct(coeff, SFT.chi(alpha, x));
-			ans.addComplex(val, 0);
+			ans.addComplex(Complex.mulComplex(coeff,SFT.chi(alpha, x)));
 		}
 		
 		return ans;
