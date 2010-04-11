@@ -1,4 +1,14 @@
-
+/**
+ * 
+ * Workshop Learning & Coding Theory Exercise
+ * TAU, Spring Semester 2010
+ * Elizabeth Firman and Ariel Stolerman
+ * 
+ * Filename: Polynomial.java
+ * Description: code for a Fourier polynomial representation, used to represent functions
+ * 				received as input from the user
+ * 
+ */
 
 package Utils;
 
