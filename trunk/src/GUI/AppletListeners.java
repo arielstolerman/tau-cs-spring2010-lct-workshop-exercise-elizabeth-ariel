@@ -504,12 +504,17 @@ public class AppletListeners {
 		// set explanation
 		MainJApplet.getjLabelExplanationTitle().setText(phasesExplanationTitle.get("phase1"));
 		MainJApplet.getjLabelExplanation().setText(phasesExplanation.get("phase1"));
+		// clear error label
+		MainJApplet.getjLabelErrorMsgBox().setText("");
 		
 		// stop SFT thread if running
 		if (sftThread != null){
 			sftThread.stop();
 		}
 		sftThread = null;
+		
+		// clear SFT's query
+		SFT.setQuery(null);
 		
 		// clear phase #2's table and phase #3's result label
 		MainJApplet.getjTableModelUserInput().setRowCount(0);

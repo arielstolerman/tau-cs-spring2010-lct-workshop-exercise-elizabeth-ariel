@@ -88,4 +88,23 @@ public class Complex {
 		this.real = this.real+real;
 		this.imaginary = this.imaginary+imaginary;
 	}
+	
+	public void addComplex(Complex complex){
+		this.addComplex(complex.getRe(), complex.getIm());
+	}
+	
+	// static math functions
+	
+	/**
+	 * @param complex1:		first argument
+	 * @param complex2:		second argument
+	 * @return:				multiplies the two complex numbers
+	 */
+	public static Complex mulComplex(Complex complex1, Complex complex2){
+		// (a + bi)(c + di) = (ac - bd) + (bc + ad)i
+		return new Complex(
+				complex1.getRe()*complex2.getRe() - complex1.getIm()*complex2.getIm(),
+				complex1.getIm()*complex2.getRe() + complex1.getRe()*complex2.getIm()
+				); 
+	}
 }
