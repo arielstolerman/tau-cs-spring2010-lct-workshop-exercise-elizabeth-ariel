@@ -107,4 +107,53 @@ public class Polynomial {
 		return ans;
 	}
 
+	/**
+	 * @param p:	a Fourier polynomial
+	 * @param N:	group order
+	 * @return:		||p||_infinity over Z_N (maximum norm of p)
+	 */
+	public static double getInfinityNorm(Polynomial p, long N){
+		double ans = 0;
+		
+		for(long i=0; i<N; i++){
+			Complex val = p.getValue(new Elem(i));
+			double tmp = Math.pow(val.getRe(),2) + Math.pow(val.getIm(),2);
+			if (tmp > ans) ans = tmp;
+		}
+		
+		return ans;
+	}
+	
+	/**
+	 * @param p:	a Fourier polynomial
+	 * @param N:	group order
+	 * @return:		||p||_2 over Z_N (Euclidean norm of p)
+	 */
+	public static double getEuclideanNorm(Polynomial p, long N){
+		double ans = 0;
+		
+		for(long i=0; i<N; i++){
+			Complex val = p.getValue(new Elem(i));
+			System.out.println(val);
+			ans += (Math.pow(val.getRe(),2) + Math.pow(val.getIm(),2))/((double)N); // [f(x) * conjugate(f(x))] / N
+			System.out.println(ans);
+		}
+		
+		return Math.sqrt(ans);
+	}
+	
+	// main for debugging
+	public static void main(String[] args) {		
+		SFT.setN(70);
+		
+		Polynomial p = new Polynomial("1");
+		p.addUpdateTerm(new Elem(0), 1000, 1000);
+		p.addUpdateTerm(new Elem(1), 0.001, 0.001);
+		p.addUpdateTerm(new Elem(2), 1000, 1000);
+		p.addUpdateTerm(new Elem(3), 0.001, 0.001);
+		p.addUpdateTerm(new Elem(4), 0.001, 0.001);
+		p.addUpdateTerm(new Elem(5), 0.001, 0.001);
+		
+		System.out.println("inf: "+getInfinityNorm(p, SFT.getN())+", euclidean: "+getEuclideanNorm(p, SFT.getN()));
+	}
 }
