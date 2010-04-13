@@ -182,7 +182,7 @@ public class MainJApplet extends javax.swing.JApplet {
 				{
 					jLabelInputDelta = new JLabel();
 					jPanelPhase1.add(jLabelInputDelta);
-					jLabelInputDelta.setText("<html>&delta;:</html>");
+					jLabelInputDelta.setText("<html>&delta;':</html>");
 					jLabelInputDelta.setBounds(26, 69, 22, 22);
 					jLabelInputDelta.setFont(AppletListeners.fontMainApplet);
 				}
