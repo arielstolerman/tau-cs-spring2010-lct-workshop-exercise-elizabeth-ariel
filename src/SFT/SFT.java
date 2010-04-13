@@ -63,9 +63,11 @@ public class SFT {
 	public static void runMainSFTAlgorithm(long N, double tau, double delta_t){
 		Debug.log("SFT -> runMainSFTAlgorithm - main algorithm part 1 started");
 		
-		// run generateQueries on N, gamma = tau/36, ||f||_infinity and delta = delta_t/O((||f||_2^2/tau)^1.5*logN)
+		/* run generateQueries (algorithm 3.5) on:
+		 * N, gamma = tau/36, ||f||_infinity and delta = delta_t/O((||f||_2^2/tau)^1.5*log_2(N))
+		 */
 		double gamma = tau/36;
-		double fInfNorm = getfInfNorm();
+		double fInfNorm = SFT.fInfNorm;
 		double delta = delta_t/( deltaCalculationConst * Math.pow(Math.pow(getfEuclideanNorm(),2)/tau,1.5) *
 				(Math.log(N)/Math.log(2)) );
 		Set<Elem>[] sets = generateQueries(N, gamma, fInfNorm, delta);
@@ -87,10 +89,14 @@ public class SFT {
 		}
 		
 		String QValues = "";
+		int rowCount = 0;
 		for (Iterator<Elem> j = Q.iterator(); j.hasNext();){
-			QValues += j.next()+" ";
+			rowCount++;
+			QValues += j.next();
+			QValues += (rowCount % 20 == 0)? "\n\t":" ";
 		}
-		Debug.log("\tcreated Q = {x - y | x in A, y in union(B_i), i=1,...,log(N)}: "+QValues);
+		String Qsize = Q.size()+"";
+		Debug.log("\tcreated Q = {x - y | x in A, y in union(B_i), i=1,...,log(N)} of size "+Qsize+":\n\t"+QValues);
 		
 		// set up public variables with Q and sets
 		// user will invoke the query calculation followed by the rest of the SFT algorithm execution

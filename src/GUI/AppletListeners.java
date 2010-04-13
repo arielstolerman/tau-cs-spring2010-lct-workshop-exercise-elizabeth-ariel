@@ -50,7 +50,7 @@ public class AppletListeners {
 		// initialize explanations
 		String phase1 =	"<html>" +
 				"Insert an integer N representing the function's domain group, τ the <br>" +
-				"threshold, δ the error probability, ||&fnof;||<sub>&infin;</sub> the infinity norm of &fnof;,<br>" +
+				"threshold, δ' the error probability, ||&fnof;||<sub>&infin;</sub> the infinity norm of &fnof;,<br>" +
 				"||&fnof;||<sub>2</sub> the Euclidean norm of &fnof;, a constant coefficient for &delta; calculation<br>" +
 				"and a constant coefficient for m<sub>A</sub> and m<sub>B</sub>.<br>" +
 				"</html>";
