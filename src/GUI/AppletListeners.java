@@ -267,26 +267,26 @@ public class AppletListeners {
 			return false;
 		}
 		
-		// validate that tau is a positive double //TODO between 0 and 1?
+		// validate that tau is a positive double
 		try{
 			double tau = Double.parseDouble(MainJApplet.getjTextFieldInputTau().getText());
 			if (tau <= 0) throw new NumberFormatException();
 			// tau is ok, set it
 			else SFT.setTau(tau);
 		} catch (NumberFormatException nfe){
-			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&tau; must be a positive double")); //TODO correct?
+			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&tau; must be a positive double"));
 			
 			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad tau");
 			
 			return false;
 		}
 		
-		// validate that delta is in (0,1)
+		// validate that delta_t is in (0,1)
 		try{
-			double delta = Double.parseDouble(MainJApplet.getjTextFieldInputDelta().getText());
-			if (delta <= 0 || delta >= 1) throw new NumberFormatException();
+			double delta_t = Double.parseDouble(MainJApplet.getjTextFieldInputDelta().getText());
+			if (delta_t <= 0 || delta_t >= 1) throw new NumberFormatException();
 			// delta is ok, set it
-			else SFT.setDelta(delta);
+			else SFT.setDelta_t(delta_t);
 		} catch (NumberFormatException nfe){
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&delta; must be a double in (0,1)"));
 			
@@ -347,6 +347,17 @@ public class AppletListeners {
 			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("m<sub>A</sub> and m<sub>B</sub> coefficient must be a positive double"));
 			
 			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad mA,mB coeff");
+			
+			return false;
+		}
+		
+		// validate that the calculation of delta is valid - in (0,1)
+		double delta = SFT.calcDelta(SFT.getDelta_t(), SFT.getDeltaCalculationConst(),
+				SFT.getfEuclideanNorm(), SFT.getTau(), SFT.getN());
+		if (delta <= 0 || delta >= 1){
+			MainJApplet.getjLabelErrorMsgBox().setText(wrapRed("&delta; came out not in (0,1). Supply bigger delta-calculation coeff"));
+			
+			Debug.log("AppletListeners -> phase1NextButtonValidateSetFields completed: bad delta calculation");
 			
 			return false;
 		}
