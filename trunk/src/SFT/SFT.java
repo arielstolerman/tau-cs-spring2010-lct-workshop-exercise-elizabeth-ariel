@@ -35,7 +35,7 @@ public class SFT {
 	private static double m_A_m_B_CalculationConst = 1;
 	private static long N;
 	private static double tau;
-	private static double delta;
+	private static double delta_t;
 	
 	/* **************************
 	 * parameters used by the second part of the algorithm
@@ -68,8 +68,9 @@ public class SFT {
 		 */
 		double gamma = tau/36;
 		double fInfNorm = SFT.fInfNorm;
-		double delta = delta_t/( deltaCalculationConst * Math.pow(Math.pow(getfEuclideanNorm(),2)/tau,1.5) *
-				(Math.log(N)/Math.log(2)) );
+		double delta = calcDelta(delta_t,deltaCalculationConst,fEuclideanNorm,tau,N);
+		Debug.log("\tgamma is: "+gamma+", delta is: "+delta+", fInfNorm is: "+fInfNorm);
+		
 		Set<Elem>[] sets = generateQueries(N, gamma, fInfNorm, delta);
 		Debug.log("\tgenerated sets A,B1,..,Bl");
 		
@@ -143,8 +144,21 @@ public class SFT {
 		
 		// compute m_A and m_B
 		double tmp = 1.0/Math.pow(gamma, 2);
-		int m_A = (int) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/delta)));
-		int m_B = (int) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/(delta*gamma))));
+		double eta = Math.min(Math.min(gamma, Math.sqrt(gamma)),(gamma/fInfNorm));
+		double tmpCoeff = Math.pow(fInfNorm/eta, 2);
+		//long m_A = (long) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/delta)));
+		//long m_B = (long) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/(delta*gamma))));
+		long m_A = (long) (m_A_m_B_CalculationConst * Math.ceil(tmpCoeff*Math.log(1.0/delta)));
+		long m_B = (long) (m_A_m_B_CalculationConst * Math.ceil(tmpCoeff*Math.log(fInfNorm/(delta*gamma))));
+		//TODO regulation of m_A and m_B - is it correct?
+		if (m_A > N) {
+			Debug.log("\tRegulated m_A from "+m_A+" to "+((long)Math.log(N)));
+			m_A = (long)Math.log(N);
+		}
+		if (m_B > N) {
+			Debug.log("\tRegulated m_B from "+m_B+" to "+((long)Math.log(N)));
+			m_B = (long)Math.log(N);
+		}
 		
 		Debug.log("\tm_A is: "+m_A+", m_B is: "+m_B);
 		
@@ -197,7 +211,7 @@ public class SFT {
 		// initialize candidate (candidate_0)
 		Elem[] initInterval = new Elem[2];
 		initInterval[0] = new Elem(0);
-		initInterval[1] = new Elem(N);
+		initInterval[1] = new Elem(N); //TODO: possibly should be N-1, since N is not a candidate!
 		Candidate candidate = new Candidate(initInterval);
 		
 		// run iterations over l = 0,...,log_2(N)-1
@@ -290,6 +304,15 @@ public class SFT {
 	 *********************/
 	
 	/**
+	 * @param:	all parameters needed to calculate delta
+	 * @return:	delta
+	 */
+	public static double calcDelta(double delta_t,double coeff, double fEucNorm, double tau, long N){
+		return delta_t/( coeff * Math.pow(Math.pow(fEucNorm,2)/tau,1.5) *
+				(Math.log(N)/Math.log(2)) );
+	}
+	
+	/**
 	 * @param N:	the order of Z_N
 	 * @return:		log_2(N), rounded up
 	 */
@@ -302,16 +325,18 @@ public class SFT {
 	 * @param N:	the order of Z_N
 	 * @return:		a set of elements in Z_N, uniformly randomly selected
 	 */
-	private static Set<Elem> generateRandomSubsetA(int m_A, long N){
+	private static Set<Elem> generateRandomSubsetA(long m_A, long N){
 		Set<Elem> res = new HashSet<Elem>();
 		
+		/*
 		// randomly choose elements
-		for(int i=0; i< m_A; i++){
+		for(long i=0; i< m_A; i++){
 			// create and add new element with value different from the elements already contained in a
 			res.add(genNewElem(res,N));
 		}
+		*/
 		
-		return res;
+		return generateRandomSubset(m_A,N);
 	}
 	
 	/**
@@ -320,7 +345,7 @@ public class SFT {
 	 * @param l		a value between 1 and log(N)
 	 * @return		a set of elements in {0,...,2^(l-1)-1}
 	 */
-	private static Set<Elem> generateRandomSubsetBl(int m_B, long N, int l){
+	private static Set<Elem> generateRandomSubsetBl(long m_B, long N, int l){
 		Set<Elem> res = new HashSet<Elem>();
 		
 		// if 2^(l-1) < m_B, no need to randomly choose elements for be, take all 0,...,2^(l-1)-1
@@ -333,9 +358,39 @@ public class SFT {
 		}
 		// otherwise, choose randomly m_B elements from 0,...,2^(l-1)-1
 		else {
-			for (long i=0; i<m_B; i++){
+			/*for (long i=0; i<m_B; i++){
 				res.add(genNewElem(res, pow));
-			}
+			}*/
+			
+			res = generateRandomSubset(m_B,pow);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @param sizeOfSet:	the size of the needed set of elements
+	 * @param randBarrier:	the barrier for the range of the randomly selected elements
+	 * @return:				a set of uniformly randomly selected elements in range (0,1,...,randBarrier-1)
+	 * 						of size sizeOfSet 
+	 */
+	private static Set<Elem> generateRandomSubset(long sizeOfSet, long randBarrier){
+		Set<Elem> res = new HashSet<Elem>();
+		
+		long i;
+		Map<Long,Elem> values = new HashMap<Long,Elem>();
+		for (i=0; i<randBarrier; i++){
+			values.put(i, new Elem(i));
+		}
+		
+		for(i=0; i<sizeOfSet; i++){
+			long index = i + getRandValue(randBarrier-i); // generate random index in range (i,...,randBarrier-1)
+			Elem elem = values.get(index);
+			// swap
+			values.put(index, values.get(i));
+			values.put(i, elem);
+			// add the randomly selected element to the result set
+			res.add(elem);
 		}
 		
 		return res;
@@ -381,7 +436,7 @@ public class SFT {
 	 */
 	public static Complex chi(Elem v, Elem y){
 		// chi_v (y) = e^(i2pi * v/N * y) = cos(2pi * v/N * y) + i*sin(2pi * v/N * y)
-		double arg = 2 * Math.PI * (((double)v.getValue())/N) * ((double)y.getValue());
+		double arg = 2 * Math.PI * (((double)v.getValue())/((double)N)) * ((double)y.getValue());
 		double re = Math.cos(arg);
 		double im = Math.sin(arg);
 		
@@ -395,7 +450,7 @@ public class SFT {
 	 * @return:		the inner product <x,y> = sum[x_i * y_i] (i = 1,2)
 	 */
 	public static double innerProduct(Complex x, Complex y){
-		return x.getRe()*y.getRe()+x.getIm()*y.getIm();
+		return x.getRe()*y.getRe()-x.getIm()*y.getIm();
 	}
 	
 	
@@ -449,12 +504,12 @@ public class SFT {
 		SFT.tau = tau;
 	}
 
-	public static double getDelta() {
-		return delta;
+	public static double getDelta_t() {
+		return delta_t;
 	}
 
-	public static void setDelta(double delta) {
-		SFT.delta = delta;
+	public static void setDelta_t(double delta_t) {
+		SFT.delta_t = delta_t;
 	}
 
 	public static Set<Elem>[] getSets() {

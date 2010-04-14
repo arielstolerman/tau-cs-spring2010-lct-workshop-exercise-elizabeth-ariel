@@ -35,7 +35,7 @@ public class SFTRunner {
 			Debug.log("SFTRunner -> RunMainSFTAlgorithm thread started");
 			
 			// call main procedure (the first part of the SFT algorithm)
-			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta());			
+			SFT.runMainSFTAlgorithm(SFT.getN(), SFT.getTau(), SFT.getDelta_t());			
 
 			// update gui: set table contents
 			// initialize list of elements for which f-values are to be fetched)

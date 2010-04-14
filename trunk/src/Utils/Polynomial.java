@@ -121,7 +121,7 @@ public class Polynomial {
 			if (tmp > ans) ans = tmp;
 		}
 		
-		return ans;
+		return Math.sqrt(ans);
 	}
 	
 	/**
@@ -144,15 +144,15 @@ public class Polynomial {
 	
 	// main for debugging
 	public static void main(String[] args) {		
-		SFT.setN(70);
+		SFT.setN(50000);
 		
 		Polynomial p = new Polynomial("1");
-		p.addUpdateTerm(new Elem(0), 1000, 1000);
-		p.addUpdateTerm(new Elem(1), 0.001, 0.001);
-		p.addUpdateTerm(new Elem(2), 1000, 1000);
-		p.addUpdateTerm(new Elem(3), 0.001, 0.001);
-		p.addUpdateTerm(new Elem(4), 0.001, 0.001);
-		p.addUpdateTerm(new Elem(5), 0.001, 0.001);
+		p.addUpdateTerm(new Elem(230), 10, 10);
+		p.addUpdateTerm(new Elem(1492), 10, 10);
+		p.addUpdateTerm(new Elem(542), 0.01, 0.01);
+		p.addUpdateTerm(new Elem(29), 0.07, 0.09);
+		/*p.addUpdateTerm(new Elem(4), 0.001, 0.001);
+		p.addUpdateTerm(new Elem(5), 0.001, 0.001);*/
 		
 		System.out.println("inf: "+getInfinityNorm(p, SFT.getN())+", euclidean: "+getEuclideanNorm(p, SFT.getN()));
 	}
