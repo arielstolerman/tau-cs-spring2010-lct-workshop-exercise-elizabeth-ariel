@@ -90,7 +90,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonPhase1Next().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> phase #1 NEXT button clicked");
 						
@@ -111,7 +111,7 @@ public class AppletListeners {
 		MainJApplet.getjRadioButtonQuery1().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> user input option selected");
 						
@@ -124,7 +124,7 @@ public class AppletListeners {
 		MainJApplet.getjRadioButtonQuery2().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> XML input option selected");
 						setPhase2XMLVisible(true);
@@ -136,7 +136,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonInputXMLBrowse().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> browse for XML file button clicked");
 						
@@ -148,7 +148,7 @@ public class AppletListeners {
 		// XML input text changed
 		MainJApplet.getjTextFieldInputXMLFile().addCaretListener(new CaretListener() {
 			
-			@Override
+			//@Override
 			public void caretUpdate(CaretEvent e) {
 				Debug.log("AppletListeners -> XML input text changed");
 				
@@ -160,7 +160,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonCalcQuery().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> calculate via XML button clicked");
 						
@@ -173,7 +173,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonPhase2Back().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> phase #2 BACK button clicked");
 						
@@ -186,7 +186,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonNextPhase2().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> phase #2 NEXT button clicked");
 						
@@ -206,7 +206,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonPhase3Back().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> phase #3 BACK button clicked");
 						
@@ -219,7 +219,7 @@ public class AppletListeners {
 		MainJApplet.getjButtonPhase3Restart().addActionListener(
 				new ActionListener() {
 					
-					@Override
+					//@Override
 					public void actionPerformed(ActionEvent arg0) {
 						Debug.log("AppletListeners -> phase #3 RESTART button clicked");
 						
@@ -403,12 +403,12 @@ public class AppletListeners {
 		JFileChooser xmlFileChoose = new JFileChooser();
 		javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
 			
-			@Override
+			//@Override
 			public String getDescription() {
 				return "XML files";
 			}
 			
-			@Override
+			//@Override
 			public boolean accept(File f) {
 				 return f.isDirectory() || f.getName().toLowerCase().endsWith(".xml");
 			}
