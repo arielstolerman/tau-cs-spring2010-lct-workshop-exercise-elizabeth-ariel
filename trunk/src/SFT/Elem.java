@@ -22,10 +22,10 @@ public class Elem {
 	 * default constructors
 	 */
 	public Elem(long value){
-		this.value = value;
+		this.value = (value<0)?value+SFT.getN():value;;
 	}
 	public Elem(double value){
-		this.value = (long)value;
+		this.value = (value<0)?(long)value+SFT.getN():(long)value;
 	}
 
 	// getters
