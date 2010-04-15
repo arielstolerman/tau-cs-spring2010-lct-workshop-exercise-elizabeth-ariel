@@ -150,15 +150,16 @@ public class SFT {
 		//long m_B = (long) (m_A_m_B_CalculationConst * Math.ceil(tmp*Math.log(1.0/(delta*gamma))));
 		long m_A = (long) (m_A_m_B_CalculationConst * Math.ceil(tmpCoeff*Math.log(1.0/delta)));
 		long m_B = (long) (m_A_m_B_CalculationConst * Math.ceil(tmpCoeff*Math.log(fInfNorm/(delta*gamma))));
-		//TODO regulation of m_A and m_B - is it correct?
-		if (m_A > N) {
+
+		//regulation of m_A and m_B - is it correct?
+		/*if (m_A > N) {
 			Debug.log("\tRegulated m_A from "+m_A+" to "+((long)Math.log(N)));
 			m_A = (long)Math.log(N);
 		}
 		if (m_B > N) {
 			Debug.log("\tRegulated m_B from "+m_B+" to "+((long)Math.log(N)));
 			m_B = (long)Math.log(N);
-		}
+		}*/
 		
 		Debug.log("\tm_A is: "+m_A+", m_B is: "+m_B);
 		
@@ -273,7 +274,7 @@ public class SFT {
 		Debug.log("SFT -> distinguish started");
 		
 		double est = 0;
-		Elem v = new Elem(Math.floor((interval[0].getValue()+interval[1].getValue())/2));
+		Elem v = new Elem(-Math.floor((interval[0].getValue()+interval[1].getValue())/2));
 		
 		// calculate est(a,b)
 		for (Elem x: A){
@@ -450,7 +451,7 @@ public class SFT {
 	 * @return:		the inner product <x,y> = sum[x_i * y_i] (i = 1,2)
 	 */
 	public static double innerProduct(Complex x, Complex y){
-		return x.getRe()*y.getRe()-x.getIm()*y.getIm();
+		return x.getRe()*y.getRe()+x.getIm()*y.getIm();
 	}
 	
 	
