@@ -291,14 +291,11 @@ public class SFT {
 		/* the fix Adi Akavia sent on 18/4/2010:
 		 * doesn't work
 		for (Elem x: A){
-			//double tmpBSum = 0;
 			Complex tmpBSum = new Complex(0,0);
 			for (Elem y: B){
 				long x_sub_y = (Elem.sub(x, y)).getValue();
-				//tmpBSum += innerProduct(chi(v,y),query.getValue(x_sub_y));
 				tmpBSum.addComplex(Complex.mulComplex(chi(v,y), query.getValue(x_sub_y)));
 			}
-			//tmpBSum /= B.size();
 			double b_size = B.size();
 			tmpBSum = new Complex(tmpBSum.getRe()/b_size,tmpBSum.getIm()/b_size);
 			// multiply by its conjugate and add to est
