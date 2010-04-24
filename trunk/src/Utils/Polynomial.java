@@ -144,10 +144,10 @@ public class Polynomial {
 	
 	// main for debugging
 	public static void main(String[] args) {		
-		SFT.setN(50000);
+		SFT.setN(10000000);
 		
 		Polynomial p = new Polynomial("1");
-		p.addUpdateTerm(new Elem(230), 10, 10);
+		p.addUpdateTerm(new Elem(2031200), 10, 10);
 		p.addUpdateTerm(new Elem(1492), 10, 10);
 		p.addUpdateTerm(new Elem(542), 0.01, 0.01);
 		p.addUpdateTerm(new Elem(29), 0.07, 0.09);

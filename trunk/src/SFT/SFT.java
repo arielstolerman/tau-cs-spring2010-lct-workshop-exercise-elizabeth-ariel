@@ -392,8 +392,27 @@ public class SFT {
 	 */
 	private static Set<Elem> generateRandomSubset(long sizeOfSet, long randBarrier){
 		Set<Elem> res = new HashSet<Elem>();
+		// assuming sizeOfSet < randBarrier
 		
-		long i;
+		Random rand = new Random();
+		for(long i=0; i<sizeOfSet; i++){
+			boolean doAgain;
+			Elem e;
+			do{
+				e = new Elem(Math.floor(rand.nextDouble()*randBarrier));
+				for (Elem elem: res){
+					if (elem.getValue() == e.getValue()){
+						doAgain = true;
+						break;
+					}
+				}
+				doAgain = false;
+			} while (doAgain);
+			res.add(e);
+		}
+				
+		// the following removed due to out of memory for large Ns
+		/*long i;
 		Map<Long,Elem> values = new HashMap<Long,Elem>();
 		for (i=0; i<randBarrier; i++){
 			values.put(i, new Elem(i));
@@ -407,7 +426,7 @@ public class SFT {
 			values.put(i, elem);
 			// add the randomly selected element to the result set
 			res.add(elem);
-		}
+		}*/
 		
 		return res;
 	}
