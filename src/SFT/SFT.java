@@ -78,6 +78,7 @@ public class SFT {
 		Set<Elem> Q = new HashSet<Elem>();
 		Set<Elem> A = sets[0];
 		
+		long qCalcCounter = 0;
 		for (int i=1; i<sets.length; i++){
 			Set<Elem> Bl = sets[i];
 			for(Elem e_a: A){
@@ -85,6 +86,9 @@ public class SFT {
 					Elem elem = Elem.sub(e_a, e_b); // subtraction modulo N
 					if (!Elem.contains(Q, elem))
 						Q.add(elem);
+					qCalcCounter++;
+					if (qCalcCounter % 10000 == 0)
+						Debug.log("\tCalculating Q, already checked "+qCalcCounter+" couples of a in A, b in Bi");
 				}
 			}
 		}
